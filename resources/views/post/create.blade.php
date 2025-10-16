@@ -8,7 +8,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form method="POST" action="/posts" encrtype="multipart/form-data">
+                    <form method="POST" action="/posts" enctype="multipart/form-data">
                         @csrf
                         <div>
                             <x-input-label for="title" :value="__('Title')" />
@@ -22,10 +22,9 @@
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
                         <div class="mt-4">
-                            <label for="file">
-                            <input class="file-control mt-1 w-full" name='file' id='file' type='file'>
-                            <X-input-error :messages="$errors->get('file')" class="mt-2" />
-                            </label>
+                            <label for="media">add a media file(video or photo)</label>
+                            <input class="file-control mt-1 w-full" type="file" name="media" accept="image/*,video/*">
+                            <X-input-error :messages="$errors->get('media')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label class="pt-3 pb-3" for="category" :value="__('Category')" />

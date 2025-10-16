@@ -2,22 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
-class postController extends Controller
+class PostController extends Controller
 {
+
     public function create()
     {
         return view('post.create');
     }
-    public function store(){
-        $data = request()-> validate([
-            'another' => '',
-            'title' => 'required',
-            'description' => 'required',
-            'category' => 'required'
+    public function store(Request $request){
+        $data = $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'category' => 'required',
+            'media' => 'nullable|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:204800', // optional
         ]);
-        auth()->user()->posts()->create($data);
-        dd(request()->all());
+        try{
+            // Save post
+            $path = null;
+            $is_saved = false;
+            if ($request->hasFile('media')) {
+                $path = $request->file('media')->store('uploads', 'public');
+            }
+            auth()->user()->posts()->create(array_merge($data, ['media_url' => $path]));
+
+
+            dd($request->all());
+        }catch(\Exception $e){
+            echo $e->getMessage();
+            return back()->withErrors(['error' => 'An error occurred while saving the post. Please try again.']);
+        }
     }
 }

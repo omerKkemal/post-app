@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('media_url')->nullable();
+            $table->string('media')->nullable();
             $table->string('category')->nullable();
             $table->timestamps();
 
