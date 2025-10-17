@@ -197,76 +197,80 @@
             </nav>
 
             <!-- Post content -->
+            @foreach ($posts as $post)
             <article class="post-card bg-white rounded-lg shadow-md overflow-hidden">
                 <!-- Post header -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-3">
-                            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                <span class="text-gray-600 font-medium">AU</span>
-                            </div>
                             <div>
-                                <p class="font-medium">Author Username</p>
-                                <p class="text-sm text-gray-500">Posted on <time datetime="2023-05-15">May 15, 2023</time></p>
+                                <p class="text-sm text-gray-500">
+                                    Posted on <time datetime="{{ $post->created_at }}">{{ $post->created_at->format('M d, Y') }}</time>
+                                </p>
                             </div>
                         </div>
                         <div class="text-sm text-gray-500">
                             <span class="inline-flex items-center">
                                 <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                                 Public Post
                             </span>
                         </div>
                     </div>
 
-                    <h1 class="text-3xl font-bold text-gray-900 mb-4">Understanding the Fundamentals of Modern Web Development</h1>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ $post->title }}</h1>
 
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag bg-blue-100 text-blue-800">Web Development</span>
-                        <span class="tag bg-green-100 text-green-800">Laravel</span>
-                        <span class="tag bg-purple-100 text-purple-800">Tailwind CSS</span>
+                        <span class="tag bg-blue-100 text-blue-800">{{ $post->category ?? 'Uncategorized' }}</span>
                     </div>
                 </div>
 
                 <!-- Post body -->
                 <div class="p-6 prose">
-                    <p class="lead text-lg text-gray-700 font-medium">In today's digital landscape, understanding the core principles of web development is more important than ever. This post explores the fundamental concepts that every developer should know.</p>
+                    @php
+                        $lines = preg_split('/\r\n|\r|\n/', $post->description);
+                    @endphp
 
-                    <p>Web development has evolved significantly over the past decade. With the advent of modern frameworks and tools, developers can now create more sophisticated and performant applications than ever before.</p>
+                    <div class="p-6 prose">
+                        @foreach ($lines as $line)
+                            @php $trim = trim($line); @endphp
 
-                    <h2>Key Technologies</h2>
+                            @if (str_starts_with($trim, '**') && str_ends_with($trim, '**'))
+                                <h3 class="font-semibold text-lg mb-2">{{ trim($trim, '*') }}</h3>
 
-                    <p>The modern web development stack typically includes:</p>
+                            @elseif (str_starts_with($trim, '*'))
+                                <ul class="list-disc ml-6">
+                                    <li>{{ ltrim($trim, '* ') }}</li>
+                                </ul>
 
-                    <ul>
-                        <li>Frontend frameworks like React, Vue, or Angular</li>
-                        <li>Backend technologies such as Laravel, Node.js, or Django</li>
-                        <li>Database systems like MySQL, PostgreSQL, or MongoDB</li>
-                        <li>Deployment platforms including AWS, Docker, and Vercel</li>
-                    </ul>
+                            @elseif (str_starts_with($trim, '-'))
+                                <p class="text-gray-700 mb-2">{{ ltrim($trim, '- ') }}</p>
 
-                    <p>Each of these technologies plays a crucial role in the development process and contributes to the overall success of a project.</p>
+                            @else
+                                <p class="text-gray-700 mb-2">{{ $trim }}</p>
+                            @endif
+                        @endforeach
+                    </div>
 
-                    <h2>Best Practices</h2>
 
-                    <p>Adhering to best practices is essential for creating maintainable and scalable applications. Some key practices include:</p>
+                    @if ($post->media_url)
+                        @php
+                            $extension = pathinfo($post->media_url, PATHINFO_EXTENSION);
+                        @endphp
 
-                    <ul>
-                        <li>Writing clean, readable code</li>
-                        <li>Implementing proper testing strategies</li>
-                        <li>Using version control effectively</li>
-                        <li>Following security guidelines</li>
-                    </ul>
-
-                    <p>By following these practices, developers can ensure that their applications are robust, secure, and easy to maintain over time.</p>
-
-                    <blockquote>
-                        <p>"The web is becoming the platform for all applications, and understanding how to build for it is a critical skill for developers."</p>
-                    </blockquote>
-
-                    <p>As the web continues to evolve, developers must stay up-to-date with the latest trends and technologies to remain competitive in the field.</p>
+                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
+                            <img src="{{ Storage::url($post->media_url) }}" alt="Post Image" class="rounded-lg mb-4 max-w-full h-auto">
+                        @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg']))
+                            <video controls class="rounded-lg mb-4 max-w-full h-auto">
+                                <source src="{{ Storage::url($post->media_url) }}" type="video/{{ $extension }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        @endif
+                    @endif
                 </div>
 
                 <!-- Post footer -->
@@ -275,13 +279,15 @@
                         <div class="flex items-center space-x-4">
                             <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
                                 <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                                 </svg>
                                 <span>243</span>
                             </button>
                             <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
                                 <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
                                 <span>42</span>
                             </button>
@@ -289,7 +295,8 @@
                         <div>
                             <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
                                 <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                                 </svg>
                                 <span>Share</span>
                             </button>
@@ -297,6 +304,8 @@
                     </div>
                 </div>
             </article>
+            @endforeach
+
 
             <!-- Related posts -->
             <div class="mt-12">

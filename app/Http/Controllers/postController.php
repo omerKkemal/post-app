@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -28,6 +29,8 @@ class PostController extends Controller
             }
             auth()->user()->posts()->create(array_merge($data, ['media_url' => $path]));
 
+            return redirect('/post');
+
 
             dd($request->all());
         }catch(\Exception $e){
@@ -35,4 +38,11 @@ class PostController extends Controller
             return back()->withErrors(['error' => 'An error occurred while saving the post. Please try again.']);
         }
     }
+
+    public function post(){
+        // all posts in db and return all the posts
+        $posts = Post::all();
+        return view('post.view', compact('posts'));
+    }
+
 }
