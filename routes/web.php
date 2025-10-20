@@ -15,7 +15,11 @@ Route::get('/p',function(){
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $posts = Post::all();
+    $numberOfPosts = $posts->count();
+    $numberOfPostsByCategory = $posts->groupBy('category')->map->count();
+
+    return view('dashboard', compact('numberOfPosts', 'numberOfPostsByCategory'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

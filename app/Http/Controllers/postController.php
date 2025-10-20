@@ -29,7 +29,7 @@ class PostController extends Controller
             }
             auth()->user()->posts()->create(array_merge($data, ['media_url' => $path]));
 
-            return redirect('/post');
+            return redirect('/posts');
 
 
             dd($request->all());

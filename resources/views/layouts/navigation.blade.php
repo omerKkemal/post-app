@@ -50,37 +50,29 @@
                         <span>Dashboard</span>
                     </a>
 
-                    <a href="#"
-                       class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-chart-line text-sm w-5"></i>
-                        <span>Analytics</span>
+                    <a href="{{ route('post.create') }}"
+                       class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
+                       :class="currentRoute === 'post.create' ?
+                              'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                              'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-share-square text-sm w-5"></i>
+                        <span>Create a Post</span>
                     </a>
 
-                    <a href="#"
-                       class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-users text-sm w-5"></i>
-                        <span>Team</span>
+                    <a href="{{ route('post.view') }}"
+                    :class="currentRoute === 'post.view' ?
+                              'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                              'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'"
+                    class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
+                        <i class="fas fa-eye text-sm w-5"></i>
+                        <span>View Post</span>
                     </a>
                 </div>
             </div>
 
             <!-- Enhanced Search & Controls -->
             <div class="flex items-center space-x-4">
-                <!-- Enhanced Search Bar -->
-                <div class="hidden lg:block relative" x-data="{ open: false, query: '' }">
-                    <div class="relative">
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white/50 backdrop-blur-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 dark:bg-gray-800/50 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-                            @focus="open = true"
-                            @blur="setTimeout(() => open = false, 200)"
-                            x-model="query"
-                        >
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
-                        </div>
-                    </div>
+
 
                     <!-- Enhanced Search Results Dropdown -->
                     <div class="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700"
@@ -88,96 +80,12 @@
                          x-transition:enter="transition ease-out duration-200"
                          x-transition:enter-start="opacity-0 transform scale-95"
                          x-transition:enter-end="opacity-100 transform scale-100">
-                        <div class="p-2 space-y-1">
-                            <template x-for="result in searchResults" :key="result.id">
-                                <a :href="result.url"
-                                   class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-150 dark:hover:bg-gray-700/50">
-                                    <i :class="result.icon" class="text-gray-500 w-5 text-center dark:text-gray-400"></i>
-                                    <div>
-                                        <div class="font-medium text-gray-900 dark:text-white" x-text="result.title"></div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400" x-text="result.description"></div>
-                                    </div>
-                                </a>
-                            </template>
-                            <div x-show="searchResults.length === 0" class="p-3 text-center text-gray-500 dark:text-gray-400">
-                                No results found for "<span x-text="query"></span>"
-                            </div>
-                        </div>
+
                     </div>
                 </div>
 
                 <!-- Enhanced Action Buttons -->
                 <div class="flex items-center space-x-2">
-                    <!-- Theme Toggle -->
-                    <button @click="toggleTheme()"
-                            class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 group relative"
-                            x-tooltip="currentTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
-                        <i class="fas fa-sun text-lg transition-transform duration-300 group-hover:scale-110 dark:hidden"></i>
-                        <i class="fas fa-moon text-lg transition-transform duration-300 group-hover:scale-110 hidden dark:block"></i>
-                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                    </button>
-
-                    <!-- Notifications -->
-                    <div class="relative dropdown-container" x-data="{ open: false, notifications: [] }">
-                        <button @click="open = !open; open && loadNotifications()"
-                                class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800 group relative">
-                            <i class="fas fa-bell text-lg transition-transform duration-300 group-hover:scale-110"></i>
-                            <span x-show="unreadCount > 0"
-                                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center transform scale-100 transition-transform duration-300 group-hover:scale-110"
-                                  x-text="unreadCount"></span>
-                        </button>
-
-                        <!-- Enhanced Notifications Dropdown -->
-                        <div class="dropdown-menu w-80" :class="{ 'open': open }">
-                            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center justify-between">
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
-                                    <span x-show="unreadCount > 0"
-                                          class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full dark:bg-blue-900 dark:text-blue-200"
-                                          x-text="unreadCount + ' unread'"></span>
-                                </div>
-                            </div>
-
-                            <div class="max-h-96 overflow-y-auto">
-                                <template x-for="notification in notifications" :key="notification.id">
-                                    <div class="dropdown-item justify-start items-start p-4 border-b border-gray-100 last:border-b-0 dark:border-gray-700/50"
-                                         :class="{ 'bg-blue-50 dark:bg-blue-900/20': !notification.read }">
-                                        <div class="flex items-start space-x-3">
-                                            <div :class="notification.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
-                                                      notification.type === 'warning' ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                                                      notification.type === 'error' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
-                                                      'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'"
-                                                 class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                                <i :class="notification.icon" class="text-sm"></i>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <p class="text-sm font-medium text-gray-900 dark:text-white" x-text="notification.title"></p>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1" x-text="notification.message"></p>
-                                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-2" x-text="formatTime(notification.time)"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-
-                                <div x-show="notifications.length === 0" class="p-8 text-center">
-                                    <i class="fas fa-bell-slash text-3xl text-gray-300 mb-3 dark:text-gray-600"></i>
-                                    <p class="text-gray-500 dark:text-gray-400">No notifications</p>
-                                </div>
-                            </div>
-
-                            <div class="p-3 border-t border-gray-200 dark:border-gray-700">
-                                <a href="#" class="block text-center text-sm text-blue-600 hover:text-blue-700 font-medium dark:text-blue-400 dark:hover:text-blue-300">
-                                    View all notifications
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Search Toggle -->
-                    <button @click="toggleMobileSearch()"
-                            class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-search text-lg"></i>
-                    </button>
 
                     <!-- Mobile Menu Toggle -->
                     <button @click="toggleMobileMenu()"
@@ -213,7 +121,7 @@
                     <!-- Enhanced User Dropdown Menu -->
                     <div id="user-dropdown-menu"
                          class="dropdown-menu w-64"
-                         :class="{ 'open': open }"
+
                          @click.outside="open = false">
                         <!-- User Info -->
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
