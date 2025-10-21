@@ -40,9 +40,80 @@ class PostController extends Controller
     }
 
     public function post(){
-        // all posts in db and return all the posts
-        $posts = Post::all();
+        // Get first 10 posts
+        $posts = Post::orderBy('created_at', 'desc')->take(10)->get();
         return view('post.view', compact('posts'));
+    }
+
+    public function loadMorePosts($clickCount)
+    {
+        try {
+            $perPage = 10;
+
+            /**
+             * Frontend clarification:
+             * - Initial load = page 1
+             * - First "Load More" click = page 2
+             * So if frontend sends clickCount = 1 for first click → page = clickCount + 1
+             */
+            $page = $clickCount;
+
+            // \Log::info("Load More Request", [
+            //     'clickCount' => $clickCount,
+            //     'calculatedPage' => $page,
+            //     'perPage' => $perPage
+            // ]);
+
+            // Fetch paginated posts (ordered by latest)
+            $posts = Post::orderBy('created_at', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+
+            $hasMore = $posts->hasMorePages();
+
+            // \Log::info("Pagination Result", [
+            //     'currentPage' => $posts->currentPage(),
+            //     'postsCount' => $posts->count(),
+            //     'hasMore' => $hasMore,
+            //     'totalPosts' => $posts->total(),
+            //     'lastPage' => $posts->lastPage(),
+            //     'firstItem' => $posts->firstItem(),
+            //     'lastItem' => $posts->lastItem()
+            // ]);
+
+            // Transform post data for JSON response
+            $transformedPosts = $posts->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'description' => $post->description,
+                    'category' => $post->category,
+                    'media_url' => $post->media_url,
+                    'created_at' => $post->created_at->toISOString(),
+                    'updated_at' => $post->updated_at->toISOString(),
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'posts' => $transformedPosts,
+                'hasMore' => $hasMore,
+                'currentPage' => $posts->currentPage(),
+                'totalPosts' => $posts->total(),
+                'postsCount' => $posts->count(),
+                'clickCount' => $clickCount
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in loadMorePosts: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error loading posts',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 }

@@ -10,17 +10,40 @@ Route::get('/', function () {
 });
 
 Route::get('/p',function(){
-    $posts = Post::all();
+    $posts = Post::orderBy('created_at', 'desc')->take(10)->get();
     return view('postView', compact('posts'));
 });
+
+
 
 Route::get('/dashboard', function () {
     $posts = Post::all();
     $numberOfPosts = $posts->count();
     $numberOfPostsByCategory = $posts->groupBy('category')->map->count();
 
-    return view('dashboard', compact('numberOfPosts', 'numberOfPostsByCategory'));
+    // Get posts grouped by date
+    $postsByDate = $posts->groupBy(function($post) {
+        return $post->created_at->format('Y-m-d');
+    })->map->count();
+
+    // Fill in missing dates with zero posts
+    $postsOverTime = [];
+    if ($postsByDate->isNotEmpty()) {
+        $startDate = $posts->min('created_at')->startOfDay();
+        $endDate = $posts->max('created_at')->startOfDay();
+
+        $currentDate = $startDate;
+        while ($currentDate <= $endDate) {
+            $dateString = $currentDate->format('Y-m-d');
+            $postsOverTime[$dateString] = $postsByDate[$dateString] ?? 0;
+            $currentDate->addDay();
+        }
+    }
+
+    return view('dashboard', compact('numberOfPosts', 'numberOfPostsByCategory', 'postsOverTime'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/load-more-posts/{clickCount}', [PostController::class, 'loadMorePosts']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
