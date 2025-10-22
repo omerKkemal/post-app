@@ -51,7 +51,7 @@
                     </a>
 
                     <a href="{{ route('post.create') }}"
-                       class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
+                       class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'post.create' ?
                               'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
                               'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'">
@@ -59,40 +59,46 @@
                         <span>Create a Post</span>
                     </a>
 
-                    <a href="{{ route('post.view') }}"
-                    :class="currentRoute === 'post.view' ?
-                              'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                              'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'"
-                    class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-eye text-sm w-5"></i>
-                        <span>View Post</span>
-                    </a>
+                    <!-- View Post Dropdown -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open"
+                                class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
+                            <i class="fas fa-eye text-sm w-5"></i>
+                            <span>View Post</span>
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-200"
+                               :class="{ 'rotate-180': open }"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div x-show="open"
+                             @click.outside="open = false"
+                             class="absolute top-full left-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100">
+                            <div class="py-1">
+                                <a href="{{ route('post.view', ['language' => 'har']) }}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'har' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
+                                    View Post (Harari)
+                                </a>
+                                <a href="{{ route('post.view', ['language' => 'eng']) }}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'eng' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
+                                    View Post (English)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Enhanced Search & Controls -->
             <div class="flex items-center space-x-4">
 
+                <!-- Enhanced Search Bar - Desktop -->
 
-                    <!-- Enhanced Search Results Dropdown -->
-                    <div class="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700"
-                         x-show="open && query.length > 0"
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100">
-
-                    </div>
-                </div>
 
                 <!-- Enhanced Action Buttons -->
-                <div class="flex items-center space-x-2">
 
-                    <!-- Mobile Menu Toggle -->
-                    <button @click="toggleMobileMenu()"
-                            class="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-bars text-lg"></i>
-                    </button>
-                </div>
 
                 <!-- Enhanced User Profile Dropdown -->
                 <div class="relative dropdown-container" x-data="{ open: false }">
@@ -121,7 +127,10 @@
                     <!-- Enhanced User Dropdown Menu -->
                     <div id="user-dropdown-menu"
                          class="dropdown-menu w-64"
-
+                         x-show="open"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 transform scale-95"
+                         x-transition:enter-end="opacity-100 transform scale-100"
                          @click.outside="open = false">
                         <!-- User Info -->
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -241,6 +250,29 @@
                 Dashboard
             </a>
 
+            <a href="{{ route('post.create') }}"
+               class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
+               :class="currentRoute === 'post.create' ?
+                      'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                      'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'">
+                <i class="fas fa-share-square w-6 mr-3 text-center"></i>
+                Create a Post
+            </a>
+
+            <!-- Mobile View Post Links -->
+            <div class="border-t border-gray-200 pt-2 dark:border-gray-700">
+                <a href="{{ route('post.view', ['language' => 'har']) }}"
+                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
+                    <i class="fas fa-eye w-6 mr-3 text-center"></i>
+                    View Post (Harari)
+                </a>
+                <a href="{{ route('post.view', ['language' => 'eng']) }}"
+                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
+                    <i class="fas fa-eye w-6 mr-3 text-center"></i>
+                    View Post (English)
+                </a>
+            </div>
+
             <a href="#"
                class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800">
                 <i class="fas fa-chart-line w-6 mr-3 text-center"></i>
@@ -294,6 +326,8 @@
             loadingProgress: 0,
             unreadCount: 3, // Example count
             searchResults: [],
+            notifications: [],
+            query: '',
 
             init() {
                 console.log('Enhanced navigation initialized');
@@ -638,6 +672,86 @@
         transform: scale(0.98);
     }
 
+    /* User avatar styles */
+    .user-avatar {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0ea5e9, #6366f1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .user-dropdown-trigger {
+        padding: 0.25rem;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+    }
+
+    .user-dropdown-trigger:hover {
+        background: rgba(0, 0, 0, 0.05);
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .dark .user-dropdown-trigger:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Dropdown styles */
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 0.5rem;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        backdrop-filter: blur(20px);
+    }
+
+    .dark .dropdown-menu {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-size: 0.875rem;
+        color: #6b7280;
+        transition: all 0.2s ease;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background: #f9fafb;
+        color: #374151;
+    }
+
+    .dark .dropdown-item:hover {
+        background: #374151;
+        color: #f9fafb;
+    }
+
+    .dropdown-item i {
+        width: 1rem;
+        margin-right: 0.75rem;
+    }
+
     /* Enhanced focus styles for accessibility */
     .keyboard-navigation .nav-link:focus,
     .keyboard-navigation .mobile-nav-link:focus {
@@ -704,5 +818,10 @@
         .mobile-nav-link:hover {
             outline: 2px solid currentColor;
         }
+    }
+
+    /* Hide dropdown when not alpine initialized */
+    [x-cloak] {
+        display: none !important;
     }
 </style>

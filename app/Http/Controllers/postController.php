@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Post Controller
+|--------------------------------------------------------------------------
+| This controller handles the creation, storage, and retrieval of posts.
+| It includes functionality for uploading media files and loading more posts via AJAX.
+|--------------------------------------------------------------------------|
+*/
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +20,9 @@ class PostController extends Controller
 
     public function create()
     {
+        \Log::info("Load More Request", [
+            'loading' => 'create post page'
+        ]);
         return view('post.create');
     }
     public function store(Request $request){
@@ -18,18 +30,25 @@ class PostController extends Controller
             'title' => 'required|string',
             'description' => 'required|string',
             'category' => 'required',
+            'language' => 'required|string',
             'media' => 'nullable|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:204800', // optional
+            'Youtube_link' => 'nullable|url', // optional
         ]);
         try{
             // Save post
             $path = null;
-            $is_saved = false;
             if ($request->hasFile('media')) {
                 $path = $request->file('media')->store('uploads', 'public');
             }
+            if(!empty($data['Youtube_link'])){
+                $embedUrl = $this->convertToEmbed($data['Youtube_link']);
+                if($embedUrl){
+                    $data['Youtube_link'] = $embedUrl;
+                }
+            }
             auth()->user()->posts()->create(array_merge($data, ['media_url' => $path]));
 
-            return redirect('/posts');
+            return redirect('/posts/create')->with('success', 'Post created successfully!');
 
 
             dd($request->all());
@@ -39,10 +58,14 @@ class PostController extends Controller
         }
     }
 
-    public function post(){
+    public function post($language = 'har'){
         // Get first 10 posts
-        $posts = Post::orderBy('created_at', 'desc')->take(10)->get();
-        return view('post.view', compact('posts'));
+        $posts = Post::where('language', $language)
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+
+        return view('post.view', compact('posts', 'language'));
     }
 
     public function loadMorePosts($clickCount)
@@ -114,6 +137,16 @@ class PostController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    private function convertToEmbed($url)
+    {
+        $parsed = parse_url($url);
+        parse_str($parsed['query'] ?? '', $query);
+
+        if (!isset($query['v'])) return null;
+
+        return "https://www.youtube.com/embed/{$query['v']}?autoplay=0&rel=0";
     }
 
 }

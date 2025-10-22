@@ -192,6 +192,13 @@
                             </video>
                         @endif
                     @endif
+
+                    @if ($post->Youtube_link)
+                        <div class="mt-4">
+                            <iframe width="100%" height="400" src="{{ $post->Youtube_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    @endif
+
                 </div>
 
                 <!-- Post footer -->

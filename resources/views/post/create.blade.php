@@ -9,13 +9,7 @@
                     Share your thoughts and ideas with the community
                 </p>
             </div>
-            <div class="flex items-center space-x-3">
-                <a href="{{ route('post.view') }}"
-                   class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to Posts
-                </a>
-            </div>
+
         </div>
     </x-slot>
 
@@ -115,6 +109,22 @@
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                             <div class="mt-1 text-xs text-gray-500" id="descriptionCounter">0/5000 characters</div>
                         </div>
+                        <!-- Youtube Link Section -->
+                        <div class="mb-8">
+                            <x-input-label for="Youtube_link" :value="__('YouTube Link (Optional)')" class="text-lg font-semibold" />
+                            <p class="text-sm text-gray-600 mb-3">
+                                Add a YouTube link to embed a video in your post
+                            </p>
+                            <x-text-input
+                                id="Youtube_link"
+                                class="block mt-1 w-full text-lg border-gray-300"
+                                type="url"
+                                name="Youtube_link"
+                                :value="old('Youtube_link')"
+                                placeholder="https://www.youtube.com/watch?v=example"
+                            />
+                            <x-input-error :messages="$errors->get('Youtube_link')" class="mt-2" />
+                        </div>
 
                         <!-- Media Upload Section -->
                         <div class="mb-8">
@@ -156,22 +166,40 @@
                             <div id="previewContainer" class="mt-6 grid gap-4"></div>
                         </div>
 
+                        <!-- Language Section -->
+                        <div class="mb-8">
+                            <x-input-label for="language" :value="__('Language')" class="text-lg font-semibold" />
+                            <p class="text-sm text-gray-600 mb-3">
+                                Select the language of your post
+                            </p>
+                            <div class="relative">
+                                <select name="language" id="language"
+                                        class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm py-3 pl-3 pr-10 appearance-none cursor-pointer">
+                                    <option value="har" {{ old('language') == 'har' ? 'selected' : '' }}>Harari</option>
+                                    <option value="eng" {{ old('language') == 'eng' ? 'selected' : '' }}>English</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+
+                            <x-input-error :messages="$errors->get('language')" class="mt-2" />
+
                         <!-- Category Section -->
                         <div class="mb-8">
                             <x-input-label for="category" :value="__('Category')" class="text-lg font-semibold" />
                             <p class="text-sm text-gray-600 mb-3">
                                 Select the most relevant category for your post
                             </p>
-
                             <div class="relative">
                                 <select name="category" id="category"
                                         class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm py-3 pl-3 pr-10 appearance-none cursor-pointer">
                                     <option value="">Select a category...</option>
-                                    <option value="1" {{ old('category') == '1' ? 'selected' : '' }}>Technology</option>
-                                    <option value="2" {{ old('category') == '2' ? 'selected' : '' }}>Lifestyle</option>
-                                    <option value="3" {{ old('category') == '3' ? 'selected' : '' }}>Education</option>
-                                    <option value="4" {{ old('category') == '4' ? 'selected' : '' }}>Entertainment</option>
-                                    <option value="5" {{ old('category') == '5' ? 'selected' : '' }}>Business</option>
+                                    <option value="Technology" {{ old('category') == '1' ? 'selected' : '' }}>Technology</option>
+                                    <option value="Lifestyle" {{ old('category') == '2' ? 'selected' : '' }}>Lifestyle</option>
+                                    <option value="Education" {{ old('category') == 'Education' ? 'selected' : '' }}>Education</option>
+                                    <option value="Entertainment" {{ old('category') == 'Entertainment' ? 'selected' : '' }}>Entertainment</option>
+                                    <option value="Business" {{ old('category') == 'Business' ? 'selected' : '' }}>Business</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <i class="fas fa-chevron-down"></i>

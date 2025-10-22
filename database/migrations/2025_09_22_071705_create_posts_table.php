@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('media_url')->nullable();
             $table->string('media')->nullable();
             $table->string('category')->nullable();
+            $table->string('Youtube_link')->nullable();
+            $table->string('language')->default('har');
             $table->timestamps();
 
             $table->index('user_id');
