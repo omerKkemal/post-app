@@ -310,7 +310,11 @@
                 const pageToLoad = clickCount + 2;
                 console.log(`Fetching page: ${pageToLoad}`);
 
-                const response = await fetch(`/load-more-posts/${pageToLoad}`);
+                const lang = window.location.href.split('/');
+                const language = lang[lang.length - 1];
+                console.log('detected language:', language);
+                const response = await fetch(`/load-more-posts/${pageToLoad}/${language}`);
+
                 console.log('Response status:', response.status);
 
                 if (!response.ok) {
