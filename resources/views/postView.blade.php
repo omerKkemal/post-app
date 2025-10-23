@@ -241,12 +241,23 @@
                 </svg>
             </button>
 
-            <!-- Desktop navigation -->
-            <div class="hidden md:flex items-center space-x-6">
+            <!-- Desktop navigation - REMOVE THE "hidden" CLASS -->
+            <div class="md:flex items-center space-x-6">
                 <a href="{{ url('/') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
                 <a href="{{ url('/about') }}" class="text-gray-600 hover:text-blue-600 transition-colors">About</a>
                 <a href="{{ url('/contact') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
-                <a href="{{ url('/p') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Post View</a>
+                <div class="relative group">
+                    <button class="text-gray-600 hover:text-blue-600 transition-colors focus:outline-none flex items-center">
+                        Posts
+                        <svg class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                        <a href="{{ url('/p/har') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">Harari</a>
+                        <a href="{{ url('/p/eng') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">English</a>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -255,7 +266,16 @@
             <a href="{{ url('/') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Home</a>
             <a href="{{ url('/about') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">About</a>
             <a href="{{ url('/contact') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
-            <a href="{{ url('/p') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Post View</a>
+                <div class="relative group">
+                    <button class="text-gray-600 hover:text-blue-600 transition-colors focus:outline-none">
+                        Posts
+                    </button>
+                    <div class="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                        <a href="{{ url('/p/har') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">Harari</a>
+                        <a href="{{ url('/p/eng') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">English</a>
+                    </div>
+
+            </div>
         </div>
     </header>
 
@@ -606,9 +626,11 @@
 
             try {
                 console.log(`Fetching with clickCount: ${clickCount}`);
-
+                const lang = window.location.href.split('/');
+                const language = lang[lang.length - 1];
+                console.log('Detected language:', language);
                 // Use your backend endpoint with clickCount as URL parameter
-                const response = await fetch(`/load-more-posts/${clickCount}`, {
+                const response = await fetch(`/load-more-posts/${clickCount}/${language}`, {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json',

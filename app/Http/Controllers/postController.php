@@ -68,7 +68,7 @@ class PostController extends Controller
         return view('post.view', compact('posts', 'language'));
     }
 
-    public function loadMorePosts($clickCount)
+    public function loadMorePosts($clickCount, $language = 'har')
     {
         try {
             $perPage = 10;
@@ -88,7 +88,7 @@ class PostController extends Controller
             // ]);
 
             // Fetch paginated posts (ordered by latest)
-            $posts = Post::orderBy('created_at', 'desc')
+            $posts = Post::where('language',$language)->orderBy('created_at', 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
 
             $hasMore = $posts->hasMorePages();

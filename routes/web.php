@@ -53,7 +53,7 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('numberOfPosts', 'numberOfPostsByCategory', 'postsOverTime'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/load-more-posts/{clickCount}', [PostController::class, 'loadMorePosts']);
+Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -94,7 +94,15 @@
                 <a href="{{ url('/') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
                 <a href="{{ url('/about') }}" class="text-gray-600 hover:text-blue-600 transition-colors">About</a>
                 <a href="{{ url('/contact') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
-                <a href="{{ url('/p') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Post View</a>
+                <!-- convert this to dropdown -->
+                <div class="relative group">
+                    <button class="text-gray-600 hover:text-blue-600 transition-colors focus:outline-none">
+                        Posts
+                    </button>
+                    <div class="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                        <a href="{{ url('/p/har') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">Harari</a>
+                        <a href="{{ url('/p/eng') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">English</a>
+                    </div>
 
             </div>
         </nav>
@@ -104,7 +112,16 @@
             <a href="{{ url('/') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Home</a>
             <a href="{{ url('/about') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">About</a>
             <a href="{{ url('/contact') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
-            <a href="{{ url('/p') }}" class="block py-2 text-gray-600 hover:text-blue-600 transition-colors">Posts</a>
+            <div class="relative group">
+                <button class="text-gray-600 hover:text-blue-600 transition-colors focus:outline-none">
+                    Posts
+                </button>
+                <div class="absolute left-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                    <a href="{{ url('/p/har') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">Harari</a>
+                    <a href="{{ url('/p/eng') }}" class="block px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-blue-600">English</a>
+                </div>
+
+            </div>
 
         </div>
     </header>
