@@ -27,6 +27,9 @@ Route::get('/p/{language}', function ($language = 'har') {
 
 
 Route::get('/dashboard', function () {
+    $subscriptions = \DB::table('subscriptions')->get();
+    $numberOfSubscriptions = $subscriptions->count();
+
     $posts = Post::all();
     $numberOfPosts = $posts->count();
     $numberOfPostsByCategory = $posts->groupBy('category')->map->count();
@@ -34,6 +37,11 @@ Route::get('/dashboard', function () {
     // Get posts grouped by date
     $postsByDate = $posts->groupBy(function($post) {
         return $post->created_at->format('Y-m-d');
+    })->map->count();
+
+    // Get subscriptions grouped by date
+    $subscriptionsByDate = $subscriptions->groupBy(function($subscription) {
+        return \Carbon\Carbon::parse($subscription->created_at)->format('Y-m-d');
     })->map->count();
 
     // Fill in missing dates with zero posts
@@ -50,9 +58,35 @@ Route::get('/dashboard', function () {
         }
     }
 
-    return view('dashboard', compact('numberOfPosts', 'numberOfPostsByCategory', 'postsOverTime'));
+    // Fill in missing dates with zero subscriptions
+    $subscriptionsOverTime = [];
+    if ($subscriptionsByDate->isNotEmpty()) {
+        $startDate = $subscriptions->min('created_at')
+            ? \Carbon\Carbon::parse($subscriptions->min('created_at'))->startOfDay()
+            : now()->subDays(30)->startOfDay();
+        $endDate = $subscriptions->max('created_at')
+            ? \Carbon\Carbon::parse($subscriptions->max('created_at'))->startOfDay()
+            : now()->startOfDay();
+
+        $currentDate = $startDate;
+        while ($currentDate <= $endDate) {
+            $dateString = $currentDate->format('Y-m-d');
+            $subscriptionsOverTime[$dateString] = $subscriptionsByDate[$dateString] ?? 0;
+            $currentDate->addDay();
+        }
+    }
+
+    return view('dashboard', compact(
+        'numberOfPosts',
+        'numberOfPostsByCategory',
+        'postsOverTime',
+        'numberOfSubscriptions',
+        'subscriptions',
+        'subscriptionsOverTime'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/subscribe', [App\Http\Controllers\SubScription::class, 'subscribe'])->name('subscribe');
 Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
 
 Route::middleware('auth')->group(function () {

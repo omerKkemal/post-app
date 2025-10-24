@@ -26,196 +26,9 @@
     @else
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @endif
-
+    <link href="{{ asset('css/postView.css') }}" rel="stylesheet">
     <!-- Additional styles for components -->
-    <style>
-        :root {
-            --color-primary: 59, 130, 246;
-            --color-secondary: 107, 114, 128;
-        }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: rgb(var(--color-primary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: rgba(var(--color-primary), 0.9);
-            transform: translateY(-1px);
-        }
-
-        .post-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .prose {
-            max-width: none;
-            line-height: 1.75;
-        }
-
-        .prose h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .prose p {
-            margin-bottom: 1.25rem;
-        }
-
-        .prose ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .prose blockquote {
-            border-left: 4px solid rgb(var(--color-primary));
-            padding-left: 1rem;
-            font-style: italic;
-            margin: 1.5rem 0;
-        }
-
-        /* Load More Button Styles */
-        .btn-loading {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .btn-disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .error-message {
-            background-color: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .load-more-container {
-            text-align: center;
-            margin: 3rem 0;
-            padding: 2rem 0;
-        }
-
-        #load-more-btn {
-            background-color: rgb(var(--color-primary));
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        #load-more-btn:hover:not(.btn-loading) {
-            background-color: rgba(var(--color-primary), 0.9);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        #load-more-btn:active {
-            transform: translateY(0);
-        }
-
-        #load-more-btn.btn-loading {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .loading-spinner {
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .no-more-posts {
-            color: #6b7280;
-            font-style: italic;
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #f9fafb;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .skip-link:focus {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-        }
-    </style>
 
     @stack('head')
 </head>
@@ -501,6 +314,16 @@
                         <li><a href="{{ url('/privacy') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Privacy Policy</a></li>
                         <li><a href="{{ url('/terms') }}" class="text-gray-600 hover:text-blue-600 transition-colors">Terms of Service</a></li>
                     </ul>
+                </div>
+                <!-- subscription form route('subscribe')-->
+                <div class="md:col-span-1">
+                    <form action="{{ route('subscribe') }}" method="POST" class="flex flex-col space-y-4">
+                        @csrf
+                        <label for="email" class="text-lg font-semibold">Subscribe to our newsletter</label>
+                        <input type="email" name="email" id="email" required placeholder="Enter your email"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button type="submit" class="btn btn-primary w-full">Subscribe</button>
+                    </form>
                 </div>
 
                 <div>
