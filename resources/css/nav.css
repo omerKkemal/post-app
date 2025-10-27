@@ -1,0 +1,116 @@
+/* Enhanced navigation-specific styles */
+.nav-link {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #0ea5e9, #0369a1);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link[class*="bg-blue-50"]::after {
+    width: 80%;
+}
+
+.mobile-nav-link {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.mobile-nav-link:active {
+    transform: scale(0.98);
+}
+
+/* User avatar styles */
+.user-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown-trigger {
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.user-dropdown-trigger:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark .user-dropdown-trigger:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown styles */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(20px);
+}
+
+.dark .dropdown-menu {
+    background: #1f2937;
+    border-color: #374151;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+    color: #6b7280;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f9fafb;
+    color: #374151;
+}
+
+.dark .dropdown-item:hover {
+    background: #374151;
+    color: #f9fafb;
+}
+
+.dropdown-item i {
+    width: 1rem;
+    margin-right: 0.75rem;
+}
+
+/* Hide dropdown when not alpine initialized */
+[x-cloak] {
+    display: none !important;
+}

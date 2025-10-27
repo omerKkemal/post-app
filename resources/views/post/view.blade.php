@@ -13,7 +13,7 @@
 
     <!-- Public Post Content -->
     <div class="max-w-4xl mx-auto px-4 py-6">
-        <!-- Breadcrumb -->
+        {{-- <!-- Breadcrumb -->
         <nav class="mb-6 text-sm text-gray-600" aria-label="Breadcrumb">
             <ol class="list-none p-0 inline-flex items-center">
                 <li class="flex items-center">
@@ -30,7 +30,7 @@
                 </li>
                 <li class="text-gray-800 font-medium" aria-current="page">Public Post</li>
             </ol>
-        </nav>
+        </nav> --}}
 
         <!-- Posts Container -->
         <div id="posts-container" class="space-y-6">

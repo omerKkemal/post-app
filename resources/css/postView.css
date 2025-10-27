@@ -99,9 +99,7 @@
     text-align: center;
 }
 
-.hidden {
-    display: none;
-}
+/* Removed global `.hidden` rule to avoid overriding Tailwind's utility classes (e.g. `md:flex`). */
 
 .load-more-container {
     text-align: center;

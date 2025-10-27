@@ -1,0 +1,5 @@
+/* Extracted from auth/login.blade.php */
+.form-input:focus { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+.btn-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+input:focus, button:focus { outline: 2px solid transparent; outline-offset: 2px; }
+a, button, input, label { transition: all 0.2s ease-in-out; }
