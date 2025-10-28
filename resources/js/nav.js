@@ -1,5 +1,5 @@
 // Enhanced navigation functionality
-function navigation() {
+function navigation(initialRoute = '') {
     return {
         // State
         scrolled: false,
@@ -7,15 +7,16 @@ function navigation() {
         showMobileSearch: false,
         isMobile: window.innerWidth < 768,
         currentTheme: localStorage.getItem('theme') || 'light',
-        currentRoute: '{{ Route::currentRouteName() }}',
+        currentRoute: initialRoute || this.getCurrentRouteFromPath(),
         loadingProgress: 0,
-        unreadCount: 3, // Example count
+        unreadCount: 3,
         searchResults: [],
         notifications: [],
         query: '',
 
         init() {
             console.log('Enhanced navigation initialized');
+            console.log('Initial route:', this.currentRoute);
 
             // Initialize mobile detection
             this.checkMobile();
@@ -36,6 +37,24 @@ function navigation() {
             console.log('Navigation enhancements loaded');
         },
 
+        getCurrentRouteFromPath() {
+            const path = window.location.pathname;
+            console.log('Getting route from path:', path);
+
+            if (path === '/' || path === '') return 'home';
+            if (path === '/dashboard') return 'dashboard';
+            if (path.includes('/posts/create')) return 'post.create';
+            if (path === '/about') return 'about';
+            if (path === '/contact') return 'contact';
+            if (path.includes('/posts/har') || path.includes('/posts/eng')) return 'post.view';
+            if (path.includes('/login')) return 'login';
+            if (path.includes('/register')) return 'register';
+            if (path.includes('/profile')) return 'profile.edit';
+
+            // Extract route name from path as fallback
+            return path.replace(/^\//, '').split('/')[0] || 'home';
+        },
+
         checkMobile() {
             this.isMobile = window.innerWidth < 768;
             if (!this.isMobile) {
@@ -46,55 +65,51 @@ function navigation() {
 
         toggleTheme() {
             this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', this.currentTheme);
             this.applyTheme(this.currentTheme);
-
-            // Emit custom event for other components
-            window.dispatchEvent(new CustomEvent('themeChanged', {
-                detail: { theme: this.currentTheme }
-            }));
         },
 
         applyTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         },
 
         toggleMobileMenu() {
             this.showMobileMenu = !this.showMobileMenu;
             this.showMobileSearch = false;
 
-            // Focus management for accessibility
             if (this.showMobileMenu) {
-                this.$nextTick(() => {
-                    const firstLink = this.$el.querySelector('.mobile-nav-link');
-                    if (firstLink) firstLink.focus();
-                });
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
             }
         },
 
-        toggleMobileSearch() {
-            this.showMobileSearch = !this.showMobileSearch;
+        closeMobileMenu() {
             this.showMobileMenu = false;
-
-            if (this.showMobileSearch) {
-                this.$nextTick(() => {
-                    this.$refs.mobileSearchInput?.focus();
-                });
-            }
+            document.body.style.overflow = '';
         },
 
         trackRouteChanges() {
-            // Track route changes for active state management
-            window.addEventListener('popstate', () => {
-                this.currentRoute = '{{ Route::currentRouteName() }}';
+            // Update route when navigation occurs
+            const observer = new MutationObserver(() => {
+                this.currentRoute = this.getCurrentRouteFromPath();
+            });
+
+            // Observe body for changes that might indicate route change
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
             });
         },
 
         simulateLoading() {
-            // Simulate loading progress for demo purposes
             let progress = 0;
             const interval = setInterval(() => {
-                progress += Math.random() * 10;
+                progress += Math.random() * 30;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
@@ -105,113 +120,72 @@ function navigation() {
         },
 
         initSearch() {
-            // Initialize search functionality
-            this.$watch('query', (value) => {
-                if (value.length > 2) {
-                    this.performSearch(value);
-                } else {
-                    this.searchResults = [];
-                }
-            });
+            // Search functionality placeholder
         },
 
         async performSearch(query) {
-            // Simulate search API call
-            try {
-                // In a real app, this would be an API call
-                await new Promise(resolve => setTimeout(resolve, 300));
-
-                this.searchResults = [
-                    {
-                        id: 1,
-                        title: 'Dashboard Overview',
-                        description: 'View your main dashboard',
-                        url: '/dashboard',
-                        icon: 'fas fa-tachometer-alt'
-                    },
-                    {
-                        id: 2,
-                        title: 'User Settings',
-                        description: 'Manage your account settings',
-                        url: '/profile',
-                        icon: 'fas fa-cog'
-                    },
-                    {
-                        id: 3,
-                        title: 'Team Members',
-                        description: 'View and manage team members',
-                        url: '/team',
-                        icon: 'fas fa-users'
-                    }
-                ].filter(item =>
-                    item.title.toLowerCase().includes(query.toLowerCase()) ||
-                    item.description.toLowerCase().includes(query.toLowerCase())
-                );
-            } catch (error) {
-                console.error('Search failed:', error);
-                this.searchResults = [];
-            }
+            // Search functionality placeholder
         },
 
         async loadNotifications() {
             // Simulate loading notifications
             try {
                 await new Promise(resolve => setTimeout(resolve, 500));
-
-                this.notifications = [
-                    {
-                        id: 1,
-                        title: 'Welcome to the new dashboard!',
-                        message: 'Check out the new features we added',
-                        type: 'info',
-                        icon: 'fas fa-info-circle',
-                        time: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-                        read: false
-                    },
-                    {
-                        id: 2,
-                        title: 'Profile updated successfully',
-                        message: 'Your profile information has been updated',
-                        type: 'success',
-                        icon: 'fas fa-check-circle',
-                        time: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-                        read: true
-                    },
-                    {
-                        id: 3,
-                        title: 'Security alert',
-                        message: 'New login from unknown device',
-                        type: 'warning',
-                        icon: 'fas fa-exclamation-triangle',
-                        time: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-                        read: false
-                    }
-                ];
-
-                this.unreadCount = this.notifications.filter(n => !n.read).length;
+                this.unreadCount = Math.floor(Math.random() * 5);
             } catch (error) {
                 console.error('Failed to load notifications:', error);
             }
         },
 
-        formatTime(date) {
-            const now = new Date();
-            const diff = now - date;
-            const minutes = Math.floor(diff / 60000);
-            const hours = Math.floor(diff / 3600000);
-            const days = Math.floor(diff / 86400000);
-
-            if (minutes < 1) return 'Just now';
-            if (minutes < 60) return `${minutes}m ago`;
-            if (hours < 24) return `${hours}h ago`;
-            if (days < 7) return `${days}d ago`;
-            return date.toLocaleDateString();
+        // Helper to check if current route matches
+        isCurrentRoute(route) {
+            return this.currentRoute === route;
         }
     }
 }
 
-// Initialize Alpine when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Alpine will auto-initialize components with x-data
-    console.log('Navigation initialized');
+// Make navigation function available globally
+window.navigation = navigation;
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    // Close user dropdown
+    const userDropdown = document.querySelector('.dropdown-container');
+    const userTrigger = document.getElementById('user-dropdown-trigger');
+
+    if (userDropdown && userTrigger && !userDropdown.contains(e.target)) {
+        const alpineData = userDropdown.__x;
+        if (alpineData && alpineData.$data.open !== undefined) {
+            alpineData.$data.open = false;
+        }
+    }
+
+    // Close view post dropdown
+    const viewPostDropdown = document.querySelector('[x-data="{ open: false }"]');
+    if (viewPostDropdown && !viewPostDropdown.contains(e.target)) {
+        const alpineData = viewPostDropdown.__x;
+        if (alpineData && alpineData.$data.open !== undefined) {
+            alpineData.$data.open = false;
+        }
+    }
 });
+
+// Handle escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('[x-data]').forEach(element => {
+            const alpineData = element.__x;
+            if (alpineData) {
+                if (alpineData.$data.open !== undefined) {
+                    alpineData.$data.open = false;
+                }
+                if (alpineData.$data.showMobileMenu !== undefined) {
+                    alpineData.$data.showMobileMenu = false;
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+    }
+});
+
+console.log('Navigation JS loaded');

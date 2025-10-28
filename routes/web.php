@@ -22,7 +22,7 @@ Route::get('/p/{language}', function ($language = 'har') {
                  ->get();
 
     return view('postView', compact('posts', 'language'));
-});
+})->name('postView');
 
 
 

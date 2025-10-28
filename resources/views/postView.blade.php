@@ -1,80 +1,48 @@
+@vite(['resources/css/view.css', 'resources/js/app.js'])
 <x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col space-y-2">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Dashboard') }}
+            </h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Create') }}
+            </h2>
+        </div>
+    </x-slot>
 
-@push('styles')
-    {{-- Per-page stylesheet for post view (kept public and separate from global Tailwind) --}}
-    <link href="{{ asset('css/postView.css') }}" rel="stylesheet">
-@endpush
+    <!-- Public Post Content -->
+    <div class="max-w-4xl mx-auto px-4 py-6">
+        {{-- <!-- Breadcrumb -->
+        <nav class="mb-6 text-sm text-gray-600" aria-label="Breadcrumb">
+            <ol class="list-none p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="{{ url('/') }}" class="hover:text-blue-600 transition-colors">Home</a>
+                    <svg class="h-4 w-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="#" class="hover:text-blue-600 transition-colors">Posts</a>
+                    <svg class="h-4 w-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </li>
+                <li class="text-gray-800 font-medium" aria-current="page">Public Post</li>
+            </ol>
+        </nav> --}}
 
-    <main id="main-content" class="flex-grow container mx-auto px-4 py-8 fade-in">
-        @if (session('status'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
-                <span class="block sm:inline">{{ session('status') }}</span>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                <strong class="font-bold">Whoops!</strong>
-                <span class="block sm:inline">There were some problems with your input.</span>
-                <ul class="mt-2 list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        </main>
-
-        <!-- Post view scripts moved to resources/js/postview-extra.js -->
-    </x-app-layout>
-                // Auto-hide error after 5 seconds
-                setTimeout(() => {
-                    errorDiv.classList.add('hidden');
-                }, 5000);
-            }
-        }
-
-        // Retry function
-        function retryLoadMore() {
-            console.log('Retrying load more...');
-            const errorDiv = document.getElementById('error-message');
-            if (errorDiv) {
-                errorDiv.classList.add('hidden');
-            }
-            handleLoadMore();
-        }
-
-        function createPostElement(post) {
-            console.log('Creating post element for:', post.title);
-
-            const article = document.createElement('article');
-            article.className = 'post-card bg-white rounded-lg shadow-md overflow-hidden mb-6 fade-in';
-
-            // Format the description
-            const descriptionHtml = formatDescription(post.description);
-
-            // Format media URL
-            let mediaHtml = '';
-            if (post.media_url) {
-                const extension = post.media_url.split('.').pop().toLowerCase();
-                if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
-                    mediaHtml = `<img src="/storage/${post.media_url}" alt="Post Image" class="rounded-lg mb-4 max-w-full h-auto">`;
-                } else if (['mp4', 'webm', 'ogg'].includes(extension)) {
-                    mediaHtml = `
-                        <video controls class="rounded-lg mb-4 max-w-full h-auto">
-                            <source src="/storage/${post.media_url}" type="video/${extension}">
-                            Your browser does not support the video tag.
-                        </video>
-                    `;
-                }
-            }
-
-            article.innerHTML = `
+        <!-- Posts Container -->
+        <div id="posts-container" class="space-y-6">
+            @foreach ($posts as $post)
+            <article class="post-card fade-in">
+                <!-- Post header -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-3">
                             <div>
                                 <p class="text-sm text-gray-500">
-                                    Posted on <time datetime="${post.created_at}">${new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
+                                    Posted on <time datetime="{{ $post->created_at }}">{{ $post->created_at->format('M d, Y') }}</time>
                                 </p>
                             </div>
                         </div>
@@ -91,18 +59,63 @@
                         </div>
                     </div>
 
-                    <h1 class="text-2xl font-bold text-gray-900 mb-4">${post.title}</h1>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ $post->title }}</h1>
 
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag bg-blue-100 text-blue-800">${post.category || 'Uncategorized'}</span>
+                        <span class="tag">{{ $post->category ?? 'Uncategorized' }}</span>
                     </div>
                 </div>
 
-                <div class="p-6 prose">
-                    ${descriptionHtml}
-                    ${mediaHtml}
+                <!-- Post body -->
+                <div class="p-6">
+                    <div class="prose">
+                        @php
+                            $lines = preg_split('/\r\n|\r|\n/', $post->description);
+                        @endphp
+
+                        @foreach ($lines as $line)
+                            @php $trim = trim($line); @endphp
+
+                            @if (str_starts_with($trim, '**') && str_ends_with($trim, '**'))
+                                <h3>{{ trim($trim, '*') }}</h3>
+
+                            @elseif (str_starts_with($trim, '*'))
+                                <ul>
+                                    <li>{{ ltrim($trim, '* ') }}</li>
+                                </ul>
+
+                            @elseif (str_starts_with($trim, '-'))
+                                <p>{{ ltrim($trim, '- ') }}</p>
+
+                            @else
+                                <p>{{ $trim }}</p>
+                            @endif
+                        @endforeach
+                    </div>
+
+                    @if ($post->media_url)
+                        @php
+                            $extension = pathinfo($post->media_url, PATHINFO_EXTENSION);
+                        @endphp
+
+                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
+                            <img src="{{ Storage::url($post->media_url) }}" alt="Post Image" class="rounded-lg mt-4 max-w-full h-auto">
+                        @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg']))
+                            <video controls class="rounded-lg mt-4 max-w-full h-auto">
+                                <source src="{{ Storage::url($post->media_url) }}" type="video/{{ $extension }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        @endif
+                    @endif
+
+                    @if ($post->Youtube_link)
+                        <div class="mt-4">
+                            <iframe width="100%" height="400" src="{{ $post->Youtube_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-lg"></iframe>
+                        </div>
+                    @endif
                 </div>
 
+                <!-- Post footer -->
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
@@ -132,46 +145,17 @@
                         </div>
                     </div>
                 </div>
-            `;
+            </article>
+            @endforeach
+        </div>
 
-            return article;
-        }
-
-        function formatDescription(description) {
-            const lines = description.split('\n');
-            let html = '';
-
-            lines.forEach(line => {
-                const trim = line.trim();
-
-                if (trim.startsWith('**') && trim.endsWith('**')) {
-                    html += `<h3 class="font-semibold text-lg mb-2">${trim.slice(2, -2)}</h3>`;
-                } else if (trim.startsWith('*')) {
-                    html += `<ul class="list-disc ml-6"><li>${trim.slice(1).trim()}</li></ul>`;
-                } else if (trim.startsWith('-')) {
-                    html += `<p class="text-gray-700 mb-2">${trim.slice(1).trim()}</p>`;
-                } else if (trim) {
-                    html += `<p class="text-gray-700 mb-2">${trim}</p>`;
-                }
-            });
-
-            return html;
-        }
-
-        // Test function
-        function testLoadMore() {
-            console.log('=== Testing Load More Functionality ===');
-            console.log('1. Button exists:', !!document.getElementById('load-more-btn'));
-            console.log('2. Spinner exists:', !!document.getElementById('load-more-spinner'));
-            console.log('3. Posts container exists:', !!document.getElementById('posts-container'));
-            console.log('4. Load more container exists:', !!document.getElementById('load-more-container'));
-            console.log('5. Current clickCount:', clickCount);
-            console.log('6. isLoading:', isLoading);
-            console.log('7. hasMorePosts:', hasMorePosts);
-            console.log('=== Test Complete ===');
-        }
-    </script>
-
-    @stack('scripts')
-</body>
-</html>
+        <!-- Load More Section -->
+        <div id="load-more-container" class="text-center mt-8 mb-8">
+            <button id="load-more-btn" class="btn btn-primary">
+                <span>Load More Posts</span>
+                <div id="load-more-spinner" class="loading-spinner hidden ml-2"></div>
+            </button>
+            <p id="no-more-posts" class="no-more-posts hidden">You've reached the end! No more posts to load.</p>
+        </div>
+    </div>
+</x-app-layout>
