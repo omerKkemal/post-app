@@ -11,7 +11,7 @@
     <div class="min-h-screen bg-gradient-to-br from-green-50 to-amber-50">
 
         <!-- Hero Section -->
-        <section id="home" class="py-16 bg-gradient-to-r from-green-600 to-green-800 text-white">
+        <section style="border-radius: 15px;" id="home" class="py-16 bg-gradient-to-r from-green-600 to-green-800 text-white">
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6 fade-in">
                     Harari Congress
@@ -458,61 +458,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-12">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-xl font-bold mb-4">Harari Congress</h3>
-                        <p class="text-gray-400">Preserving Harari culture, history, and community for future generations.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">Quick Links</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#culture" class="hover:text-white transition">Culture</a></li>
-                            <li><a href="#history" class="hover:text-white transition">History</a></li>
-                            <li><a href="#handicrafts" class="hover:text-white transition">Handicrafts</a></li>
-                            <li><a href="#news" class="hover:text-white transition">News</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">Contact</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex items-start">
-                                <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
-                                <span>Harar, Ethiopia</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-phone mt-1 mr-2"></i>
-                                <span>+251 XX XXX XXXX</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-envelope mt-1 mr-2"></i>
-                                <span>info@hararicongress.org</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold mb-4">Follow Us</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-600 transition">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-600 transition">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-green-600 transition">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                    <p>&copy; 2023 Harari Congress. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
     </div>
 
     <style>
@@ -530,40 +475,4 @@
         }
     </style>
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                document.getElementById('mobile-menu').classList.add('hidden');
-            });
-        });
-
-        // Add active class to navigation links when scrolling
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
-
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-green-600', 'border-b-2', 'border-green-600');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-green-600', 'border-b-2', 'border-green-600');
-                }
-            });
-        });
-    </script>
 </x-app-layout>

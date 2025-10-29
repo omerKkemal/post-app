@@ -86,9 +86,19 @@ Route::get('/dashboard', function () {
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Congress Leaders Routes
+Route::get('/congress', [App\Http\Controllers\CongressController::class, 'view'])->name('congress.view');
+Route::post('/congress/store', [App\Http\Controllers\CongressController::class, 'store'])->name('congress.store');
+Route::put('/congress/update/{id}', [App\Http\Controllers\CongressController::class, 'update'])->name('congress.update');
+Route::delete('/congress/destroy/{id}', [App\Http\Controllers\CongressController::class, 'destroy'])->name('congress.destroy');
+
+// Subscription Routes
 Route::post('/subscribe', [App\Http\Controllers\SubScription::class, 'subscribe'])->name('subscribe');
+
+// Post Routes
 Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
 
+// Profile and Post Management Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

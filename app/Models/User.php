@@ -48,4 +48,10 @@ class User extends Authenticatable
     public function posts(){
         return $this -> hasMany(Post::class)->orderBy('created_at','DESC');
     }
+    public function catagory(){
+        return $this -> hasMany(catagory::class)->orderBy('created_at','DESC');
+    }
+    public function congressLeader(){
+        return $this -> hasMany(congress_leaders::class)->orderBy('created_at','DESC');
+    }
 }
