@@ -16,7 +16,7 @@
             <!-- Enhanced Logo/Brand Section -->
             <div class="flex items-center space-x-3">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
+                <div class="flex-shrink-0 flex items-center -ml-2">
                     <a href="{{ url('/') }}"
                        class="flex items-center space-x-3 group transition-all duration-300 hover:scale-105">
                         <div class="relative">
@@ -38,88 +38,105 @@
                         </div>
                     </a>
                 </div>
+            </div>
 
-                <!-- Navigation Links - Different based on auth status -->
+            <!-- Center: navigation links (evenly spaced) -->
+            <div class="hidden md:flex flex-1 justify-evenly items-center">
                 @auth
-                    <!-- Enhanced Quick Actions - Desktop (Logged In) -->
-                    <div class="hidden md:flex items-center space-x-1 ml-4">
-                        <a href="{{ route('dashboard') }}"
-                           class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                           :class="currentRoute === 'dashboard' ?
-                                  'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                                  'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                            <i class="fas fa-home text-sm w-5"></i>
-                            <span>Dashboard</span>
-                        </a>
+                    <a href="{{ route('dashboard') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'dashboard' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-home text-sm w-5"></i>
+                        <span>Dashboard</span>
+                    </a>
 
-                        <a href="{{ route('post.create') }}"
-                           class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                           :class="currentRoute === 'post.create' ?
-                                  'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                                  'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                            <i class="fas fa-share-square text-sm w-5"></i>
-                            <span>Create a Post</span>
-                        </a>
+                    <a href="{{ route('post.create') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'post.create' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-share-square text-sm w-5"></i>
+                        <span>Create a Post</span>
+                    </a>
 
-                        <!-- View Post Dropdown -->
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open"
-                                    class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
-                                <i class="fas fa-eye text-sm w-5"></i>
-                                <span>View Post</span>
-                                <i class="fas fa-chevron-down text-xs transition-transform duration-200"
-                                   :class="{ 'rotate-180': open }"></i>
-                            </button>
+                    <a href="{{ route('congress.view') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'congress.view' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-user-tie text-sm w-5"></i>
+                        <span>Add Congress Leader</span>
+                    </a>
 
-                            <!-- Dropdown Menu -->
-                            <div x-show="open"
-                                 @click.outside="open = false"
-                                 class="absolute top-full left-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700"
-                                 x-transition:enter="transition ease-out duration-200"
-                                 x-transition:enter-start="opacity-0 transform scale-95"
-                                 x-transition:enter-end="opacity-100 transform scale-100">
-                                <div class="py-1">
-                                    <a href="{{ route('post.view', ['language' => 'har']) }}"
-                                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'har' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
-                                        View Post (Harari)
-                                    </a>
-                                    <a href="{{ route('post.view', ['language' => 'eng']) }}"
-                                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'eng' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
-                                        View Post (English)
-                                    </a>
-                                </div>
+                    <a href="{{ route('post.category') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'category.show' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-tags text-sm w-5"></i>
+                        <span>Category Management</span>
+                    </a>
+
+                    <!-- View Post Dropdown -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                            <i class="fas fa-eye text-sm w-5"></i>
+                            <span>View Post</span>
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                        </button>
+
+                        <div x-show="open" @click.outside="open = false" class="absolute top-full left-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700"
+                             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                            <div class="py-1">
+                                <a href="{{ route('post.view', ['language' => 'har']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'har' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">View Post (Harari)</a>
+                                <a href="{{ route('post.view', ['language' => 'eng']) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'eng' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">View Post (English)</a>
                             </div>
                         </div>
                     </div>
+                @else
+                    <!-- Public User Navigation - ONLY Main Links (No Login/Register/Theme here) -->
+                    <a href="{{ url('/') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'home' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-home text-sm w-5"></i>
+                        <span>Home</span>
+                    </a>
+
+                    <a href="{{ url('/about') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'about' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-info-circle text-sm w-5"></i>
+                        <span>About</span>
+                    </a>
+
+                    <a href="{{ url('/contact') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'contact' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-envelope text-sm w-5"></i>
+                        <span>Contact</span>
+                    </a>
+
+                    <!-- What's New Dropdown for Public Users -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open"
+                                class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                            <i class="fas fa-newspaper text-sm w-5"></i>
+                            <span>What's New</span>
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                        </button>
+
+                        <div x-show="open"
+                             @click.outside="open = false"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             class="absolute top-full left-0 mt-2 w-48 bg-white/95 backdrop-blur-md border border-gray-200 rounded-lg shadow-xl z-50 transition-all duration-200 dark:bg-gray-800/95 dark:border-gray-700">
+                            <a href="{{ route('postView', ['language' => 'har']) }}"
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'har' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
+                                Harari
+                            </a>
+                            <a href="{{ route('postView', ['language' => 'eng']) }}"
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'eng' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
+                                English
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- REMOVED: Login, Register, and Theme Toggle from center section -->
+                    <!-- These now only appear in the right section -->
                 @endauth
             </div>
 
             <!-- Enhanced Search & Controls -->
             <div class="flex items-center space-x-4">
                 @auth
-                    <!-- Enhanced Action Buttons (Logged In) -->
-                    <div class="hidden md:flex items-center space-x-2">
-                        <!-- Theme Toggle -->
-                        <button @click="toggleTheme()"
-                                class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800"
-                                x-tooltip="currentTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
-                            <i class="fas fa-sun text-sm" x-show="currentTheme === 'light'"></i>
-                            <i class="fas fa-moon text-sm" x-show="currentTheme === 'dark'"></i>
-                        </button>
-
-                        <!-- Notifications -->
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open; loadNotifications()"
-                                    class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800 relative"
-                                    x-tooltip="Notifications">
-                                <i class="fas fa-bell text-sm"></i>
-                                <span x-show="unreadCount > 0"
-                                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-                                      x-text="unreadCount"></span>
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- Enhanced User Profile Dropdown (Logged In) -->
                     <div class="relative dropdown-container" x-data="{ open: false }">
                         <button id="user-dropdown-trigger"
@@ -135,11 +152,11 @@
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
                                         {{ Auth::user()->name }}
                                     </div>
-                                        <div class="text-xs text-gray-500 dark:text-white">
+                                    <div class="text-xs text-gray-500 dark:text-white">
                                         {{ Auth::user()->email }}
                                     </div>
                                 </div>
-                                          <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform duration-200 group-hover:text-gray-600 dark:text-white dark:group-hover:text-white"
+                                <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform duration-200 group-hover:text-gray-600 dark:text-white dark:group-hover:text-white"
                                    :class="{ 'rotate-180': open }"></i>
                             </div>
                         </button>
@@ -200,73 +217,18 @@
                         </div>
                     </div>
                 @else
-                    <!-- Authentication Links (Not Logged In) -->
+                    <!-- Public User Right Section - ONLY Login/Register/Theme Toggle -->
                     <div class="flex items-center space-x-3">
-                        <!-- Public Navigation Links for non-mobile -->
-                        <div style="color: white" class="hidden md:flex items-center space-x-1">
-                            <a href="{{ url('/') }}"
-                               class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                               :class="currentRoute === 'home'  ?
-                                  'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                                  'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                            <i class="fas fa-share-square text-sm w-5"></i>
-                                <span>Home</span>
-                            </a>
-
-                            <a href="{{ url('/about') }}"
-                               class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                               :class="currentRoute === 'about' ?
-                                      'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                                      'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                                <i class="fas fa-info-circle text-sm w-5"></i>
-                                <span>About</span>
-                            </a>
-
-                            <a href="{{ url('/contact') }}"
-                               class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                               :class="currentRoute === 'contact' ?
-                                      'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
-                                      'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                                <i class="fas fa-envelope text-sm w-5"></i>
-                                <span>Contact</span>
-                            </a>
-                            <!-- what's new(/p/har or /p/eng route= postView) dropdown(english or harari) -->
-                            <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open"
-                                        :aria-expanded="open"
-                                        aria-haspopup="true"
-                                        class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
-                                    <i class="fas fa-newspaper text-sm w-5"></i>
-                                    <span>What's New</span>
-                                    <i class="fas fa-chevron-down text-xs transition-transform duration-200"
-                                       :class="{ 'rotate-180': open }"></i>
-                                </button>
-
-                                <div x-show="open"
-                                     @click.outside="open = false"
-                                     x-transition:enter="transition ease-out duration-200"
-                                     x-transition:enter-start="opacity-0 transform scale-95"
-                                     x-transition:enter-end="opacity-100 transform scale-100"
-                                     x-transition:leave="transition ease-in duration-150"
-                                     x-transition:leave-start="opacity-100 transform scale-100"
-                                     x-transition:leave-end="opacity-0 transform scale-95"
-                                     class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 dark:bg-gray-800 dark:border-gray-700">
-                                    <a href="{{ route('postView', ['language' => 'har']) }}"
-                                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'har' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
-                                        Harari
-                                    </a>
-                                    <a href="{{ route('postView', ['language' => 'eng']) }}"
-                                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 transition-colors duration-200 {{ request('language') == 'eng' ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300' : '' }}">
-                                        English
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
                         <a href="{{ route('login') }}"
                            class="nav-link px-4 py-2 rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                             <i class="fas fa-sign-in-alt mr-2"></i>
                             <span>Login</span>
+                        </a>
+
+                        <a href="{{ route('register') }}"
+                           class="btn btn-primary px-4 py-2 rounded-lg font-semibold transition-all duration-200">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            <span>Register</span>
                         </a>
 
                         <!-- Theme Toggle for Public -->
@@ -322,6 +284,26 @@
                     Create a Post
                 </a>
 
+                <!-- add a congress leader link -->
+                <a href="{{ route('congress.view') }}"
+                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
+                   :class="currentRoute === 'congress.view' ?
+                          'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                          'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                    <i class="fas fa-user-tie w-6 mr-3 text-center"></i>
+                    Add Congress Leader
+                </a>
+
+                <!-- category management link -->
+                <a href="{{ route('post.category')}}"
+                class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
+                :class="currentRoute === 'category.show' ?
+                       'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                       'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                 <i class="fas fa-tags w-6 mr-3 text-center"></i>
+                 Category Management
+             </a>
+
                 <!-- Mobile View Post Links -->
                 <div class="border-t border-gray-200 pt-2 dark:border-gray-700">
                     <a href="{{ route('post.view', ['language' => 'har']) }}"
@@ -375,6 +357,20 @@
                     <i class="fas fa-envelope w-6 mr-3 text-center"></i>
                     Contact
                 </a>
+
+                <!-- Mobile What's New Links -->
+                <div class="border-t border-gray-200 pt-2 dark:border-gray-700">
+                    <a href="{{ route('postView', ['language' => 'har']) }}"
+                       class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                        <i class="fas fa-newspaper w-6 mr-3 text-center"></i>
+                        What's New (Harari)
+                    </a>
+                    <a href="{{ route('postView', ['language' => 'eng']) }}"
+                       class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                        <i class="fas fa-newspaper w-6 mr-3 text-center"></i>
+                        What's New (English)
+                    </a>
+                </div>
 
                 <!-- Mobile Authentication Links -->
                 <div class="border-t border-gray-200 pt-2 dark:border-gray-700">

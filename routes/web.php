@@ -86,11 +86,6 @@ Route::get('/dashboard', function () {
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Congress Leaders Routes
-Route::get('/congress', [App\Http\Controllers\CongressController::class, 'view'])->name('congress.view');
-Route::post('/congress/store', [App\Http\Controllers\CongressController::class, 'store'])->name('congress.store');
-Route::put('/congress/update/{id}', [App\Http\Controllers\CongressController::class, 'update'])->name('congress.update');
-Route::delete('/congress/destroy/{id}', [App\Http\Controllers\CongressController::class, 'destroy'])->name('congress.destroy');
 
 // Subscription Routes
 Route::post('/subscribe', [App\Http\Controllers\SubScription::class, 'subscribe'])->name('subscribe');
@@ -110,5 +105,17 @@ Route::middleware('auth')->group(function () {
 
     // This should come AFTER specific routes
     Route::get('/posts/{language}', [PostController::class, 'post'])->name('post.view');
+
+    // Category Routes
+    Route::get('/category', [App\Http\Controllers\CatagoryController::class, 'view'])->name('post.category');
+    Route::post('/category/store', [App\Http\Controllers\CatagoryController::class, 'store'])->name('category.store');
+    Route::delete('/category/destroy/{id}', [App\Http\Controllers\CatagoryController::class, 'destroy'])->name('category.destroy');
+    Route::put('/category/update/{id}', [App\Http\Controllers\CatagoryController::class, 'update'])->name('category.update');
+
+    // Congress Leaders Routes
+    Route::get('/congress', [App\Http\Controllers\CongressController::class, 'view'])->name('congress.view');
+    Route::post('/congress/store', [App\Http\Controllers\CongressController::class, 'store'])->name('congress.store');
+    Route::put('/congress/update/{id}', [App\Http\Controllers\CongressController::class, 'update'])->name('congress.update');
+    Route::delete('/congress/destroy/{id}', [App\Http\Controllers\CongressController::class, 'destroy'])->name('congress.destroy');
 });
 require __DIR__.'/auth.php';

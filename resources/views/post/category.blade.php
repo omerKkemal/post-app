@@ -3,10 +3,10 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('Congress Leaders Management') }}
+                    {{ __('Category Management') }}
                 </h2>
                 <p class="text-sm text-gray-600 mt-1">
-                    {{ __("Manage congress leaders here.") }}
+                    {{ __("Manage your post categories here.") }}
                 </p>
             </div>
         </div>
@@ -28,70 +28,73 @@
             @endif
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Add Congress Leader Form -->
+                <!-- Add Category Form -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Congress Leader</h3>
-                        <form method="POST" action="{{ route('congress.store') }}">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Category</h3>
+                        <form method="POST" action="{{ route('category.store') }}">
                             @csrf
                             <div class="mb-4">
-                                <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Category Name</label>
                                 <input type="text"
                                        name="name"
                                        id="name"
                                        required
                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Enter congress leader name">
+                                       placeholder="Enter category name">
                                 @error('name')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="mb-4">
-                                <label for="position" class="block text-sm font-medium text-gray-700">Position *</label>
-                                <input type="text"
-                                       name="position"
-                                       id="position"
-                                       required
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Enter position">
-                                @error('position')
+                                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea
+                                    name="description"
+                                    id="description"
+                                    rows="3"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Enter category description (optional)"
+                                ></textarea>
+                                @error('description')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <button type="submit"
                                     class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
-                                Add Congress Leader
+                                Add Category
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Congress Leaders List -->
+                <!-- Categories List -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Existing Congress Leaders ({{ $congress_leaders->count() }})</h3>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Existing Categories</h3>
 
-                        @if($congress_leaders->count() > 0)
-                            <div class="space-y-3" id="congress-leaders-list">
-                                @foreach($congress_leaders as $leader)
-                                    <div class="congress-leader-item flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-leader-id="{{ $leader->id }}">
+                        @if($categories->count() > 0)
+                            <div class="space-y-3" id="categories-list">
+                                @foreach($categories as $category)
+                                    <div class="category-item flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-category-id="{{ $category->id }}">
                                         <!-- Display Mode -->
                                         <div class="display-mode flex items-center justify-between w-full">
                                             <div>
-                                                <span class="text-gray-800 font-medium">{{ $leader->name }}</span>
-                                                <p class="text-sm text-gray-600 mt-1">{{ $leader->position }}</p>
+                                                <span class="text-gray-800 font-medium">{{ $category->name }}</span>
+                                                @if($category->description)
+                                                    <p class="text-sm text-gray-600 mt-1">{{ $category->description }}</p>
+                                                @endif
                                             </div>
                                             <div class="flex space-x-2">
                                                 <button type="button"
-                                                        onclick="enableEditMode({{ $leader->id }})"
+                                                        onclick="enableEditMode({{ $category->id }})"
                                                         class="text-blue-600 hover:text-blue-800 text-sm font-medium transition duration-200">
                                                     Update
                                                 </button>
-                                                <form method="POST" action="{{ route('congress.destroy', $leader->id) }}" class="inline">
+                                                <form method="POST" action="{{ route('category.destroy', $category->id) }}" class="inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                            onclick="return confirm('Are you sure you want to delete this congress leader?')"
+                                                            onclick="return confirm('Are you sure you want to delete this category?')"
                                                             class="text-red-600 hover:text-red-800 text-sm font-medium transition duration-200">
                                                         Delete
                                                     </button>
@@ -101,28 +104,28 @@
 
                                         <!-- Edit Mode (Hidden by default) -->
                                         <div class="edit-mode hidden w-full">
-                                            <form method="POST" action="{{ route('congress.update', $leader->id) }}" class="flex flex-col space-y-3">
+                                            <form method="POST" action="{{ route('category.update', $category->id) }}" class="flex flex-col space-y-3">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="text"
                                                        name="name"
-                                                       value="{{ $leader->name }}"
+                                                       value="{{ $category->name }}"
                                                        required
                                                        class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                       placeholder="Congress leader name">
-                                                <input type="text"
-                                                       name="position"
-                                                       value="{{ $leader->position }}"
-                                                       required
-                                                       class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                       placeholder="Position">
+                                                       placeholder="Category name">
+                                                <textarea
+                                                    name="description"
+                                                    rows="2"
+                                                    class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                    placeholder="Category description (optional)"
+                                                >{{ $category->description }}</textarea>
                                                 <div class="flex space-x-2">
                                                     <button type="submit"
                                                             class="bg-green-600 text-white py-2 px-3 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200 text-sm">
                                                         Save
                                                     </button>
                                                     <button type="button"
-                                                            onclick="disableEditMode({{ $leader->id }})"
+                                                            onclick="disableEditMode({{ $category->id }})"
                                                             class="bg-gray-600 text-white py-2 px-3 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200 text-sm">
                                                         Cancel
                                                     </button>
@@ -133,7 +136,7 @@
                                 @endforeach
                             </div>
                         @else
-                            <p class="text-gray-500 text-center py-4">No congress leaders found. Add your first congress leader!</p>
+                            <p class="text-gray-500 text-center py-4">No categories found. Add your first category!</p>
                         @endif
                     </div>
                 </div>
@@ -142,24 +145,24 @@
     </div>
 
     <script>
-        function enableEditMode(leaderId) {
-            const leaderItem = document.querySelector(`.congress-leader-item[data-leader-id="${leaderId}"]`);
-            const displayMode = leaderItem.querySelector('.display-mode');
-            const editMode = leaderItem.querySelector('.edit-mode');
+        function enableEditMode(categoryId) {
+            const categoryItem = document.querySelector(`.category-item[data-category-id="${categoryId}"]`);
+            const displayMode = categoryItem.querySelector('.display-mode');
+            const editMode = categoryItem.querySelector('.edit-mode');
 
             displayMode.classList.add('hidden');
             editMode.classList.remove('hidden');
 
-            // Focus on the name input field
+            // Focus on the input field
             const inputField = editMode.querySelector('input[name="name"]');
             inputField.focus();
             inputField.select();
         }
 
-        function disableEditMode(leaderId) {
-            const leaderItem = document.querySelector(`.congress-leader-item[data-leader-id="${leaderId}"]`);
-            const displayMode = leaderItem.querySelector('.display-mode');
-            const editMode = leaderItem.querySelector('.edit-mode');
+        function disableEditMode(categoryId) {
+            const categoryItem = document.querySelector(`.category-item[data-category-id="${categoryId}"]`);
+            const displayMode = categoryItem.querySelector('.display-mode');
+            const editMode = categoryItem.querySelector('.edit-mode');
 
             displayMode.classList.remove('hidden');
             editMode.classList.add('hidden');
@@ -170,9 +173,9 @@
             if (e.key === 'Escape') {
                 const activeEdit = document.querySelector('.edit-mode:not(.hidden)');
                 if (activeEdit) {
-                    const leaderItem = activeEdit.closest('.congress-leader-item');
-                    const leaderId = leaderItem.getAttribute('data-leader-id');
-                    disableEditMode(leaderId);
+                    const categoryItem = activeEdit.closest('.category-item');
+                    const categoryId = categoryItem.getAttribute('data-category-id');
+                    disableEditMode(categoryId);
                 }
             }
         });
@@ -182,16 +185,16 @@
             if (!e.target.closest('.edit-mode') && !e.target.closest('.display-mode .text-blue-600')) {
                 const activeEdit = document.querySelector('.edit-mode:not(.hidden)');
                 if (activeEdit && !activeEdit.contains(e.target)) {
-                    const leaderItem = activeEdit.closest('.congress-leader-item');
-                    const leaderId = leaderItem.getAttribute('data-leader-id');
-                    disableEditMode(leaderId);
+                    const categoryItem = activeEdit.closest('.category-item');
+                    const categoryId = categoryItem.getAttribute('data-category-id');
+                    disableEditMode(categoryId);
                 }
             }
         });
     </script>
 
     <style>
-        .congress-leader-item {
+        .category-item {
             transition: all 0.3s ease;
         }
 

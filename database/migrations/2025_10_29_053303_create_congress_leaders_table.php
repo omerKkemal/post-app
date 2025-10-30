@@ -20,11 +20,6 @@ return new class extends Migration
         });
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     /**
      * Reverse the migrations.
      */
