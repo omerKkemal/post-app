@@ -10,9 +10,11 @@ class congress_leaders extends Model
     use HasFactory;
 
     protected $fillable = [
+        'photo_url',
         'name',
         'position',
-        'user_id'
+        'bio',
+        'user_id',
     ];
 
     public function user()

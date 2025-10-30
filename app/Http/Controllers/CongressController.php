@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\congress_leaders;
 
 class CongressController extends Controller
 {
@@ -16,20 +17,32 @@ class CongressController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'bio' => 'nullable|string',
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
+            'media' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
         ]);
 
-        // Add the authenticated user's ID
-        $data['user_id'] = Auth::id();
+        if (!Auth::check()) {
+            return redirect()->back()->with('error', 'You must be logged in to add a leader.');
+        }
 
         try {
-            \DB::table('congress_leaders')->insert($data);
-            $message = "Congress leader added successfully.";
-            return redirect()->back()->with('success', $message);
+            // Handle file upload if present
+            if ($request->hasFile('media')) {
+                $data['photo_url'] = $request->file('media')->store('congress_leaders', 'public');
+            }
+
+            $data['user_id'] = Auth::id();
+            $data['bio'] = $request->input('bio', '');
+
+            // Use Eloquent for auto timestamps
+            congress_leaders::create($data);
+
+            return redirect()->back()->with('success', 'Congress leader added successfully.');
         } catch (\Exception $e) {
-            $errorMessage = "Error adding congress leader: " . $e->getMessage();
-            return redirect()->back()->with('error', $errorMessage);
+            \Log::error("Error storing congress leader: " . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to store congress leader.');
         }
     }
 

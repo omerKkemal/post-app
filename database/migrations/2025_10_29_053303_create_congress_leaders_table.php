@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('congress_leaders', function (Blueprint $table) {
             $table->id();
+            $table->string('photo_url')->nullable();
             $table->string('name');
             $table->string('position');
+            $table->text('bio')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
