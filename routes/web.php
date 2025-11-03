@@ -9,6 +9,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
 Route::get('/p/{language}', function ($language = 'har') {
     // Check if the language parameter is actually a valid language, not 'create'

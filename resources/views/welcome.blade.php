@@ -10,28 +10,108 @@
     <!-- Main Content -->
     <div class="min-h-screen bg-gradient-to-br from-green-50 to-amber-50">
 
-        <!-- Hero Section -->
-        <section style="border-radius: 15px;" id="home" class="py-16 bg-gradient-to-r from-green-600 to-green-800 text-white">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 fade-in">
-                    Harari Congress
-                </h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto fade-in">
-                    Preserving the rich heritage and culture of Harar while building a prosperous future for our community
-                </p>
-                <div class="flex flex-wrap justify-center gap-4 mt-8">
-                    <a href="#messaging"
-                       class="bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-bullhorn mr-2"></i>Community Messages
-                    </a>
-                    <a href="#news"
-                       class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-newspaper mr-2"></i>Latest News
-                    </a>
+        <!-- Slideshow with Fixed Text Section -->
+        <section class="py-8 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="overflow-hidden rounded-xl shadow-lg fade-in relative">
+                    <!-- Fixed Text Overlay -->
+                    <div class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+                            Harari Congress
+                        </h1>
+                        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white drop-shadow-lg">
+                            Preserving the rich heritage and culture of Harar while building a prosperous future for our community
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-4 mt-8">
+                            <a href="#messaging"
+                            class="bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-bullhorn mr-2"></i>Community Messages
+                            </a>
+                            <a href="#news"
+                            class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-newspaper mr-2"></i>Latest News
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slideshow Images -->
+                    <div class="relative h-96 md:h-screen max-h-[80vh]">
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar1.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-0">
+                            <img src="{{ asset('images/harar2.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-0">
+                            <img src="{{ asset('images/harar3.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-0">
+                            <img src="{{ asset('images/harar4.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <!-- more -->
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar1.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar2.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar3.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar4.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar5.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar6.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar7.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar8.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar9.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar10.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar11.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar12.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="{{ asset('images/harar13.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                        </div>
+                        <!-- more end -->
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Rest of the sections remain unchanged -->
         <!-- Culture Section -->
         <section id="culture" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4">
@@ -460,7 +540,34 @@
         </section>
     </div>
 
+    <!-- Updated slideshow logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slides = document.querySelectorAll('.slideshow-image');
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.opacity = i === index ? '1' : '0';
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+
+            // Initialize
+            showSlide(currentIndex);
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+    </script>
     <style>
+        /* Slideshow styling */
+        .slideshow-image {
+            transition: opacity 1s ease-in-out;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
