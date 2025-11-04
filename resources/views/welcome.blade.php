@@ -189,7 +189,8 @@
                             <h3 class="english text-2xl font-bold text-gray-800 mb-4">The Walled City</h3>
                             <h3 class="harari text-2xl font-bold text-gray-800 mb-4">ዚትሔጠርቲ አሲማ</h3>
                             <p class="english text-gray-600 mb-4">
-                                The ancient walled city of Harar, founded in the 7th century, is renowned for its unique architecture and rich cultural heritage. It was the capital of the Harari Kingdom from 1520 to 1568 and served as an important center for Islamic learning and trade.
+                                Harar Jugol, the historic fortified city, is a UNESCO World Heritage Site with 82 mosques
+                                and 102 shrines, representing the most important Islamic historical city in the Horn of Africa.
                             <p class="harari text-gray-600 mb-4">
                                 ታሪኺያ ዚቴማ ዚትሼመቅቲ ሀረር ጆጎል ዩኒስኮ አለም ሑቁፍ ታሪኽ ቁራስነትቤ ሲትሴጀልቲ ዚኻነሳአ 82 መስጂዳች 102 አዋቻች ዛሉ ዚኻነሳአ ዩም ቀር አፍሪካቤ ተትኺሽዛት ዚኻንቲ ዚኢስላሚያ ታሪኺያ አሲማነንቴ
                             </p>
