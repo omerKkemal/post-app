@@ -23,7 +23,8 @@ class PostController extends Controller
         \Log::info("Load More Request", [
             'loading' => 'create post page'
         ]);
-        return view('post.create');
+        $category = \DB::table('catagories')->get();
+        return view('post.create', compact('category'));
     }
     public function store(Request $request){
         $data = $request->validate([

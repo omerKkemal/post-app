@@ -9,27 +9,46 @@
 
     <!-- Main Content -->
     <div class="min-h-screen bg-gradient-to-br from-green-50 to-amber-50">
-
+        <!-- tagle to change language (using a switch)-->
+        <div class="absolute top-4 right-4 z-20">
+            <button id="language-toggle" class="bg-white text-green-700 hover:bg-green-50 font-semibold py-2 px-4 rounded-lg shadow-lg transition duration-300">
+                <i class="fas fa-globe-americas mr-2"></i><span class="english">Switch to Harari</span><span class="harari hidden">ወደ ሀረሪ ቀይር</span>
+            </button>
+        </div>
         <!-- Slideshow with Fixed Text Section -->
         <section class="py-8 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="overflow-hidden rounded-xl shadow-lg fade-in relative">
                     <!-- Fixed Text Overlay -->
                     <div class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
-                        <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+                        <h1 class="english text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
                             Harari Congress
                         </h1>
-                        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white drop-shadow-lg">
+                        <h1 class="harari text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+                            ሀረሪ መጀሊስ
+                        </h1>
+                        <p class="english text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white drop-shadow-lg">
                             Preserving the rich heritage and culture of Harar while building a prosperous future for our community
+                        </p>
+                        <p class="harari text-lg md:text-xl mb-4 max-w-2xl mx-auto text-white drop-shadow-lg">
+                            ዚሀረሪ ሳዮት ቁራስ ዋ አዳች መቄረሕቤ ዳይሐዋዝዚኛሌ ዚሳይቲ ሙስተቅበል መቼኻል ላአይቤ.
                         </p>
                         <div class="flex flex-wrap justify-center gap-4 mt-8">
                             <a href="#messaging"
-                            class="bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                            class="english bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                                 <i class="fas fa-bullhorn mr-2"></i>Community Messages
                             </a>
+                            <a href="#messaging"
+                            class="harari bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-bullhorn mr-2"></i>ዚዳይሐዋዞ ሉኽ
+                            </a>
                             <a href="#news"
-                            class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                            class="english bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                                 <i class="fas fa-newspaper mr-2"></i>Latest News
+                            </a>
+                            <a href="#news"
+                            class="harari bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-newspaper mr-2"></i>ቁራ ወቅቲ ኻበራች
                             </a>
                         </div>
                     </div>
@@ -116,8 +135,8 @@
         <section id="culture" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Harari Culture</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Discover the rich traditions, language, and customs of the Harari people</p>
+                    <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Harari Culture</h2>
+                    <h2 class="harari text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዚሀረሪ አዳ</h2>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -125,24 +144,30 @@
                         <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-language text-green-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Harari Language</h3>
-                        <p class="text-gray-600">Learn about the unique Harari language (Gey Sinan) and its preservation efforts</p>
+                        <h3 class="english text-xl font-semibold text-gray-800 mb-3">Harari Language</h3>
+                        <h3 class="harari text-xl font-semibold text-gray-800 mb-3">ሀረሪ ሉኃ</h3>
+                        <p class="english text-gray-600">Learn about the unique Harari language (Gey Sinan) and its preservation efforts</p>
+                        <p calss="harari text-gray-600">ሀረሪ ሉኃ ኔሮት ዋ ቄረሖት ኩሽኩሽቲው ዩቁ.</p>
                     </div>
 
                     <div class="bg-amber-50 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.1s">
                         <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-utensils text-amber-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Traditional Cuisine</h3>
-                        <p class="text-gray-600">Explore the unique flavors and dishes of Harari culinary traditions</p>
+                        <h3 class="english text-xl font-semibold text-gray-800 mb-3">Traditional Cuisine</h3>
+                        <h3 class="harari text-xl font-semibold text-gray-800 mb-3">አዳ ሐንጉራች</h3>
+                        <p class="english text-gray-600">Explore the unique flavors and dishes of Harari culinary traditions</p>
+                        <p class="harari text-gray-600">ሀረሪ አዳ ሐንጉራች ሲነታች ዋ ሉይ ጢማቹ የፌሕሱ</p>
                     </div>
 
                     <div class="bg-red-50 rounded-xl p-6 text-center fade-in" style="animation-delay: 0.2s">
                         <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-praying-hands text-red-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Religious Traditions</h3>
-                        <p class="text-gray-600">Understanding the Islamic traditions and religious practices in Harari culture</p>
+                        <h3 class="english text-xl font-semibold text-gray-800 mb-3">Religious Traditions</h3>
+                        <h3 class="harari text-xl font-semibold text-gray-800 mb-3">ሹዋል ኢድ ዋ መውሉድ</h3>
+                        <p class="english text-gray-600">Understanding the Islamic traditions and religious practices in Harari culture</p>
+                        <p class="harari text-gray-600">ዚሀረሪ መሐድ ሹዋል ኢድ ዋ መውሉድ መግደርቲ ሒራች ዋ ተቃሊዳች</p>
                     </div>
                 </div>
             </div>
@@ -152,19 +177,36 @@
         <section id="history" class="py-16 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">History of Harar</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Explore the ancient walled city and its significant historical legacy</p>
+                    <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">History of Harar</h2>
+                    <h2 class="harari text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዚሀረሪ ታሪኽ</h2>
+                    <p class="english text-gray-600 max-w-2xl mx-auto">Explore the ancient walled city and its significant historical legacy</p>
+                    <p class="harari text-gray-600 max-w-2xl mx-auto">ቀዲም ጆጎል ሑጡርቤ ዚትቼኻልቲ አሲማ ዋ በግዚታ ታሪኽ ዋ ቁራሳች ዛሌ</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div class="fade-in">
                         <div class="bg-white rounded-xl shadow-lg p-6">
-                            <h3 class="text-2xl font-bold text-gray-800 mb-4">The Walled City</h3>
-                            <p class="text-gray-600 mb-4">
-                                Harar Jugol, the historic fortified city, is a UNESCO World Heritage Site with 82 mosques
-                                and 102 shrines, representing the most important Islamic historical city in the Horn of Africa.
+                            <h3 class="english text-2xl font-bold text-gray-800 mb-4">The Walled City</h3>
+                            <h3 class="harari text-2xl font-bold text-gray-800 mb-4">ዚትሔጠርቲ አሲማ</h3>
+                            <p class="english text-gray-600 mb-4">
+                                The ancient walled city of Harar, founded in the 7th century, is renowned for its unique architecture and rich cultural heritage. It was the capital of the Harari Kingdom from 1520 to 1568 and served as an important center for Islamic learning and trade.
+                            <p class="harari text-gray-600 mb-4">
+                                ታሪኺያ ዚቴማ ዚትሼመቅቲ ሀረር ጆጎል ዩኒስኮ አለም ሑቁፍ ታሪኽ ቁራስነትቤ ሲትሴጀልቲ ዚኻነሳአ 82 መስጂዳች 102 አዋቻች ዛሉ ዚኻነሳአ ዩም ቀር አፍሪካቤ ተትኺሽዛት ዚኻንቲ ዚኢስላሚያ ታሪኺያ አሲማነንቴ
                             </p>
-                            <ul class="space-y-2 text-gray-600">
+                            <ul class="harari space-y-2 text-gray-600">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>7ታኝ ቀርኒ ዘማንቤ ዚትኤሰስቲ</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>ዚሀረሪ አሲማ 1520 ኢላዋ 1568 አመት</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>ዚኢስላም ዲን ደርሲ ዋ ቲጃራ ቲነፊዛት ኡድ</span>
+                                </li>
+                            <ul class="english space-y-2 text-gray-600">
                                 <li class="flex items-start">
                                     <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
                                     <span>Founded in the 7th century</span>
@@ -561,6 +603,18 @@
             showSlide(currentIndex);
             setInterval(nextSlide, 3000); // Change slide every 3 seconds
         });
+        // Language toggle functionality(bettwen english and harari using thhere class (harari and english))
+        document.getElementById('toggle-language').addEventListener('click', function() {
+            const harariElements = document.querySelectorAll('.harari');
+            const englishElements = document.querySelectorAll('.english');
+
+            harariElements.forEach(el => {
+                el.classList.toggle('hidden');
+            });
+            englishElements.forEach(el => {
+                el.classList.toggle('hidden');
+            });
+        });
     </script>
     <style>
         /* Slideshow styling */
@@ -579,6 +633,12 @@
 
         html {
             scroll-behavior: smooth;
+        }
+        .english {
+            display: none;
+        }
+        .harari {
+            display: block;
         }
     </style>
 

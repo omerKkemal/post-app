@@ -217,28 +217,6 @@
                         </div>
                     </div>
                 @else
-                    <!-- Public User Right Section - ONLY Login/Register/Theme Toggle -->
-                    <div class="flex items-center space-x-3">
-                        <a href="{{ route('login') }}"
-                           class="nav-link px-4 py-2 rounded-lg transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
-                            <i class="fas fa-sign-in-alt mr-2"></i>
-                            <span>Login</span>
-                        </a>
-
-                        <a href="{{ route('register') }}"
-                           class="btn btn-primary px-4 py-2 rounded-lg font-semibold transition-all duration-200">
-                            <i class="fas fa-user-plus mr-2"></i>
-                            <span>Register</span>
-                        </a>
-
-                        <!-- Theme Toggle for Public -->
-                        <button @click="toggleTheme()"
-                                class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800"
-                                x-tooltip="currentTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'">
-                            <i class="fas fa-sun text-sm" x-show="currentTheme === 'light'"></i>
-                            <i class="fas fa-moon text-sm" x-show="currentTheme === 'dark'"></i>
-                        </button>
-                    </div>
                 @endauth
 
                 <!-- Mobile menu button -->
@@ -369,20 +347,6 @@
                        class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                         <i class="fas fa-newspaper w-6 mr-3 text-center"></i>
                         What's New (English)
-                    </a>
-                </div>
-
-                <!-- Mobile Authentication Links -->
-                <div class="border-t border-gray-200 pt-2 dark:border-gray-700">
-                    <a href="{{ route('login') }}"
-                       class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
-                        <i class="fas fa-sign-in-alt w-6 mr-3 text-center"></i>
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}"
-                       class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200">
-                        <i class="fas fa-user-plus w-6 mr-3 text-center"></i>
-                        Register
                     </a>
                 </div>
             @endauth

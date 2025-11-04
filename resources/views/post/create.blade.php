@@ -195,11 +195,9 @@
                                 <select name="category" id="category"
                                         class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm py-3 pl-3 pr-10 appearance-none cursor-pointer">
                                     <option value="">Select a category...</option>
-                                    <option value="Technology" {{ old('category') == '1' ? 'selected' : '' }}>Technology</option>
-                                    <option value="Lifestyle" {{ old('category') == '2' ? 'selected' : '' }}>Lifestyle</option>
-                                    <option value="Education" {{ old('category') == 'Education' ? 'selected' : '' }}>Education</option>
-                                    <option value="Entertainment" {{ old('category') == 'Entertainment' ? 'selected' : '' }}>Entertainment</option>
-                                    <option value="Business" {{ old('category') == 'Business' ? 'selected' : '' }}>Business</option>
+                                    @foreach($category as $cat)
+                                        <option value="{{ $cat->id }}" {{ old('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                    @endforeach
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <i class="fas fa-chevron-down"></i>
