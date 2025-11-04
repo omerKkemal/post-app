@@ -225,31 +225,38 @@
                     </div>
                     <div class="fade-in" style="animation-delay: 0.1s">
                         <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-xl p-8 text-white">
-                            <h3 class="text-2xl font-bold mb-4">Historical Timeline</h3>
+                            <h3 class="english text-2xl font-bold mb-4">Historical Timeline</h3>
+                            <h3 class="harari text-2xl font-bold mb-4">ታሪኺያ ዚወቅቲ መስጣራ</h3>
                             <div class="space-y-4">
                                 <div class="flex">
-                                    <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
+                                    <div class="english bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
                                         7th C
                                     </div>
-                                    <p>Foundation of Harar</p>
+                                    <div class="harari bg-white text-green-700 w-20 h-8 rounded-full px-4 py-2 flex items-center justify-center text-sm font-bold mr-4">
+                                        7ኛ ቀርኒ
+                                    </div>
+                                    <p class="english">Foundation of Harar</p>
+                                    <p class="harari">ሀረሪ አስሊ</p>
                                 </div>
                                 <div class="flex">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
                                         1520
                                     </div>
-                                    <p>Capital of Harari Kingdom</p>
+                                    <p class="english">Capital of Harari Kingdom</p>
+                                    <p class="harari">ሀረሪ ሑኩማ ዋና አሲማ</p>
                                 </div>
                                 <div class="flex">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
                                         1887
                                     </div>
-                                    <p>Incorporation into Ethiopia</p>
+                                    <p class="english">Incorporation into Ethiopia</p>
+                                    <p class="harari">ኪም ኢቶጲያ ሑኩማ</p>
                                 </div>
                                 <div class="flex">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
                                         2006
                                     </div>
-                                    <p>UNESCO World Heritage Site</p>
+                                    <p class="harari">ዩኒስኮ አለም ሑቁፍ ቁራስ</p>
                                 </div>
                             </div>
                         </div>
@@ -262,8 +269,10 @@
         <section id="handicrafts" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Traditional Handicrafts</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Exquisite handmade items showcasing Harari artistry and heritage</p>
+                    <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Traditional Handicrafts</h2>
+                    <h2 class="harari text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዚአዳ ኢጂ ሲነታች</h2>
+                    <p class="english text-gray-600 max-w-2xl mx-auto">Exquisite handmade items showcasing Harari artistry and heritage</p>
+                    <p class="harari text-gray-600 max-w-2xl mx-auto">ዚሀረሪ ሲነት ዋ ቁራሱ ያርዛሉ አጃኢብ ዚተዩ ኢጂቤ ዚትደለጉ መሐዋች</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -272,8 +281,10 @@
                             <i class="fas fa-basket-shopping text-amber-600 text-5xl"></i>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Basketry</h3>
+                            <h3 class="english text-xl font-semibold text-gray-800 mb-2">Basketry</h3>
+                            <h3 class="harari text-xl font-semibold text-gray-800 mb-2">ሞታች</h3>
                             <p class="text-gray-600 text-sm">Intricately woven baskets with traditional patterns</p>
+                            <p class="harari text-gray-600 text-sm">አዳ ሲነታችቤ ዚትደለጉ አጃኢብ ዚተዩ ኢጂቤ ዚትሰፉ ሞታች</p>
                         </div>
                     </div>
 
@@ -282,8 +293,10 @@
                             <i class="fas fa-tshirt text-green-600 text-5xl"></i>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Textiles</h3>
-                            <p class="text-gray-600 text-sm">Traditional Harari clothing and fabric designs</p>
+                            <h3 class="english text-xl font-semibold text-gray-800 mb-2">Textiles</h3>
+                            <h3 class="harari text-xl font-semibold text-gray-800 mb-2">ጨርቂቤ</h3>
+                            <p class="english text-gray-600 text-sm">Traditional Harari clothing and fabric designs</p>
+                            <p class="harari text-gray-600 text-sm">ሀረሪ አዳ ሊባሻች ዋ ጨርቂቤ ዚደለጉ ሲነታች</p>
                         </div>
                     </div>
 
@@ -292,8 +305,10 @@
                             <i class="fas fa-gem text-red-600 text-5xl"></i>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Jewelry</h3>
-                            <p class="text-gray-600 text-sm">Silver and beadwork with cultural significance</p>
+                            <h3 class="english text-xl font-semibold text-gray-800 mb-2">Jewelry</h3>
+                            <h3 class="harari text-xl font-semibold text-gray-800 mb-2">ሰያቅ</h3>
+                            <p class="english text-gray-600 text-sm">Silver and beadwork with cultural significance</p>
+                            <p class="harari text-gray-600 text-sm">ሀረሪ አዳ ሊባሻች ማቤይነቤ ዚደለጉ ዚትሊያያ ዲዛይቤ ዚትደለጉ ሰያቅ ዲላጋች</p>
                         </div>
                     </div>
 
@@ -302,8 +317,10 @@
                             <i class="fas fa-paint-brush text-blue-600 text-5xl"></i>
                         </div>
                         <div class="p-4">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Pottery</h3>
-                            <p class="text-gray-600 text-sm">Traditional clay works with unique Harari motifs</p>
+                            <h3 class="english text-xl font-semibold text-gray-800 mb-2">Pottery</h3>
+                            <h3 class="harari text-xl font-semibold text-gray-800 mb-2">አፈር ጌብ</h3>
+                            <p class="english text-gray-600 text-sm">Traditional clay works with unique Harari motifs</p>
+                            <p class="harari text-gray-600 text-sm">ዚአዳ አፈር ጌብ ሉይ ዚኻና ኡጋቤ ሀረሪ ተቃሊድ ቤ ዚትደለጉ ኢጂ ሲነታች</p>
                         </div>
                     </div>
                 </div>
@@ -314,8 +331,10 @@
         <section id="messaging" class="py-16 bg-green-50">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Community Messaging</h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto">Stay connected with important announcements and community updates</p>
+                    <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Community Messaging</h2>
+                    <h2 class="harari text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዳይሐዋዞ ሉኽ</h2>
+                    <p class="english text-gray-600 max-w-2xl mx-auto">Stay connected with important announcements and community updates</p>
+                    <p class="harari text-gray-600 max-w-2xl mx-auto">አትኼሽ ዚኻኑ አቴወቆታች ዋ ዳይሐዋዝ ዘማኒያችባሕ ዚትራአ ኩትቤ ዩነብራል ዚቁራ ዳይሐዋዝ ሉኻች</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -636,10 +655,10 @@
             scroll-behavior: smooth;
         }
         .english {
-            display: none;
+            display: block;
         }
         .harari {
-            display: block;
+            display: none;
         }
     </style>
 
