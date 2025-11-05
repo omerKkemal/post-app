@@ -6,9 +6,24 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    try {
+        $recent_harari_posts = Post::orderBy('created_at', 'desc')->take(3)->where('language', 'har')->get();
+        $recent_english_posts = Post::orderBy('created_at', 'desc')->take(3)->where('language', 'eng')->get();
+        $congress_members = DB::table('congress_leaders')->get();
+        $messages = Post::where('category', 'message')->get();
+        $law_posts = Post::where('category', 'law')->orderBy('created_at','desc')->take(5)->get();
 
+        return view('welcome', compact('messages', 'congress_members', 'recent_harari_posts', 'recent_english_posts', 'law_posts'));
+    } catch (\Exception $e) {
+        \Log::error('Welcome page error: ' . $e->getMessage());
+
+        // Return view with empty collections to prevent errors
+        return view('welcome', [
+            'messages' => collect(),
+            'congress_members' => collect()
+        ]);
+    }
+});
 Route::get('/about', function () {
     return view('about');
 })->name('about');

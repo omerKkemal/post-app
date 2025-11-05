@@ -30,7 +30,7 @@ class CongressController extends Controller
         try {
             // Handle file upload if present
             if ($request->hasFile('media')) {
-                $data['photo_url'] = $request->file('media')->store('congress_leaders', 'public');
+                $data['photo_url'] = $request->file('media')->store('uploads', 'public');
             }
 
             $data['user_id'] = Auth::id();
