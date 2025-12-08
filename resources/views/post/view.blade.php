@@ -13,29 +13,30 @@
 
     <!-- Public Post Content -->
     <div class="max-w-4xl mx-auto px-4 py-6">
-        {{-- <!-- Breadcrumb -->
-        <nav class="mb-6 text-sm text-gray-600" aria-label="Breadcrumb">
-            <ol class="list-none p-0 inline-flex items-center">
-                <li class="flex items-center">
-                    <a href="{{ url('/') }}" class="hover:text-blue-600 transition-colors">Home</a>
-                    <svg class="h-4 w-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </li>
-                <li class="flex items-center">
-                    <a href="#" class="hover:text-blue-600 transition-colors">Posts</a>
-                    <svg class="h-4 w-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </li>
-                <li class="text-gray-800 font-medium" aria-current="page">Public Post</li>
-            </ol>
-        </nav> --}}
-
         <!-- Posts Container -->
         <div id="posts-container" class="space-y-6">
+            <!-- Filter by Category -->
+            <div class="mb-8 p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+                    </svg>
+                    Filter by Category
+                </h3>
+                <div class="flex flex-wrap gap-3" id="category-filters-container">
+                    <button class="filter-btn category-filter-btn category-filter-active" data-category="all">
+                        <span class="category-badge">All Categories</span>
+                    </button>
+                    @foreach ($categories as $category)
+                        <button class="filter-btn category-filter-btn" data-category="{{ $category->name }}">
+                            <span class="category-badge">{{ $category->name }}</span>
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+
             @foreach ($posts as $post)
-            <article class="post-card fade-in">
+            <article class="post-card fade-in" data-category="{{ $post->category ?? 'uncategorized' }}">
                 <!-- Post header -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
@@ -62,7 +63,7 @@
                     <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ $post->title }}</h1>
 
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">{{ $post->category ?? 'Uncategorized' }}</span>
+                        <span class="category-tag">{{ $post->category ?? 'Uncategorized' }}</span>
                     </div>
                 </div>
 
@@ -158,4 +159,190 @@
             <p id="no-more-posts" class="no-more-posts hidden">You've reached the end! No more posts to load.</p>
         </div>
     </div>
+
+    <style>
+        .category-filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-filter-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .category-filter-active {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        .category-filter-active:hover {
+            border-color: #2563eb;
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .category-badge {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-card {
+            transition: all 0.3s ease;
+        }
+
+        .post-card.custom-hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        @media (max-width: 640px) {
+            .category-filter-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+
+        /* Load More Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-loading {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Use a custom class name instead of .hidden to avoid Tailwind conflict */
+        .custom-hidden {
+            display: none !important;
+        }
+
+        .no-more-posts {
+            color: #6b7280;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <script>
+        // Update JavaScript to use custom-hidden instead of hidden
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadMoreSpinner = document.getElementById('load-more-spinner');
+            const noMorePosts = document.getElementById('no-more-posts');
+
+            // When showing/hiding elements
+            loadMoreSpinner.classList.add('custom-hidden');
+            noMorePosts.classList.add('custom-hidden');
+
+            // Example usage:
+            loadMoreBtn.addEventListener('click', function() {
+                loadMoreSpinner.classList.remove('custom-hidden');
+
+                // After loading
+                // loadMoreSpinner.classList.add('custom-hidden');
+            });
+
+            // Category filtering
+            const categoryFilterBtns = document.querySelectorAll('.category-filter-btn');
+            const postCards = document.querySelectorAll('.post-card');
+
+            categoryFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const selectedCategory = this.getAttribute('data-category');
+
+                    // Update active button
+                    categoryFilterBtns.forEach(b => b.classList.remove('category-filter-active'));
+                    this.classList.add('category-filter-active');
+
+                    // Filter posts
+                    postCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+
+                        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                            card.classList.remove('custom-hidden');
+                        } else {
+                            card.classList.add('custom-hidden');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

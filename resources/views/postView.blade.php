@@ -34,8 +34,31 @@
 
         <!-- Posts Container -->
         <div id="posts-container" class="space-y-6">
+            <!-- Filter by Category -->
+            <div class="mb-8 p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+                    </svg>
+                    Filter by Category
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                    <button class="filter-btn category-filter-btn category-filter-active" data-category="all">
+                        <span class="category-badge">All Categories</span>
+                    </button>
+                    @php
+                        $categories = $posts->pluck('category')->unique()->filter()->values();
+                    @endphp
+                    @foreach ($categories as $category)
+                        <button class="filter-btn category-filter-btn" data-category="{{ $category }}">
+                            <span class="category-badge">{{ $category }}</span>
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+
             @foreach ($posts as $post)
-            <article class="post-card fade-in">
+            <article class="post-card fade-in" data-category="{{ $post->category ?? 'uncategorized' }}">
                 <!-- Post header -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
@@ -62,7 +85,7 @@
                     <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ $post->title }}</h1>
 
                     <div class="flex flex-wrap gap-2">
-                        <span class="tag">{{ $post->category ?? 'Uncategorized' }}</span>
+                        <span class="category-tag">{{ $post->category ?? 'Uncategorized' }}</span>
                     </div>
                 </div>
 
@@ -158,4 +181,150 @@
             <p id="no-more-posts" class="no-more-posts hidden">You've reached the end! No more posts to load.</p>
         </div>
     </div>
+
+    <!-- Add this CSS to your view.css file -->
+    <style>
+        .category-filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-filter-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+
+        .category-filter-active {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+
+        .category-filter-active:hover {
+            border-color: #2563eb;
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .category-badge {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .category-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 6px;
+            background: #f3f4f6;
+            color: #6b7280;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .category-filter-active .category-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .category-filter-btn:hover .category-count {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animation for filter changes */
+        .post-card {
+            transition: all 0.3s ease;
+        }
+
+        .post-card.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .category-filter-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .category-count {
+                min-width: 20px;
+                height: 20px;
+                font-size: 11px;
+            }
+        }
+    </style>
+
+    <!-- Filter Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const posts = document.querySelectorAll('.post-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('category-filter-active'));
+                    // Add active class to clicked button
+                    button.classList.add('category-filter-active');
+
+                    const category = button.getAttribute('data-category');
+
+                    posts.forEach(post => {
+                        const postCategory = post.getAttribute('data-category');
+
+                        if (category === 'all' || postCategory === category) {
+                            post.style.display = 'block';
+                            setTimeout(() => {
+                                post.style.opacity = '1';
+                                post.style.transform = 'translateY(0)';
+                            }, 50);
+                        } else {
+                            post.style.opacity = '0';
+                            post.style.transform = 'translateY(-10px)';
+                            setTimeout(() => {
+                                post.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

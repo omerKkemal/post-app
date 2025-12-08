@@ -42,8 +42,9 @@ Route::get('/p/{language}', function ($language = 'har') {
                  ->orderBy('created_at', 'desc')
                  ->take(10)
                  ->get();
+    $catagories = \DB::table('catagories')->get();
 
-    return view('postView', compact('posts', 'language'));
+    return view('postView', compact('posts', 'language', 'catagories'));
 })->name('postView');
 
 

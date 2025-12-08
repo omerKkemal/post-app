@@ -65,8 +65,9 @@ class PostController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->take(10)
                     ->get();
+        $categories = \DB::table('catagories')->get();
 
-        return view('post.view', compact('posts', 'language'));
+        return view('post.view', compact('posts', 'language', 'categories'));
     }
 
     public function loadMorePosts($clickCount, $language = 'har')
@@ -80,29 +81,30 @@ class PostController extends Controller
              * - First "Load More" click = page 2
              * So if frontend sends clickCount = 1 for first click → page = clickCount + 1
              */
-            $page = $clickCount;
+            $page = $clickCount + 1; // Fixed: Add 1 to clickCount to get the correct page
 
-            // \Log::info("Load More Request", [
-            //     'clickCount' => $clickCount,
-            //     'calculatedPage' => $page,
-            //     'perPage' => $perPage
-            // ]);
+            \Log::info("Load More Request", [
+                'clickCount' => $clickCount,
+                'calculatedPage' => $page,
+                'perPage' => $perPage
+            ]);
 
             // Fetch paginated posts (ordered by latest)
-            $posts = Post::where('language',$language)->orderBy('created_at', 'desc')
+            $posts = Post::where('language', $language)
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
 
             $hasMore = $posts->hasMorePages();
 
-            // \Log::info("Pagination Result", [
-            //     'currentPage' => $posts->currentPage(),
-            //     'postsCount' => $posts->count(),
-            //     'hasMore' => $hasMore,
-            //     'totalPosts' => $posts->total(),
-            //     'lastPage' => $posts->lastPage(),
-            //     'firstItem' => $posts->firstItem(),
-            //     'lastItem' => $posts->lastItem()
-            // ]);
+            \Log::info("Pagination Result", [
+                'currentPage' => $posts->currentPage(),
+                'postsCount' => $posts->count(),
+                'hasMore' => $hasMore,
+                'totalPosts' => $posts->total(),
+                'lastPage' => $posts->lastPage(),
+                'firstItem' => $posts->firstItem(),
+                'lastItem' => $posts->lastItem()
+            ]);
 
             // Transform post data for JSON response
             $transformedPosts = $posts->map(function ($post) {
@@ -112,6 +114,7 @@ class PostController extends Controller
                     'description' => $post->description,
                     'category' => $post->category,
                     'media_url' => $post->media_url,
+                    'Youtube_link' => $post->Youtube_link, // Make sure this is included
                     'created_at' => $post->created_at->toISOString(),
                     'updated_at' => $post->updated_at->toISOString(),
                 ];
