@@ -125,10 +125,12 @@ Route::middleware('auth')->group(function () {
     // FIX: Move specific routes BEFORE parameterized routes
     Route::get('/posts/create', [PostController::class, 'create'])->name('post.create');
     Route::post('/posts/store', [PostController::class, 'store'])->name('post.store');
+    Route::delete('/posts/{id}', [PostController::class, 'delete_post'])->name('posts.delete');
+    // or if using resource routes:
+    // Route::resource('posts', PostController::class);
 
     // This should come AFTER specific routes
     Route::get('/posts/{language}', [PostController::class, 'post'])->name('post.view');
-
     // Category Routes
     Route::get('/category', [App\Http\Controllers\CatagoryController::class, 'view'])->name('post.category');
     Route::post('/category/store', [App\Http\Controllers\CatagoryController::class, 'store'])->name('category.store');

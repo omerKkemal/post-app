@@ -143,6 +143,30 @@ class PostController extends Controller
         }
     }
 
+    public function delete_post($id)
+    {
+        try {
+            $post = Post::findOrFail($id);
+
+            // Delete associated media file if exists
+            if($post->media_url){
+                Storage::disk('public')->delete($post->media_url);
+            }
+            $post->delete();
+
+            // Return JSON response for AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Post deleted successfully!'
+            ]);
+
+        } catch(\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while deleting the post. Please try again.'
+            ], 500);
+        }
+    }
+
     private function convertToEmbed($url)
     {
         $parsed = parse_url($url);

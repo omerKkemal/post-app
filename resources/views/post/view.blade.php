@@ -36,7 +36,7 @@
             </div>
 
             @foreach ($posts as $post)
-            <article class="post-card fade-in" data-category="{{ $post->category ?? 'uncategorized' }}">
+            <article class="post-card fade-in" data-category="{{ $post->category ?? 'uncategorized' }}" data-post-id="{{ $post->id }}">
                 <!-- Post header -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
@@ -47,16 +47,31 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="text-sm text-gray-500">
-                            <span class="inline-flex items-center">
-                                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="flex items-center space-x-4">
+                            <div class="text-sm text-gray-500">
+                                <span class="inline-flex items-center">
+                                    <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Public Post
+                                </span>
+                            </div>
+
+                            <!-- Delete Button -->
+                            <button
+                                class="delete-post-btn flex items-center text-red-600 hover:text-red-800 transition-colors hover:bg-red-50 px-3 py-1 rounded-md"
+                                data-post-id="{{ $post->id }}"
+                                title="Delete Post"
+                            >
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
-                                Public Post
-                            </span>
+                                <span class="ml-1">Delete</span>
+                            </button>
                         </div>
                     </div>
 
@@ -160,189 +175,280 @@
         </div>
     </div>
 
-    <style>
-        .category-filter-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            background: white;
-            color: #6b7280;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0 h-12 w-12 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                            <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.998-.833-2.732 0L4.342 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Delete Post</h3>
+                            <p class="text-gray-600">Are you sure you want to delete this post?</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">This action cannot be undone. The post will be permanently removed.</p>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="delete-modal-cancel" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            Cancel
+                        </button>
+                        <button type="button" id="delete-modal-confirm" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        .category-filter-btn:hover {
-            border-color: #3b82f6;
-            color: #3b82f6;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-        }
-
-        .category-filter-active {
-            border-color: #3b82f6;
-            background: #3b82f6;
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-        }
-
-        .category-filter-active:hover {
-            border-color: #2563eb;
-            background: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
-        }
-
-        .category-badge {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .category-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .post-card {
-            transition: all 0.3s ease;
-        }
-
-        .post-card.custom-hidden {
-            opacity: 0;
-            transform: translateY(-10px);
-            height: 0;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        @media (max-width: 640px) {
-            .category-filter-btn {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-        }
-
-        /* Load More Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 12px 24px;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-loading {
-            opacity: 0.7;
-            cursor: wait;
-        }
-
-        .loading-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Use a custom class name instead of .hidden to avoid Tailwind conflict */
-        .custom-hidden {
-            display: none !important;
-        }
-
-        .no-more-posts {
-            color: #6b7280;
-            font-style: italic;
-            padding: 20px;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-
+    @push('scripts')
     <script>
-        // Update JavaScript to use custom-hidden instead of hidden
-        document.addEventListener('DOMContentLoaded', function() {
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            const loadMoreSpinner = document.getElementById('load-more-spinner');
-            const noMorePosts = document.getElementById('no-more-posts');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Elements
+        const deleteModal = document.getElementById('delete-modal');
+        const deleteModalCancel = document.getElementById('delete-modal-cancel');
+        const deleteModalConfirm = document.getElementById('delete-modal-confirm');
+        const postsContainer = document.getElementById('posts-container');
 
-            // When showing/hiding elements
-            loadMoreSpinner.classList.add('custom-hidden');
-            noMorePosts.classList.add('custom-hidden');
+        let postToDelete = null;
+        let deleteButton = null;
 
-            // Example usage:
-            loadMoreBtn.addEventListener('click', function() {
-                loadMoreSpinner.classList.remove('custom-hidden');
+        // EVENT DELEGATION - This is the key fix!
+        // Attach event listener to the parent container that never gets removed
+        postsContainer.addEventListener('click', function(e) {
+            // Check if the clicked element is a delete button or inside one
+            const deleteBtn = e.target.closest('.delete-post-btn');
+            if (deleteBtn) {
+                e.preventDefault();
+                e.stopPropagation();
 
-                // After loading
-                // loadMoreSpinner.classList.add('custom-hidden');
-            });
+                postToDelete = deleteBtn.getAttribute('data-post-id');
+                deleteButton = deleteBtn;
 
-            // Category filtering
-            const categoryFilterBtns = document.querySelectorAll('.category-filter-btn');
-            const postCards = document.querySelectorAll('.post-card');
+                // Show modal
+                deleteModal.classList.remove('hidden');
+            }
+        });
 
-            categoryFilterBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const selectedCategory = this.getAttribute('data-category');
+        // Handle modal cancel
+        deleteModalCancel.addEventListener('click', function() {
+            deleteModal.classList.add('hidden');
+            resetModalState();
+        });
 
-                    // Update active button
-                    categoryFilterBtns.forEach(b => b.classList.remove('category-filter-active'));
-                    this.classList.add('category-filter-active');
+        // Handle modal confirm
+        deleteModalConfirm.addEventListener('click', function() {
+            if (!postToDelete || !deleteButton) return;
 
-                    // Filter posts
-                    postCards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
+            // Show loading state on button
+            const originalContent = deleteButton.innerHTML;
+            deleteButton.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="ml-1">Deleting...</span>
+            `;
+            deleteButton.disabled = true;
 
-                        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
-                            card.classList.remove('custom-hidden');
-                        } else {
-                            card.classList.add('custom-hidden');
-                        }
-                    });
-                });
+            // Disable modal buttons
+            deleteModalConfirm.disabled = true;
+            deleteModalCancel.disabled = true;
+            deleteModalConfirm.innerHTML = 'Deleting...';
+
+            // Send DELETE request
+            fetch(`/posts/${postToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Find and remove post element
+                    const postElement = document.querySelector(`.post-card[data-post-id="${postToDelete}"]`);
+                    if (postElement) {
+                        // Add fade out animation
+                        postElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        postElement.style.opacity = '0';
+                        postElement.style.transform = 'translateX(-20px)';
+
+                        setTimeout(() => {
+                            postElement.remove();
+                            showNotification('Post deleted successfully!', 'success');
+
+                            // Check if no posts left
+                            const remainingPosts = document.querySelectorAll('.post-card');
+                            if (remainingPosts.length === 0) {
+                                const noPostsMessage = document.createElement('div');
+                                noPostsMessage.className = 'text-center py-12';
+                                noPostsMessage.innerHTML = `
+                                    <div class="max-w-md mx-auto">
+                                        <div class="mb-4">
+                                            <svg class="h-16 w-16 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-medium text-gray-900 mb-2">No Posts Found</h3>
+                                        <p class="text-gray-600">There are no posts to display. Create your first post!</p>
+                                    </div>
+                                `;
+                                postsContainer.appendChild(noPostsMessage);
+                            }
+                        }, 300);
+                    }
+
+                    // Close modal
+                    deleteModal.classList.add('hidden');
+                } else {
+                    throw new Error(data.error || 'Failed to delete post');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+
+                // Reset button states
+                if (deleteButton) {
+                    deleteButton.innerHTML = originalContent;
+                    deleteButton.disabled = false;
+                }
+
+                deleteModalConfirm.disabled = false;
+                deleteModalCancel.disabled = false;
+                deleteModalConfirm.innerHTML = 'Delete';
+
+                showNotification(error.message || 'An error occurred while deleting the post.', 'error');
+            })
+            .finally(() => {
+                resetModalState();
             });
         });
+
+        // Close modal when clicking outside
+        deleteModal.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.classList.add('hidden');
+                resetModalState();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !deleteModal.classList.contains('hidden')) {
+                deleteModal.classList.add('hidden');
+                resetModalState();
+            }
+        });
+
+        // Reset modal state
+        function resetModalState() {
+            postToDelete = null;
+            deleteButton = null;
+            deleteModalConfirm.disabled = false;
+            deleteModalCancel.disabled = false;
+            deleteModalConfirm.innerHTML = 'Delete';
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${type === 'success' ? 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' : 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'}"></path>
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+                notification.classList.add('translate-x-0');
+            }, 10);
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+
+            // Click to dismiss
+            notification.addEventListener('click', () => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            });
+        }
+    });
     </script>
+    @endpush
+
+    <style>
+    /* Modal styling */
+    #delete-modal {
+        display: none;
+    }
+
+    #delete-modal:not(.hidden) {
+        display: block;
+    }
+
+    /* Spinner animation */
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+
+    /* Delete button hover effect */
+    .delete-post-btn:hover {
+        background-color: #fef2f2;
+    }
+
+    /* Fade in animation for posts */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    </style>
 </x-app-layout>

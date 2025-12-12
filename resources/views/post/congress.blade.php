@@ -42,24 +42,25 @@
                                     Add an image to represent the leader (Max: 10MB)
                                 </p>
 
-                                <div id="mediaDropZone"
-                                     class="group relative flex flex-col items-center justify-center gap-4 px-6 py-12 border-2 border-dashed border-gray-300 rounded-xl bg-white hover:border-blue-500 transition-all duration-300 cursor-pointer">
-
+                                <div class="relative flex flex-col items-center justify-center gap-4 px-6 py-12 border-2 border-dashed border-gray-300 rounded-xl bg-white">
                                     <div class="text-center">
-                                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 group-hover:text-blue-500 mb-3 transition-colors"></i>
+                                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
                                         <h3 class="text-lg font-semibold text-gray-700 mb-2" id="fileLabel">
                                             Drop your file here
                                         </h3>
                                         <p class="text-sm text-gray-500 mb-4">
-                                            or click to browse your files
+                                            or use the button below
                                         </p>
 
-                                        <button type="button"
-                                                id="mediaSelectButton"
-                                                class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 transform hover:scale-105">
+                                        <!-- Use label to ensure file dialog works without JS -->
+                                        <label for="media"
+                                               id="mediaSelectButton"
+                                               role="button"
+                                               tabindex="0"
+                                               class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 cursor-pointer">
                                             <i class="fas fa-plus-circle mr-2"></i>
                                             Choose File
-                                        </button>
+                                        </label>
 
                                         <p class="text-xs text-gray-400 mt-3">
                                             Supports: JPG, PNG (Max 10MB)
@@ -67,6 +68,25 @@
                                     </div>
 
                                     <input class="sr-only" type="file" name="media" id="media" accept="image/*">
+                                </div>
+
+                                <!-- File info display -->
+                                <div id="fileInfo" class="mt-3 hidden">
+                                    <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-file-image text-blue-500 mr-2"></i>
+                                            <span id="fileName" class="text-sm font-medium"></span>
+                                            <span id="fileSize" class="text-xs text-gray-500 ml-2"></span>
+                                        </div>
+                                        <button type="button" id="removeFile" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    <!-- Image preview -->
+                                    <div id="filePreviewWrapper" class="mt-3 hidden">
+                                        <img id="filePreview" src="" alt="Selected image preview" class="w-32 h-32 object-cover rounded-lg border" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -114,6 +134,119 @@
                                 Add Congress Leader
                             </button>
                         </form>
+
+                        <!-- Scripts for file UI -->
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+
+                            const mediaInput = document.getElementById('media');
+                            const mediaSelectButton = document.getElementById('mediaSelectButton');
+                            const fileLabel = document.getElementById('fileLabel');
+                            const fileInfo = document.getElementById('fileInfo');
+                            const fileName = document.getElementById('fileName');
+                            const fileSize = document.getElementById('fileSize');
+                            const removeFileBtn = document.getElementById('removeFile');
+                            const filePreview = document.getElementById('filePreview');
+                            const filePreviewWrapper = document.getElementById('filePreviewWrapper');
+                            const dropzone = mediaInput ? mediaInput.closest('.border-dashed') : null;
+
+                            if (mediaSelectButton && mediaInput) {
+                                mediaSelectButton.addEventListener('click', function (e) {
+                                    try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
+                                    try { mediaInput.click(); } catch (err) {}
+                                });
+                                mediaSelectButton.addEventListener('keydown', function (e) {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        mediaInput.click();
+                                    }
+                                });
+                            }
+
+                            if (mediaInput) {
+                                mediaInput.addEventListener('change', function (e) {
+                                    const file = e.target.files[0];
+                                    if (file) updateFileInfo(file);
+                                });
+                            }
+
+                            if (removeFileBtn) {
+                                removeFileBtn.addEventListener('click', function (e) {
+                                    e.stopPropagation();
+                                    if (mediaInput) mediaInput.value = '';
+                                    if (fileInfo) fileInfo.classList.add('hidden');
+                                    if (fileLabel) fileLabel.textContent = 'Drop your file here';
+                                    if (filePreview) {
+                                        filePreview.src = '';
+                                        if (filePreviewWrapper) filePreviewWrapper.classList.add('hidden');
+                                    }
+                                });
+                            }
+
+                            if (dropzone) {
+                                dropzone.addEventListener('dragover', function (e) {
+                                    e.preventDefault();
+                                    dropzone.classList.add('border-blue-500', 'bg-blue-50');
+                                });
+
+                                dropzone.addEventListener('dragleave', function (e) {
+                                    e.preventDefault();
+                                    dropzone.classList.remove('border-blue-500', 'bg-blue-50');
+                                });
+
+                                dropzone.addEventListener('drop', function (e) {
+                                    e.preventDefault();
+                                    dropzone.classList.remove('border-blue-500', 'bg-blue-50');
+
+                                    const file = e.dataTransfer.files[0];
+                                    if (!file) return;
+
+                                    if (!file.type.startsWith('image/')) {
+                                        alert('Only image files are allowed.');
+                                        return;
+                                    }
+
+                                    if (file.size > 10 * 1024 * 1024) {
+                                        alert('Max file size is 10MB.');
+                                        return;
+                                    }
+
+                                    try {
+                                        const dt = new DataTransfer();
+                                        dt.items.add(file);
+                                        if (mediaInput) mediaInput.files = dt.files;
+                                        updateFileInfo(file);
+                                    } catch (err) {
+                                        alert('Your browser does not support drag-and-drop file assignment. Please use the "Choose File" button.');
+                                    }
+                                });
+                            }
+
+                            function updateFileInfo(file) {
+                                if (fileName) fileName.textContent = file.name;
+                                if (fileSize) fileSize.textContent = formatFileSize(file.size);
+                                if (fileLabel) fileLabel.textContent = 'File selected';
+                                if (fileInfo) fileInfo.classList.remove('hidden');
+
+                                if (filePreview) {
+                                    try {
+                                        const url = URL.createObjectURL(file);
+                                        filePreview.src = url;
+                                        if (filePreviewWrapper) filePreviewWrapper.classList.remove('hidden');
+                                    } catch (err) {
+                                        // ignore preview errors
+                                    }
+                                }
+                            }
+
+                            function formatFileSize(bytes) {
+                                const units = ['Bytes', 'KB', 'MB', 'GB'];
+                                if (!bytes) return '0 Bytes';
+                                const i = Math.floor(Math.log(bytes) / Math.log(1024));
+                                return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + units[i];
+                            }
+                        });
+                        </script>
                     </div>
                 </div>
 
@@ -206,94 +339,4 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        // File upload interaction
-        const mediaDropZone = document.getElementById('mediaDropZone');
-        const mediaSelectButton = document.getElementById('mediaSelectButton');
-        const mediaInput = document.getElementById('media');
-        const fileLabel = document.getElementById('fileLabel');
-
-        mediaSelectButton.addEventListener('click', () => mediaInput.click());
-        mediaDropZone.addEventListener('click', () => mediaInput.click());
-
-        mediaInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) fileLabel.textContent = `Selected: ${file.name}`;
-        });
-
-        mediaDropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            mediaDropZone.classList.add('border-blue-500', 'bg-blue-50');
-        });
-        mediaDropZone.addEventListener('dragleave', () => {
-            mediaDropZone.classList.remove('border-blue-500', 'bg-blue-50');
-        });
-        mediaDropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            mediaDropZone.classList.remove('border-blue-500', 'bg-blue-50');
-            const file = e.dataTransfer.files[0];
-            mediaInput.files = e.dataTransfer.files;
-            if (file) fileLabel.textContent = `Selected: ${file.name}`;
-        });
-
-        // Inline edit toggle
-        function enableEditMode(leaderId) {
-            const leaderItem = document.querySelector(`.congress-leader-item[data-leader-id="${leaderId}"]`);
-            leaderItem.querySelector('.display-mode').classList.add('hidden');
-            leaderItem.querySelector('.edit-mode').classList.remove('hidden');
-            const inputField = leaderItem.querySelector('input[name="name"]');
-            inputField.focus();
-            inputField.select();
-        }
-
-        function disableEditMode(leaderId) {
-            const leaderItem = document.querySelector(`.congress-leader-item[data-leader-id="${leaderId}"]`);
-            leaderItem.querySelector('.display-mode').classList.remove('hidden');
-            leaderItem.querySelector('.edit-mode').classList.add('hidden');
-        }
-
-        // Escape key closes edit mode
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const activeEdit = document.querySelector('.edit-mode:not(.hidden)');
-                if (activeEdit) {
-                    const leaderItem = activeEdit.closest('.congress-leader-item');
-                    const leaderId = leaderItem.getAttribute('data-leader-id');
-                    disableEditMode(leaderId);
-                }
-            }
-        });
-
-        // Click outside closes edit mode
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.edit-mode') && !e.target.closest('.text-blue-600')) {
-                const activeEdit = document.querySelector('.edit-mode:not(.hidden)');
-                if (activeEdit && !activeEdit.contains(e.target)) {
-                    const leaderItem = activeEdit.closest('.congress-leader-item');
-                    const leaderId = leaderItem.getAttribute('data-leader-id');
-                    disableEditMode(leaderId);
-                }
-            }
-        });
-    </script>
-
-    <style>
-        /* Smooth inline edit transition */
-        .edit-mode {
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .edit-mode:not(.hidden) {
-            opacity: 1;
-            max-height: 400px;
-        }
-
-        .congress-leader-item {
-            transition: all 0.3s ease;
-        }
-    </style>
 </x-app-layout>

@@ -20,6 +20,22 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
     <!-- Scripts -->
+    {{-- Fallback: emit CSS links from Vite manifest if available (helps when @vite doesn't output tags on some hosts) --}}
+    @php
+        $manifestPath = public_path('build/manifest.json');
+        if (file_exists($manifestPath)) {
+            try {
+                $manifest = json_decode(file_get_contents($manifestPath), true);
+                if (isset($manifest['resources/js/app.js']['css']) && is_array($manifest['resources/js/app.js']['css'])) {
+                    foreach ($manifest['resources/js/app.js']['css'] as $cssFile) {
+                        echo '<link rel="stylesheet" href="' . asset('build/' . $cssFile) . '">';
+                    }
+                }
+            } catch (\Throwable $e) {
+                // ignore manifest parse errors — @vite will still be called below
+            }
+        }
+    @endphp
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -204,6 +220,25 @@
     </footer>
 
     <!-- Layout scripts are bundled in resources/js/layout-app.js and imported via Vite -->
+    <!-- Fallback: ensure loading overlay is removed if JS bundle fails to execute on the server -->
+    <script>
+        (function() {
+            try {
+                const spinner = document.getElementById('loading-spinner');
+                if (!spinner) return;
+                // Remove spinner after 4s as a safety net if app JS doesn't run
+                setTimeout(() => {
+                    spinner.style.transition = 'opacity 0.3s ease';
+                    spinner.style.opacity = '0';
+                    setTimeout(() => { if (spinner.parentNode) spinner.parentNode.removeChild(spinner); }, 300);
+                }, 4000);
+            } catch (e) {
+                // fail silently
+                console && console.error && console.error('Spinner fallback error', e);
+            }
+        })();
+    </script>
+
     @stack('scripts')
 </body>
 </html>

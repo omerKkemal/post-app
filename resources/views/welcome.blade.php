@@ -50,7 +50,7 @@
                     <div class="relative h-96 md:h-screen max-h-[80vh]">
                         @foreach([1,2,3,4,5,6,7,8,9,10,11,12,13] as $index)
                         <div class="absolute inset-0 w-full h-full slideshow-image {{ $index === 1 ? 'opacity-100' : 'opacity-0' }}">
-                            <img src="{{ asset('images/harar' . $index . '.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
+                            <img width="100%" src="{{ asset('images/harar' . $index . '.jpg') }}" alt="Harar City" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black bg-opacity-50"></div>
                         </div>
                         @endforeach
