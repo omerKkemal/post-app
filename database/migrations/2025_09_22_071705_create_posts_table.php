@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('title');
-            $table->string('description');
-            $table->string('media_url')->nullable();
+            $table->text('description');
+            $table->text('media_url')->nullable();
             $table->string('media')->nullable();
             $table->string('category')->nullable();
             $table->string('Youtube_link')->nullable();

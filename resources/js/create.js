@@ -46,44 +46,61 @@ document.addEventListener('DOMContentLoaded', function () {
     const mediaSelectButton = document.getElementById('mediaSelectButton');
     const previewContainer = document.getElementById('previewContainer');
 
-    if (mediaSelectButton && mediaInput) mediaSelectButton.addEventListener('click', () => mediaInput.click());
+    if (mediaSelectButton && mediaInput) mediaSelectButton.addEventListener('click', (e) => { e.preventDefault(); mediaInput.click(); });
 
     if (mediaDropZone) {
         mediaDropZone.addEventListener('dragover', (e) => { e.preventDefault(); mediaDropZone.classList.add('border-blue-500', 'bg-blue-50'); });
         mediaDropZone.addEventListener('dragleave', (e) => { e.preventDefault(); mediaDropZone.classList.remove('border-blue-500', 'bg-blue-50'); });
-        mediaDropZone.addEventListener('drop', (e) => {
-            e.preventDefault(); mediaDropZone.classList.remove('border-blue-500', 'bg-blue-50');
-            const file = e.dataTransfer.files && e.dataTransfer.files[0]; if (file) processFile(file);
+        // Note: Drag and drop is disabled as input.files is read-only
+    }
+
+    if (mediaInput) mediaInput.addEventListener('change', function(event) { const files = event.target.files; if (files && files.length > 0) processFiles(files); });
+
+    function processFiles(files) {
+        // Clear previous previews if any, but since multiple, append
+        Array.from(files).forEach(file => {
+            const maxSize = 100 * 1024 * 1024; // 100MB
+            if (!validTypes.includes(file.type)) { showNotification('Please select a valid image or video file', 'error'); return; }
+            if (file.size > maxSize) { showNotification('File size must be less than 100MB', 'error'); return; }
+            const url = URL.createObjectURL(file);
+            const card = document.createElement('div'); card.className = 'relative bg-gray-50 rounded-lg p-4 border border-gray-200';
+            card.innerHTML = `
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center space-x-4 flex-1">
+                        <div class="flex-shrink-0 w-20 h-20 bg-white rounded-lg overflow-hidden">
+                            ${file.type.startsWith('image/') ? `<img src="${url}" alt="${file.name}" class="w-full h-full object-cover">` : `<video src="${url}" class="w-full h-full object-cover" preload="metadata"></video>`}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-sm font-medium text-gray-900 truncate">${file.name}</h4>
+                            <p class="text-sm text-gray-500">${formatFileSize(file.size)}</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mt-2"><div class="bg-green-600 h-2 rounded-full transition-all duration-300 upload-progress" style="width: 0%"></div></div>
+                        </div>
+                    </div>
+                    <button type="button" class="remove-media flex-shrink-0 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors" title="Remove file" data-file-name="${file.name}"><i class="fas fa-times"></i></button>
+                </div>`;
+            previewContainer.appendChild(card);
+            simulateUploadProgress(card);
+            const removeButton = card.querySelector('.remove-media');
+            removeButton.addEventListener('click', function() {
+                URL.revokeObjectURL(url);
+                previewContainer.removeChild(card);
+                removeFileFromInput(file.name);
+            });
         });
     }
 
-    if (mediaInput) mediaInput.addEventListener('change', function(event) { const file = event.target.files && event.target.files[0]; if (file) processFile(file); });
-
-    function processFile(file) {
-        const maxSize = 10 * 1024 * 1024; const validTypes = ['image/jpeg','image/png','image/gif','video/mp4','video/webm'];
-        if (!validTypes.includes(file.type)) { showNotification('Please select a valid image or video file', 'error'); return; }
-        if (file.size > maxSize) { showNotification('File size must be less than 10MB', 'error'); return; }
-        previewContainer.innerHTML = '';
-        const url = URL.createObjectURL(file);
-        const card = document.createElement('div'); card.className = 'relative bg-gray-50 rounded-lg p-4 border border-gray-200';
-        card.innerHTML = `
-            <div class="flex items-start justify-between">
-                <div class="flex items-center space-x-4 flex-1">
-                    <div class="flex-shrink-0 w-20 h-20 bg-white rounded-lg overflow-hidden">
-                        ${file.type.startsWith('image/') ? `<img src="${url}" alt="${file.name}" class="w-full h-full object-cover">` : `<video src="${url}" class="w-full h-full object-cover" preload="metadata"></video>`}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-medium text-gray-900 truncate">${file.name}</h4>
-                        <p class="text-sm text-gray-500">${formatFileSize(file.size)}</p>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-2"><div class="bg-green-600 h-2 rounded-full transition-all duration-300 upload-progress" style="width: 0%"></div></div>
-                    </div>
-                </div>
-                <button type="button" class="remove-media flex-shrink-0 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors" title="Remove file"><i class="fas fa-times"></i></button>
-            </div>`;
-        previewContainer.appendChild(card);
-        simulateUploadProgress(card);
-        const removeButton = card.querySelector('.remove-media');
-        removeButton.addEventListener('click', function() { URL.revokeObjectURL(url); previewContainer.removeChild(card); mediaInput.value = ''; });
+    function removeFileFromInput(fileName) {
+        const dt = new DataTransfer();
+        const files = Array.from(mediaInput.files);
+        files.forEach(file => {
+            if (file.name !== fileName) {
+                dt.items.add(file);
+            }
+        });
+        mediaInput.files = dt.files;
+        if (mediaInput.files.length === 0) {
+            previewContainer.innerHTML = '';
+        }
     }
 
     function simulateUploadProgress(card) { const progressBar = card.querySelector('.upload-progress'); let progress = 0; const interval = setInterval(() => { progress += Math.random() * 15; if (progress >= 100) { progress = 100; clearInterval(interval); } progressBar.style.width = progress + '%'; }, 100); }

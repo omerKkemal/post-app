@@ -13,6 +13,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CommunityMessage;
+use App\Models\subscription;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -33,7 +36,7 @@ class PostController extends Controller
             'category' => 'required',
             'language' => 'required|string',
             'media' => 'nullable|array',
-            'media.*' => 'nullable|file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:102400', // 100MB per file
+            'media.*' => 'file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:102400', // 100MB per file
             'Youtube_link' => 'nullable|url', // optional
         ]);
         try{
@@ -52,12 +55,28 @@ class PostController extends Controller
                 }
             }
             unset($data['media']); // Remove the file array from data
-            auth()->user()->posts()->create(array_merge($data, ['media_url' => !empty($mediaPaths) ? implode(',', $mediaPaths) : null]));
+            $post = auth()->user()->posts()->create(array_merge($data, ['media_url' => !empty($mediaPaths) ? implode(',', $mediaPaths) : null]));
+
+            \Log::info('Post created with category: ' . $data['category']);
+
+            // Send email if category is community_message
+            if ($data['category'] === 'message') {
+                $subscribers = subscription::all();
+                \Log::info('Sending community message emails to ' . $subscribers->count() . ' subscribers');
+                foreach ($subscribers as $subscriber) {
+                    \Log::info('Sending email to: ' . $subscriber->email);
+                    try {
+                        Mail::to($subscriber->email)->send(new CommunityMessage($post));
+                        \Log::info('Email sent successfully to: ' . $subscriber->email);
+                    } catch (\Exception $e) {
+                        \Log::error('Failed to send email to ' . $subscriber->email . ': ' . $e->getMessage());
+                    }
+                }
+            }
 
             return redirect('/posts/create')->with('success', 'Post created successfully!');
 
 
-            dd($request->all());
         }catch(\Exception $e){
             \Log::error('Post create error: ' . $e->getMessage());
             return back()->withErrors(['error' => 'An error occurred while saving the post. Please try again.']);

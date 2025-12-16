@@ -12,7 +12,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/nav.js',
                 'resources/js/view.js',
-                'resources/js/postview.js'
+                'resources/js/postview.js',
+                'resources/js/create.js'
             ],
             refresh: true,
         }),
