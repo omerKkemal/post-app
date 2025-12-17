@@ -1,4 +1,46 @@
 @vite(['resources/css/view.css', 'resources/js/app.js'])
+<style>
+    /* Slideshow styles */
+    .slideshow-container {
+        position: relative;
+        height: 500px;
+    }
+
+    .slideshow-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slideshow-slide.active {
+        opacity: 1;
+        z-index: 10;
+    }
+
+    .slideshow-slide img,
+    .slideshow-slide video {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .slideshow-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slideshow-dot.active {
+        background-color: #3b82f6 !important;
+    }
+</style>
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col space-y-2">
@@ -118,16 +160,77 @@
 
                     @if ($post->media_url)
                         @php
-                            $extension = pathinfo($post->media_url, PATHINFO_EXTENSION);
+                            $mediaFiles = explode(',', $post->media_url);
+                            $hasMultipleFiles = count($mediaFiles) > 1;
                         @endphp
 
-                        @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
-                            <img src="{{ Storage::url($post->media_url) }}" alt="Post Image" class="rounded-lg mt-4 max-w-full h-auto">
-                        @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg']))
-                            <video controls class="rounded-lg mt-4 max-w-full h-auto">
-                                <source src="{{ Storage::url($post->media_url) }}" type="video/{{ $extension }}">
-                                Your browser does not support the video tag.
-                            </video>
+                        @if ($hasMultipleFiles)
+                            <!-- Slideshow for multiple files -->
+                            <div class="mt-6 relative slideshow-wrapper">
+                                <div class="slideshow-container rounded-lg overflow-hidden bg-black relative h-[500px]">
+                                    @foreach ($mediaFiles as $index => $mediaFile)
+                                        @php
+                                            $extension = pathinfo($mediaFile, PATHINFO_EXTENSION);
+                                        @endphp
+
+                                        <div class="slideshow-slide absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 flex items-center justify-center @if($index === 0) active opacity-100 z-10 @endif" data-slide-index="{{ $index }}">
+                                            @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
+                                                <img src="{{ Storage::url($mediaFile) }}"
+                                                     alt="Post Image {{ $index + 1 }}"
+                                                     class="max-w-full max-h-full object-contain">
+                                            @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg']))
+                                                <video controls class="max-w-full max-h-full">
+                                                    <source src="{{ Storage::url($mediaFile) }}" type="video/{{ $extension }}">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @endif
+                                        </div>
+                                    @endforeach
+
+                                    <!-- Navigation arrows -->
+                                    @if (count($mediaFiles) > 1)
+                                        <button class="slideshow-nav slideshow-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-20">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                            </svg>
+                                        </button>
+                                        <button class="slideshow-nav slideshow-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all z-20">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </button>
+                                    @endif
+
+                                    <!-- Dots indicator -->
+                                    @if (count($mediaFiles) > 1)
+                                        <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 z-20">
+                                            @foreach ($mediaFiles as $index => $mediaFile)
+                                                <button class="slideshow-dot w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all @if($index === 0) active bg-opacity-100 @endif" data-slide-index="{{ $index }}"></button>
+                                            @endforeach
+                                        </div>
+
+                                        <!-- Slide counter -->
+                                        <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm z-20">
+                                            <span class="slideshow-counter">1</span> / {{ count($mediaFiles) }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <!-- Single file display -->
+                            @php
+                                $mediaFile = trim($mediaFiles[0]);
+                                $extension = pathinfo($mediaFile, PATHINFO_EXTENSION);
+                            @endphp
+
+                            @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif']))
+                                <img src="{{ Storage::url($mediaFile) }}" alt="Post Image" class="rounded-lg mt-4 max-w-full h-auto">
+                            @elseif (in_array(strtolower($extension), ['mp4', 'webm', 'ogg']))
+                                <video controls class="rounded-lg mt-4 max-w-full h-auto">
+                                    <source src="{{ Storage::url($mediaFile) }}" type="video/{{ $extension }}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @endif
                         @endif
                     @endif
 
@@ -325,6 +428,115 @@
                     });
                 });
             });
+
+            // Initialize slideshows
+            initializeSlideshows();
         });
+
+        // Initialize slideshows
+        function initializeSlideshows() {
+            document.querySelectorAll('.slideshow-container').forEach(container => {
+                const slides = container.querySelectorAll('.slideshow-slide');
+                const prevBtn = container.querySelector('.slideshow-prev');
+                const nextBtn = container.querySelector('.slideshow-next');
+                const dots = container.querySelectorAll('.slideshow-dot');
+                const counter = container.querySelector('.slideshow-counter');
+
+                let currentSlide = 0;
+                let slideInterval = null;
+
+                function showSlide(index) {
+                    // Hide all slides
+                    slides.forEach(slide => {
+                        slide.classList.remove('active');
+                        slide.style.zIndex = '0';
+                    });
+
+                    // Remove active class from all dots
+                    dots.forEach(dot => {
+                        dot.classList.remove('active');
+                    });
+
+                    // Show current slide
+                    slides[index].classList.add('active');
+                    slides[index].style.zIndex = '10';
+
+                    if (dots.length > 0) {
+                        dots[index].classList.add('active');
+                    }
+
+                    // Update counter
+                    if (counter) {
+                        counter.textContent = index + 1;
+                    }
+
+                    currentSlide = index;
+                }
+
+                function nextSlide() {
+                    let nextIndex = currentSlide + 1;
+                    if (nextIndex >= slides.length) {
+                        nextIndex = 0;
+                    }
+                    showSlide(nextIndex);
+                }
+
+                function prevSlide() {
+                    let prevIndex = currentSlide - 1;
+                    if (prevIndex < 0) {
+                        prevIndex = slides.length - 1;
+                    }
+                    showSlide(prevIndex);
+                }
+
+                // Event listeners for navigation
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', nextSlide);
+                }
+
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', prevSlide);
+                }
+
+                // Event listeners for dots
+                dots.forEach(dot => {
+                    dot.addEventListener('click', function() {
+                        const slideIndex = parseInt(this.getAttribute('data-slide-index'));
+                        showSlide(slideIndex);
+                    });
+                });
+
+                // Auto-advance slides (optional)
+                if (slides.length > 1) {
+                    slideInterval = setInterval(nextSlide, 5000);
+
+                    // Pause auto-advance on hover
+                    container.addEventListener('mouseenter', () => {
+                        if (slideInterval) {
+                            clearInterval(slideInterval);
+                        }
+                    });
+
+                    container.addEventListener('mouseleave', () => {
+                        if (slideInterval) {
+                            clearInterval(slideInterval);
+                        }
+                        slideInterval = setInterval(nextSlide, 5000);
+                    });
+                }
+
+                // Keyboard navigation
+                container.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') prevSlide();
+                    if (e.key === 'ArrowRight') nextSlide();
+                });
+
+                // Focus for accessibility
+                container.setAttribute('tabindex', '0');
+
+                // Initialize first slide
+                showSlide(0);
+            });
+        }
     </script>
 </x-app-layout>

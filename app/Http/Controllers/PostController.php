@@ -172,9 +172,12 @@ class PostController extends Controller
         try {
             $post = Post::findOrFail($id);
 
-            // Delete associated media file if exists
+            // Delete associated media files if exists
             if($post->media_url){
-                Storage::disk('public')->delete($post->media_url);
+                $files = explode(',', $post->media_url);
+                foreach($files as $file){
+                    Storage::disk('public')->delete(trim($file));
+                }
             }
             $post->delete();
 
