@@ -52,22 +52,22 @@
                                             or use the button below
                                         </p>
 
-                                        <!-- Use label to ensure file dialog works without JS -->
-                                        <label for="media"
-                                               id="mediaSelectButton"
-                                               role="button"
-                                               tabindex="0"
-                                               class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 cursor-pointer">
-                                            <i class="fas fa-plus-circle mr-2"></i>
-                                            Choose File
-                                        </label>
-
                                         <p class="text-xs text-gray-400 mt-3">
                                             Supports: JPG, PNG (Max 10MB)
                                         </p>
                                     </div>
 
                                     <input class="sr-only" type="file" name="media" id="media" accept="image/*">
+                                </div>
+
+                                <!-- Button placed outside the dropzone to prevent event conflicts -->
+                                <div class="mt-4 text-center">
+                                    <button type="button"
+                                           id="mediaSelectButton"
+                                           class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 cursor-pointer">
+                                        <i class="fas fa-plus-circle mr-2"></i>
+                                        Choose File
+                                    </button>
                                 </div>
 
                                 <!-- File info display -->
@@ -152,14 +152,13 @@
 
                             if (mediaSelectButton && mediaInput) {
                                 mediaSelectButton.addEventListener('click', function (e) {
-                                    try { e.preventDefault(); e.stopPropagation(); } catch (err) {}
-                                    try { mediaInput.click(); } catch (err) {}
-                                });
-                                mediaSelectButton.addEventListener('keydown', function (e) {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        mediaInput.click();
-                                    }
+                                    e.stopPropagation();
+                                    mediaSelectButton.disabled = true;
+                                    mediaInput.click();
+                                    // Re-enable after a short delay
+                                    setTimeout(() => {
+                                        mediaSelectButton.disabled = false;
+                                    }, 100);
                                 });
                             }
 

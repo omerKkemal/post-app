@@ -134,7 +134,7 @@
                             </p>
 
                             <div id="mediaDropZone"
-                                 class="group relative flex flex-col items-center justify-center gap-4 px-6 py-12 border-2 border-dashed border-gray-300 rounded-xl bg-white hover:border-blue-500 transition-all duration-300 cursor-pointer">
+                                 class="group relative flex flex-col items-center justify-center gap-4 px-6 py-12 border-2 border-dashed border-gray-300 rounded-xl bg-white hover:border-blue-500 transition-all duration-300">
 
                                 <div class="text-center">
                                     <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 group-hover:text-blue-500 mb-3 transition-colors"></i>
@@ -145,13 +145,6 @@
                                         or click to browse your files
                                     </p>
 
-                                    <button type="button"
-                                            id="mediaSelectButton"
-                                            class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 transform hover:scale-105">
-                                        <i class="fas fa-plus-circle mr-2"></i>
-                                        Choose Files
-                                    </button>
-
                                     <p class="text-xs text-gray-400 mt-3">
                                         Supports: JPG, PNG, GIF, MP4, WebM (Max 100MB each, up to 10 files)
                                     </p>
@@ -159,6 +152,16 @@
                                 </div>
 
                                 <input class="sr-only" type="file" name="media[]" id="media" accept="image/*,video/*" multiple>
+                            </div>
+
+                            <!-- Button placed outside the dropzone to prevent event conflicts -->
+                            <div class="mt-4 text-center">
+                                <button type="button"
+                                        id="mediaSelectButton"
+                                        class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 transform hover:scale-105">
+                                    <i class="fas fa-plus-circle mr-2"></i>
+                                    Choose Files
+                                </button>
                             </div>
 
                             <x-input-error :messages="$errors->get('media')" class="mt-2" />
@@ -269,9 +272,16 @@
         let selectedFiles = [];
         let filePreviews = [];
 
-        // Open file dialog when clicking the drop zone or button
-        mediaDropZone.addEventListener('click', () => mediaInput.click());
-        mediaSelectButton.addEventListener('click', () => mediaInput.click());
+        // Only button opens file dialog - dropzone is for drag & drop only
+        mediaSelectButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mediaSelectButton.disabled = true;
+            mediaInput.click();
+            // Re-enable after a short delay
+            setTimeout(() => {
+                mediaSelectButton.disabled = false;
+            }, 100);
+        });
 
         // Handle file selection
         mediaInput.addEventListener('change', handleFileSelect);
@@ -495,5 +505,5 @@
         object-fit: cover;
     }
     </style>
-    @vite('resources/js/create.js')
+
 </x-app-layout>
