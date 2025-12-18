@@ -113,6 +113,9 @@ Route::get('/dashboard', function () {
 // Subscription Routes
 Route::post('/subscribe', [App\Http\Controllers\SubScription::class, 'subscribe'])->name('subscribe');
 
+// Public Library Route
+Route::get('/public-library', [App\Http\Controllers\LibController::class, 'publicIndex'])->name('public.library');
+
 // Post Routes
 Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
 
@@ -142,5 +145,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/congress/store', [App\Http\Controllers\CongressController::class, 'store'])->name('congress.store');
     Route::put('/congress/update/{id}', [App\Http\Controllers\CongressController::class, 'update'])->name('congress.update');
     Route::delete('/congress/destroy/{id}', [App\Http\Controllers\CongressController::class, 'destroy'])->name('congress.destroy');
+
+    // Library Routes
+    Route::get('/library', [App\Http\Controllers\LibController::class, 'index'])->name('library.index');
+    Route::post('/library/store', [App\Http\Controllers\LibController::class, 'store'])->name('library.store');
+    Route::delete('/library/{id}', [App\Http\Controllers\LibController::class, 'destroy'])->name('library.destroy');
+    Route::get('/library/download/{id}', [App\Http\Controllers\LibController::class, 'download'])->name('library.download');
 });
 require __DIR__.'/auth.php';

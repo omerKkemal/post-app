@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Library extends Model
 {
     protected $guarded = [];
+
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

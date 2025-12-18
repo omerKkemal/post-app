@@ -67,6 +67,12 @@
                         <span>Category Management</span>
                     </a>
 
+                    <a href="{{ route('library.index') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'library.index' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-folder text-sm w-5"></i>
+                        <span>Library</span>
+                    </a>
+
                     <!-- View Post Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
@@ -101,6 +107,12 @@
                        :class="currentRoute === 'contact' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-envelope text-sm w-5"></i>
                         <span>Contact</span>
+                    </a>
+
+                    <a href="{{ route('public.library') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                       :class="currentRoute === 'public.library' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
+                        <i class="fas fa-folder text-sm w-5"></i>
+                        <span>Library</span>
                     </a>
 
                     <!-- What's New Dropdown for Public Users -->

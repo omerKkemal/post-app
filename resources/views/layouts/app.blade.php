@@ -220,14 +220,11 @@
         </div>
     </footer>
 
-    <!-- Layout scripts are bundled in resources/js/layout-app.js and imported via Vite -->
-    <!-- Fallback: ensure loading overlay is removed if JS bundle fails to execute on the server -->
     <script>
         (function() {
             try {
                 const spinner = document.getElementById('loading-spinner');
                 if (!spinner) return;
-                // Remove spinner after 4s as a safety net if app JS doesn't run
                 setTimeout(() => {
                     spinner.style.transition = 'opacity 0.3s ease';
                     spinner.style.opacity = '0';
