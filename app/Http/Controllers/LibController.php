@@ -19,7 +19,7 @@ class LibController extends Controller
     public function publicIndex()
     {
         $libraries = Library::latest()->get();
-        return view('public.lib', compact('libraries'));
+        return view('public_lib', compact('libraries'));
     }
 
     // Store new library file
