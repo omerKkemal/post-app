@@ -103,12 +103,6 @@
                         <span>About</span>
                     </a>
 
-                    <a href="{{ url('/contact') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
-                       :class="currentRoute === 'contact' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
-                        <i class="fas fa-envelope text-sm w-5"></i>
-                        <span>Contact</span>
-                    </a>
-
                     <a href="{{ route('public.library') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'public.library' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-folder text-sm w-5"></i>
@@ -338,11 +332,10 @@
                     <i class="fas fa-info-circle w-6 mr-3 text-center"></i>
                     About
                 </a>
-
-                <a href="{{ url('/contact') }}"
-                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
-                    <i class="fas fa-envelope w-6 mr-3 text-center"></i>
-                    Contact
+                <a href="{{ url('/library') }}"
+                     class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                      <i class="fas fa-folder w-6 mr-3 text-center"></i>
+                      Library
                 </a>
 
                 <!-- Mobile What's New Links -->
