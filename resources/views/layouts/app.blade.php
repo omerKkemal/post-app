@@ -111,9 +111,15 @@
                     @endif
                 </div>
 
-                <!-- Main Slot Content -->
+
                 <div id="main-content">
-                    {{ $slot }}
+                    {{-- First try to use @yield for blade templates extending this layout --}}
+                    @hasSection('content')
+                        @yield('content')
+                    @else
+                        {{-- Fallback to $slot for blade components --}}
+                        {{ $slot ?? '' }}
+                    @endif
                 </div>
             </div>
         </main>

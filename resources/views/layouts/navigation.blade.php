@@ -164,9 +164,6 @@
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
                                         {{ Auth::user()->name }}
                                     </div>
-                                    <div class="text-xs text-gray-500 dark:text-white">
-                                        {{ Auth::user()->email }}
-                                    </div>
                                 </div>
                                 <i class="fas fa-chevron-down text-gray-400 text-xs transition-transform duration-200 group-hover:text-gray-600 dark:text-white dark:group-hover:text-white"
                                    :class="{ 'rotate-180': open }"></i>

@@ -12,7 +12,8 @@ class LibController extends Controller
     public function index()
     {
         $libraries = auth()->user()->library()->latest()->get();
-        return view('post.lib', compact('libraries'));
+        $categories = \DB::table('catagories')->get();
+        return view('post.lib', compact('libraries', 'categories'));
     }
 
     // Display public library
@@ -68,15 +69,54 @@ class LibController extends Controller
         }
     }
 
+
+    public function view($id)
+    {
+        $library = Library::findOrFail($id);
+        $filePath = storage_path('app/public/' . $library->location);
+
+        // Check if file exists
+        if (!file_exists($filePath)) {
+            abort(404);
+        }
+
+        // Return the file with appropriate headers
+        return response()->file($filePath, [
+            'Content-Type' => mime_content_type($filePath),
+            'Content-Disposition' => 'inline; filename="' . $library->name . '"'
+        ]);
+    }
+
+    public function previewText($id)
+    {
+        $library = Library::findOrFail($id);
+        $filePath = storage_path('app/public/' . $library->location);
+
+        // Check if file exists and is a text file
+        if (!file_exists($filePath) || !in_array(pathinfo($filePath, PATHINFO_EXTENSION), ['txt'])) {
+            abort(404);
+        }
+
+        // Read and return text content
+        $content = file_get_contents($filePath);
+
+        // Limit content for preview
+        $maxLength = 100000;
+        if (strlen($content) > $maxLength) {
+            $content = substr($content, 0, $maxLength) . "\n\n... (preview truncated)";
+        }
+
+        return response($content, 200, [
+            'Content-Type' => 'text/plain; charset=utf-8'
+        ]);
+    }
+
     // Download file
     public function download($id)
     {
         $library = Library::findOrFail($id);
+        $filePath = storage_path('app/public/' . $library->location);
 
-        if (!$library->location || !Storage::disk('public')->exists($library->location)) {
-            abort(404, 'File not found');
-        }
-
-        return Storage::disk('public')->download($library->location, $library->name);
+        return response()->download($filePath, "{$library->name}." . pathinfo($filePath, PATHINFO_EXTENSION));
     }
 }
