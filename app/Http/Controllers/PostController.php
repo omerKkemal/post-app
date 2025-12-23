@@ -83,18 +83,27 @@ class PostController extends Controller
         }
     }
 
-    public function post($language = 'har'){
+    public function post(){
         // Get first 10 posts
-        $posts = Post::where('language', $language)
+        $posts_harari = Post::where('language', 'har')
                     ->orderBy('created_at', 'desc')
                     ->take(10)
                     ->get();
+        $posts_english = Post::where('language', 'eng')
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+        $posts_amharic = Post::where('language', 'am')
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+
         $categories = \DB::table('catagories')->get();
 
-        return view('post.view', compact('posts', 'language', 'categories'));
+        return view('post.view', compact('posts_harari', 'posts_english', 'posts_amharic', 'categories'));
     }
 
-    public function loadMorePosts($clickCount, $language = 'har')
+    public function loadMorePosts($clickCount)
     {
         try {
             $perPage = 10;
@@ -114,24 +123,70 @@ class PostController extends Controller
             ]);
 
             // Fetch paginated posts (ordered by latest)
-            $posts = Post::where('language', $language)
+            $posts_harari = Post::where('language', 'har')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
-
-            $hasMore = $posts->hasMorePages();
-
+            $posts_english = Post::where('language', 'eng')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+            $posts_amharic = Post::where('language', 'am')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage, ['*'], 'page', $page);
+            $hasMore_harari = $posts_harari->hasMorePages();
+            $hasMore_english = $posts_english->hasMorePages();
+            $hasMore_amharic = $posts_amharic->hasMorePages();
             \Log::info("Pagination Result", [
-                'currentPage' => $posts->currentPage(),
-                'postsCount' => $posts->count(),
-                'hasMore' => $hasMore,
-                'totalPosts' => $posts->total(),
-                'lastPage' => $posts->lastPage(),
-                'firstItem' => $posts->firstItem(),
-                'lastItem' => $posts->lastItem()
+                'currentPage harari' => $posts_harari->currentPage(),
+                'currentPage english' => $posts_english->currentPage(),
+                'currentPage amharic' => $posts_amharic->currentPage(),
+                'postsCount harari' => $posts_harari->count(),
+                'postsCount english' => $posts_english->count(),
+                'postsCount amharic' => $posts_amharic->count(),
+                'hasMore harari' => $hasMore_harari,
+                'hasMore english' => $hasMore_english,
+                'hasMore amharic' => $hasMore_amharic,
+                'totalPosts harari' => $posts_harari->total(),
+                'totalPosts english' => $posts_english->total(),
+                'totalPosts amharic' => $posts_amharic->total(),
+                'lastPage harari' => $posts_harari->lastPage(),
+                'lastPage english' => $posts_english->lastPage(),
+                'lastPage amharic' => $posts_amharic->lastPage(),
+                'firstItem harari' => $posts_harari->firstItem(),
+                'firstItem english' => $posts_english->firstItem(),
+                'firstItem amharic' => $posts_amharic->firstItem(),
+                'lastItem harari' => $posts_harari->lastItem(),
+                'lastItem english' => $posts_english->lastItem(),
+                'lastItem amharic' => $posts_amharic->lastItem(),
             ]);
 
             // Transform post data for JSON response
-            $transformedPosts = $posts->map(function ($post) {
+            $transformedPosts_harari = $posts_harari->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'description' => $post->description,
+                    'category' => $post->category,
+                    'media_url' => $post->media_url,
+                    'Youtube_link' => $post->Youtube_link, // Make sure this is included
+                    'created_at' => $post->created_at->toISOString(),
+                    'updated_at' => $post->updated_at->toISOString(),
+                ];
+            });
+
+            $transformedPosts_english = $posts_english->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'description' => $post->description,
+                    'category' => $post->category,
+                    'media_url' => $post->media_url,
+                    'Youtube_link' => $post->Youtube_link, // Make sure this is included
+                    'created_at' => $post->created_at->toISOString(),
+                    'updated_at' => $post->updated_at->toISOString(),
+                ];
+            });
+
+            $transformedPosts_amharic = $posts_amharic->map(function ($post) {
                 return [
                     'id' => $post->id,
                     'title' => $post->title,
@@ -146,11 +201,21 @@ class PostController extends Controller
 
             return response()->json([
                 'success' => true,
-                'posts' => $transformedPosts,
-                'hasMore' => $hasMore,
-                'currentPage' => $posts->currentPage(),
-                'totalPosts' => $posts->total(),
-                'postsCount' => $posts->count(),
+                'posts_harari' => $transformedPosts_harari,
+                'posts_english' => $transformedPosts_english,
+                'posts_amharic' => $transformedPosts_amharic,
+                'hasMore harari' => $hasMore_harari,
+                'hasMore english' => $hasMore_english,
+                'hasMore amharic' => $hasMore_amharic,
+                'currentPage harari' => $posts_harari->currentPage(),
+                'currentPage english' => $posts_english->currentPage(),
+                'currentPage amharic' => $posts_amharic->currentPage(),
+                'totalPosts harari' => $posts_harari->total(),
+                'totalPosts english' => $posts_english->total(),
+                'totalPosts amharic' => $posts_amharic->total(),
+                'postsCount harari' => $posts_harari->count(),
+                'postsCount english' => $posts_english->count(),
+                'postsCount amharic' => $posts_amharic->count(),
                 'clickCount' => $clickCount
             ]);
 

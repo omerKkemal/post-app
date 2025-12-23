@@ -25,26 +25,33 @@ Route::get('/', function () {
     }
 });
 Route::get('/about', function () {
-    return view('about');
+    $members = \DB::table('congress_leaders')->get();
+    return view('about', compact('members'));
 })->name('about');
 
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/p/{language}', function ($language = 'har') {
-    // Check if the language parameter is actually a valid language, not 'create'
-    if (!in_array($language, ['har', 'eng'])) { // Add your valid languages
-        abort(404);
-    }
+Route::get('/p', function () {
 
-    $posts = Post::where('language', $language)
-                 ->orderBy('created_at', 'desc')
-                 ->take(10)
-                 ->get();
-    $catagories = \DB::table('catagories')->get();
+        $posts_harari = Post::where('language', 'har')
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+        $posts_english = Post::where('language', 'eng')
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
+        $posts_amharic = Post::where('language', 'am')
+                    ->orderBy('created_at', 'desc')
+                    ->take(10)
+                    ->get();
 
-    return view('postView', compact('posts', 'language', 'catagories'));
+        $categories = \DB::table('catagories')->get();
+
+
+    return view('postView', compact('posts_harari','posts_english','posts_amharic', 'categories'));
 })->name('postView');
 
 
@@ -119,6 +126,8 @@ Route::get('/public-library', [App\Http\Controllers\LibController::class, 'publi
 // Post Routes
 Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
 
+Route::get('/download/{id}', [App\Http\Controllers\LibController::class, 'download'])->name('library.download');
+
 // Profile and Post Management Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -133,7 +142,7 @@ Route::middleware('auth')->group(function () {
     // Route::resource('posts', PostController::class);
 
     // This should come AFTER specific routes
-    Route::get('/posts/{language}', [PostController::class, 'post'])->name('post.view');
+    Route::get('/posts', [PostController::class, 'post'])->name('post.view');
     // Category Routes
     Route::get('/category', [App\Http\Controllers\CatagoryController::class, 'view'])->name('post.category');
     Route::post('/category/store', [App\Http\Controllers\CatagoryController::class, 'store'])->name('category.store');
@@ -152,6 +161,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/library/view/{id}', [App\Http\Controllers\LibController::class, 'view'])->name('library.view');
     Route::get('/library/preview-text/{id}', [App\Http\Controllers\LibController::class, 'previewText'])->name('library.preview-text');
     Route::delete('/library/{id}', [App\Http\Controllers\LibController::class, 'destroy'])->name('library.destroy');
-    Route::get('/download/{id}', [App\Http\Controllers\LibController::class, 'download'])->name('library.download');
 });
 require __DIR__.'/auth.php';

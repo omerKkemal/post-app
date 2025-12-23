@@ -17,6 +17,8 @@ class CatagoryController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:catagories,name',
+            'am' => 'required|string|max:255|unique:catagories,am',
+            'har' => 'required|string|max:255|unique:catagories,har',
             'description' => 'nullable|string|max:500',
         ]);
 

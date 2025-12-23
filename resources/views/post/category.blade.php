@@ -35,7 +35,7 @@
                         <form method="POST" action="{{ route('category.store') }}">
                             @csrf
                             <div class="mb-4">
-                                <label for="name" class="block text-sm font-medium text-gray-700">Category Name</label>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Category Name (English)</label>
                                 <input type="text" name="name" id="name" required
                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                        placeholder="Enter category name">
@@ -43,9 +43,26 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div class="mb-4">
-                                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                                <label for="am" class="block text-sm font-medium text-gray-700">Category Name (Amharic)</label>
+                                <input type="text" name="am" id="am" required
+                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter category in Amharic">
+                                @error('am')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
+                                <label for="har" class="block text-sm font-medium text-gray-700">Category Name (Harari)</label>
+                                <input type="text" name="har" id="har" required
+                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Enter category in Harari">
+                                @error('har')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
+                                <label for="description" class="block text-sm font-medium text-gray-700">Description (English)</label>
                                 <textarea name="description" id="description" rows="3"
                                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                           placeholder="Enter category description (optional)"></textarea>
@@ -76,9 +93,17 @@
                                         <div class="display-mode flex items-center justify-between w-full">
                                             <div>
                                                 <span class="text-gray-800 font-medium">{{ $category->name }}</span>
-                                                @if($category->description)
-                                                    <p class="text-sm text-gray-600 mt-1">{{ $category->description }}</p>
-                                                @endif
+                                                <div class="text-sm text-gray-600 mt-1 space-y-1">
+                                                    @if($category->am)
+                                                        <div><span class="font-medium">Amharic:</span> {{ $category->am }}</div>
+                                                    @endif
+                                                    @if($category->har)
+                                                        <div><span class="font-medium">Harari:</span> {{ $category->har }}</div>
+                                                    @endif
+                                                    @if($category->description)
+                                                        <div><span class="font-medium">Description:</span> {{ $category->description }}</div>
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="flex space-x-2">
                                                 <button type="button" onclick="enableEditMode({{ $category->id }})"
@@ -105,7 +130,13 @@
                                                 @method('PUT')
                                                 <input type="text" name="name" value="{{ $category->name }}" required
                                                        class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                       placeholder="Category name">
+                                                       placeholder="Category name (English)">
+                                                <input type="text" name="am" value="{{ $category->am }}" required
+                                                       class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                       placeholder="Category name (Amharic)">
+                                                <input type="text" name="har" value="{{ $category->har }}" required
+                                                       class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                                       placeholder="Category name (Harari)">
                                                 <textarea name="description" rows="2"
                                                           class="border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                                           placeholder="Category description (optional)">{{ $category->description }}</textarea>
@@ -180,4 +211,4 @@
         }
     });
 </script>
-@endpush
+@endpush>

@@ -18,6 +18,37 @@
         </div>
     </x-slot>
 
+    <style>
+        /* Chart container styles */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Ensure canvas elements are responsive */
+        .chart-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* No data message */
+        .chart-no-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: #6b7280;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .chart-no-data svg {
+            margin-bottom: 1rem;
+        }
+    </style>
+
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Welcome Card -->
@@ -118,12 +149,18 @@
                             </svg>
                             Category Distribution
                         </h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
+                        <div class="chart-container">
                             <canvas id="categoryChart"></canvas>
+                            <div id="categoryNoData" class="chart-no-data" style="display: none;">
+                                <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                <p>No category data available</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- subscribtion over time chart  -->
+                <!-- subscription over time chart  -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -132,8 +169,14 @@
                             </svg>
                             Subscriptions Over Time
                         </h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
+                        <div class="chart-container">
                             <canvas id="subscriptionChart"></canvas>
+                            <div id="subscriptionNoData" class="chart-no-data" style="display: none;">
+                                <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-18 0v1.5a2.5 2.5 0 005 0V12"></path>
+                                </svg>
+                                <p>No subscription data available</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -146,8 +189,14 @@
                             </svg>
                             Posts Over Time
                         </h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
+                        <div class="chart-container">
                             <canvas id="timeChart"></canvas>
+                            <div id="timeNoData" class="chart-no-data" style="display: none;">
+                                <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <p>No posts data available</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -155,20 +204,92 @@
             <!-- subscription list -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 mb-8">
                 <div class="p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-18 0v1.5a2.5 2.5 0 005 0V12"></path>
-                        </svg>
-                        Subscriptions List
-                    </h3>
-                    <div class="space-y-3 max-h-64 overflow-y-auto">
-                        @foreach($subscriptions as $subscription)
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                                <span class="font-medium text-gray-700">{{ $subscription->email }}</span>
-                                <span class="text-sm text-gray-500">Subscribed on {{ \Carbon\Carbon::parse($subscription->created_at)->format('M d, Y') }}</span>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-18 0v1.5a2.5 2.5 0 005 0V12"></path>
+                            </svg>
+                            Subscriptions List
+                            <span class="ml-2 text-sm font-normal text-gray-500">
+                                ({{ $subscriptions->count() }} total)
+                            </span>
+                        </h3>
+
+                        <!-- Search Filter Bar -->
+                        <div class="flex items-center space-x-2">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="subscriptionSearch"
+                                    placeholder="Search by email..."
+                                    class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition duration-200 w-full sm:w-64"
+                                >
                             </div>
-                        @endforeach
+
+                            <button
+                                id="clearSearch"
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200"
+                                style="display: none;"
+                            >
+                                Clear
+                            </button>
+                        </div>
                     </div>
+
+                    <!-- Search Results Message (initially hidden) -->
+                    <div id="searchResultsMessage" class="mb-4 text-sm text-gray-600" style="display: none;"></div>
+
+                    <!-- No Results Message (initially hidden) -->
+                    <div id="noResultsMessage" class="mb-4 text-center py-8 text-gray-500" style="display: none;">
+                        <svg class="w-12 h-12 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p>No subscriptions found matching your search.</p>
+                    </div>
+
+                    @if($subscriptions->isNotEmpty())
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Subscriber
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Subscribed Date
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subscriptionsContainer" class="bg-white divide-y divide-gray-200">
+                                    @foreach($subscriptions as $subscription)
+                                        <tr class="subscription-item hover:bg-gray-50 transition-colors duration-200">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="subscription-email font-medium text-gray-900">{{ $subscription->email }}</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <!-- Fix: Use Carbon to parse the string date -->
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                                    {{ \Carbon\Carbon::parse($subscription->created_at)->format('M d, Y') }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div id="noSubscriptionsMessage" class="text-center py-8 text-gray-500">
+                            <svg class="w-12 h-12 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-18 0v1.5a2.5 2.5 0 005 0V12"></path>
+                            </svg>
+                            <p>No subscriptions yet.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
             <!-- Categories List -->
@@ -201,12 +322,397 @@
         window.__DASHBOARD_DATA__ = {
             numberOfPosts: {!! json_encode($numberOfPosts ?? 0) !!},
             numberOfPostsByCategory: {
-                labels: {!! json_encode($numberOfPostsByCategory->keys()) !!},
-                values: {!! json_encode($numberOfPostsByCategory->values()) !!}
+                labels: {!! json_encode($numberOfPostsByCategory->keys() ?? []) !!},
+                values: {!! json_encode($numberOfPostsByCategory->values() ?? []) !!}
             },
             postsOverTime: {!! json_encode($postsOverTime ?? []) !!},
             subscriptionsOverTime: {!! json_encode($subscriptionsOverTime ?? []) !!}
         };
+
+        console.log('Dashboard Data:', window.__DASHBOARD_DATA__);
+
+        // Initialize charts after the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing charts...');
+
+            // Show no data message for a chart
+            function showNoData(chartId) {
+                const noDataEl = document.getElementById(chartId + 'NoData');
+                if (noDataEl) {
+                    noDataEl.style.display = 'flex';
+                }
+                const canvas = document.getElementById(chartId);
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+            }
+
+            // Hide no data message and show chart
+            function showChart(chartId) {
+                const noDataEl = document.getElementById(chartId + 'NoData');
+                if (noDataEl) {
+                    noDataEl.style.display = 'none';
+                }
+                const canvas = document.getElementById(chartId);
+                if (canvas) {
+                    canvas.style.display = 'block';
+                }
+            }
+
+            // 1. Category Distribution Chart
+            const categoryChartEl = document.getElementById('categoryChart');
+            if (categoryChartEl) {
+                const labels = window.__DASHBOARD_DATA__.numberOfPostsByCategory.labels || [];
+                const values = window.__DASHBOARD_DATA__.numberOfPostsByCategory.values || [];
+
+                if (labels.length > 0 && values.length > 0 && values.some(v => v > 0)) {
+                    showChart('categoryChart');
+                    const ctx = categoryChartEl.getContext('2d');
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: values,
+                                backgroundColor: [
+                                    '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6',
+                                    '#EF4444', '#EC4899', '#06B6D4', '#F97316'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                    console.log('Category chart created with', labels.length, 'categories');
+                } else {
+                    showNoData('categoryChart');
+                    console.log('No category data to display');
+                }
+            }
+
+            // 2. Subscriptions Over Time Chart
+            const subscriptionChartEl = document.getElementById('subscriptionChart');
+            if (subscriptionChartEl) {
+                const data = window.__DASHBOARD_DATA__.subscriptionsOverTime || [];
+                console.log('Subscription data:', data);
+
+                if (Array.isArray(data) && data.length > 0) {
+                    showChart('subscriptionChart');
+                    const ctx = subscriptionChartEl.getContext('2d');
+
+                    // Prepare chart data
+                    let labels = [];
+                    let chartData = [];
+
+                    if (data[0] && typeof data[0] === 'object') {
+                        // Object format: [{date: '...', count: 1}, ...]
+                        labels = data.map(item => item.date || '');
+                        chartData = data.map(item => item.count || 0);
+                    } else if (Array.isArray(data[0])) {
+                        // Array format: [['date', count], ...]
+                        labels = data.map(item => item[0] || '');
+                        chartData = data.map(item => item[1] || 0);
+                    } else {
+                        // Simple array: [1, 2, 3, ...] - use index as labels
+                        labels = data.map((_, index) => `Day ${index + 1}`);
+                        chartData = data;
+                    }
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Subscriptions',
+                                data: chartData,
+                                borderColor: '#F59E0B',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    console.log('Subscription chart created with', data.length, 'data points');
+                } else {
+                    // If no subscription data, create a simple chart with current subscription count
+                    const subscriptionCount = {{ $numberOfSubscriptions ?? 0 }};
+                    if (subscriptionCount > 0) {
+                        showChart('subscriptionChart');
+                        const ctx = subscriptionChartEl.getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Today'],
+                                datasets: [{
+                                    label: 'Subscriptions',
+                                    data: [subscriptionCount],
+                                    borderColor: '#F59E0B',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                        console.log('Created simple subscription chart with current count:', subscriptionCount);
+                    } else {
+                        showNoData('subscriptionChart');
+                        console.log('No subscription data available');
+                    }
+                }
+            }
+
+            // 3. Posts Over Time Chart
+            const timeChartEl = document.getElementById('timeChart');
+            if (timeChartEl) {
+                const data = window.__DASHBOARD_DATA__.postsOverTime || [];
+                console.log('Posts over time data:', data);
+
+                if (Array.isArray(data) && data.length > 0) {
+                    showChart('timeChart');
+                    const ctx = timeChartEl.getContext('2d');
+
+                    // Prepare chart data
+                    let labels = [];
+                    let chartData = [];
+
+                    if (data[0] && typeof data[0] === 'object') {
+                        // Object format: [{date: '...', count: 1}, ...]
+                        labels = data.map(item => item.date || '');
+                        chartData = data.map(item => item.count || 0);
+                    } else if (Array.isArray(data[0])) {
+                        // Array format: [['date', count], ...]
+                        labels = data.map(item => item[0] || '');
+                        chartData = data.map(item => item[1] || 0);
+                    } else {
+                        // Simple array: [1, 2, 3, ...] - use index as labels
+                        labels = data.map((_, index) => `Day ${index + 1}`);
+                        chartData = data;
+                    }
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Posts',
+                                data: chartData,
+                                borderColor: '#3B82F6',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    console.log('Posts over time chart created with', data.length, 'data points');
+                } else {
+                    // If no posts over time data, create a simple chart with current post count
+                    const postCount = {{ $numberOfPosts ?? 0 }};
+                    if (postCount > 0) {
+                        showChart('timeChart');
+                        const ctx = timeChartEl.getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Today'],
+                                datasets: [{
+                                    label: 'Posts',
+                                    data: [postCount],
+                                    borderColor: '#3B82F6',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                        console.log('Created simple posts chart with current count:', postCount);
+                    } else {
+                        showNoData('timeChart');
+                        console.log('No posts data available');
+                    }
+                }
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('subscriptionSearch');
+            const clearButton = document.getElementById('clearSearch');
+            const subscriptionsContainer = document.getElementById('subscriptionsContainer');
+            const subscriptionItems = document.querySelectorAll('.subscription-item');
+            const searchResultsMessage = document.getElementById('searchResultsMessage');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            const noSubscriptionsMessage = document.getElementById('noSubscriptionsMessage');
+
+            if (searchInput && subscriptionItems.length > 0) {
+                // Initialize counters
+                let totalItems = subscriptionItems.length;
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.toLowerCase().trim();
+                    let visibleCount = 0;
+
+                    // Show/hide clear button based on search input
+                    if (searchTerm.length > 0) {
+                        clearButton.style.display = 'block';
+                    } else {
+                        clearButton.style.display = 'none';
+                        searchResultsMessage.style.display = 'none';
+                        noResultsMessage.style.display = 'none';
+                    }
+
+                    // If there are no subscription items (empty list), handle accordingly
+                    if (totalItems === 0) {
+                        if (noSubscriptionsMessage) {
+                            noSubscriptionsMessage.style.display = 'block';
+                        }
+                        if (subscriptionsContainer) {
+                            subscriptionsContainer.style.display = 'none';
+                        }
+                        return;
+                    }
+
+                    // If search is empty, show all items
+                    if (searchTerm === '') {
+                        subscriptionItems.forEach(item => {
+                            item.style.display = 'table-row';
+                        });
+                        if (subscriptionsContainer) {
+                            subscriptionsContainer.style.display = 'table-row-group';
+                        }
+                        if (noResultsMessage) {
+                            noResultsMessage.style.display = 'none';
+                        }
+                        if (noSubscriptionsMessage) {
+                            noSubscriptionsMessage.style.display = 'none';
+                        }
+                        return;
+                    }
+
+                    // Filter items based on search term
+                    subscriptionItems.forEach(item => {
+                        const emailElement = item.querySelector('.subscription-email');
+                        const email = emailElement ? emailElement.textContent.toLowerCase() : '';
+
+                        if (email.includes(searchTerm)) {
+                            item.style.display = 'table-row';
+                            visibleCount++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    // Update search results message
+                    if (searchTerm.length > 0) {
+                        if (visibleCount === 0) {
+                            if (searchResultsMessage) {
+                                searchResultsMessage.style.display = 'none';
+                            }
+                            if (noResultsMessage) {
+                                noResultsMessage.style.display = 'block';
+                            }
+                            if (subscriptionsContainer) {
+                                subscriptionsContainer.style.display = 'none';
+                            }
+                            if (noSubscriptionsMessage) {
+                                noSubscriptionsMessage.style.display = 'none';
+                            }
+                        } else {
+                            if (searchResultsMessage) {
+                                searchResultsMessage.textContent = `Found ${visibleCount} subscription${visibleCount !== 1 ? 's' : ''} matching "${searchTerm}"`;
+                                searchResultsMessage.style.display = 'block';
+                            }
+                            if (noResultsMessage) {
+                                noResultsMessage.style.display = 'none';
+                            }
+                            if (subscriptionsContainer) {
+                                subscriptionsContainer.style.display = 'table-row-group';
+                            }
+                            if (noSubscriptionsMessage) {
+                                noSubscriptionsMessage.style.display = 'none';
+                            }
+                        }
+                    } else {
+                        if (searchResultsMessage) {
+                            searchResultsMessage.style.display = 'none';
+                        }
+                        if (noResultsMessage) {
+                            noResultsMessage.style.display = 'none';
+                        }
+                        if (subscriptionsContainer) {
+                            subscriptionsContainer.style.display = 'table-row-group';
+                        }
+                        if (noSubscriptionsMessage) {
+                            noSubscriptionsMessage.style.display = 'none';
+                        }
+                    }
+                }
+
+                // Event listeners
+                searchInput.addEventListener('input', performSearch);
+
+                if (clearButton) {
+                    clearButton.addEventListener('click', function() {
+                        searchInput.value = '';
+                        performSearch();
+                        searchInput.focus();
+                    });
+                }
+
+                // Add keyboard shortcuts
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        searchInput.value = '';
+                        performSearch();
+                    }
+                    if (e.key === 'Enter' && searchInput.value.trim()) {
+                        // Perform search on Enter as well (though input event handles it)
+                        performSearch();
+                    }
+                });
+
+                // Initialize search state
+                performSearch();
+            }
+        });
     </script>
-    <!-- Dashboard chart initialization moved to resources/js/dashboard.js (bundled) -->
 </x-app-layout>

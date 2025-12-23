@@ -110,6 +110,10 @@
     margin-right: 0.75rem;
 }
 
+.s {
+    font-size: small;
+}
+
 /* Hide dropdown when not alpine initialized */
 [x-cloak] {
     display: none !important;
