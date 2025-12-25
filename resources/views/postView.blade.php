@@ -867,6 +867,34 @@
             let currentLanguageFilter = 'all';
             let currentCategoryFilter = 'all';
 
+            // Function to hide/show navigation language spans
+            function updateNavigationLanguage(language) {
+                // Hide all navigation spans first
+                document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => {
+                    span.style.display = 'none';
+                });
+
+                // Show only the navigation spans for the selected language
+                switch(language) {
+                    case 'english':
+                    case 'all': // When "all" is selected, show English
+                        document.querySelectorAll('.nav-eng').forEach(span => {
+                            span.style.display = 'inline';
+                        });
+                        break;
+                    case 'harari':
+                        document.querySelectorAll('.nav-har').forEach(span => {
+                            span.style.display = 'inline';
+                        });
+                        break;
+                    case 'amharic':
+                        document.querySelectorAll('.nav-am').forEach(span => {
+                            span.style.display = 'inline';
+                        });
+                        break;
+                }
+            }
+
             // Function to update category button labels based on selected language
             function updateCategoryButtonLabels(language) {
                 categoryFilterButtons.forEach(button => {
@@ -910,6 +938,9 @@
 
                         // Update current filter
                         currentLanguageFilter = language;
+
+                        // Update navigation language spans
+                        updateNavigationLanguage(language);
 
                         // Update category button labels
                         updateCategoryButtonLabels(language);
@@ -1011,6 +1042,9 @@
                     document.querySelector('.language-filter-btn[data-language="all"]').classList.add('language-filter-active');
                     currentLanguageFilter = 'all';
 
+                    // Update navigation language spans to show English (since "all" selected)
+                    updateNavigationLanguage('all');
+
                     // Reset category button labels to English
                     updateCategoryButtonLabels('all');
 
@@ -1022,7 +1056,8 @@
             initializeLanguageFilter();
             initializeCategoryFilter();
 
-            // Apply initial filters
+            // Apply initial filters and set initial navigation language
+            updateNavigationLanguage('all'); // This will show English only
             applyFilters();
 
             // Initialize slideshows

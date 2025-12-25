@@ -14,6 +14,28 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Language toggle -->
+            <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                        </svg>
+                        Language Filter
+                    </h3>
+                    <button id="reset-language-filter" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">
+                        Reset Filter
+                    </button>
+                </div>
+                <div class="flex flex-wrap gap-3" id="language-filters-container">
+                    <button class="filter-btn language-filter-btn active" data-language="english">
+                        <span class="language-badge">English</span>
+                    </button>
+                    <button class="filter-btn language-filter-btn" data-language="harari">
+                        <span class="language-badge">Harari</span>
+                    </button>
+                </div>
+            </div>
             <!-- Library Files Grid -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -222,6 +244,64 @@
     </div>
 
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Language filter functionality
+        const languageButtons = document.querySelectorAll('.language-filter-btn');
+        const resetButton = document.getElementById('reset-language-filter');
+
+        function setLanguage(language) {
+            // Remove active class from all buttons
+            languageButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active class to selected button
+            const selectedBtn = document.querySelector(`[data-language="${language}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('active');
+            }
+
+            // Show/hide language-specific content
+            const harariElements = document.querySelectorAll('.harari');
+            const englishElements = document.querySelectorAll('.english');
+
+            if (language === 'harari') {
+                harariElements.forEach(el => {
+                    el.classList.remove('hidden1');
+                });
+                englishElements.forEach(el => {
+                    el.classList.add('hidden1');
+                });
+            } else {
+                // Default to English
+                englishElements.forEach(el => {
+                    el.classList.remove('hidden1');
+                });
+                harariElements.forEach(el => {
+                    el.classList.add('hidden1');
+                });
+            }
+        }
+
+        // Add click events to language buttons
+        languageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const language = this.getAttribute('data-language');
+                setLanguage(language);
+            });
+        });
+
+        // Reset button functionality
+        if (resetButton) {
+            resetButton.addEventListener('click', function() {
+                setLanguage('english');
+            });
+        }
+
+        // Initialize with English
+        setLanguage('english');
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Public Library script loaded');
 
@@ -525,6 +605,32 @@
     #pdfPreview iframe {
         width: 100%;
         height: 100%;
+    }
+
+    .hidden1 {
+        display: none !important;
+    }
+
+    /* Active button styling */
+    .language-filter-btn.active {
+        background-color: #3b82f6; /* blue-500 */
+        color: white;
+    }
+
+    .language-filter-btn.active .language-badge {
+        color: white;
+    }
+
+    .language-filter-btn {
+        transition: all 0.2s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        background-color: #f3f4f6; /* gray-100 */
+        border: 1px solid #e5e7eb; /* gray-200 */
+    }
+
+    .language-filter-btn:hover {
+        background-color: #e5e7eb; /* gray-200 */
     }
     </style>
 </x-app-layout>

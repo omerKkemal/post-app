@@ -83,26 +83,33 @@
                     <a href="{{ url('/') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'home' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-home text-sm w-5"></i>
-                        <span>Home</span>
+                        <span class="english nav-eng">Home</span>
+                        <span class="harari nav-har">Home</span>
+                        <span class="amharic nav-am">መነሻ</span>
                     </a>
-
                     <a href="{{ url('/about') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'about' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-info-circle text-sm w-5"></i>
-                        <span>About</span>
+                        <span class="english nav-eng">About</span>
+                        <span class="harari nav-har">About</span>
+                        <span class="amharic nav-am">ስለ እኛ</span>
                     </a>
 
                     <a href="{{ route('public.library') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'public.library' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-folder text-sm w-5"></i>
-                        <span>Library</span>
+                        <span class="english nav-eng">Library</span>
+                        <span class="harari nav-har">Library</span>
+                        <span class="amharic nav-am">ቤተ መጻሕፍት</span>
                     </a>
 
                     <!-- What's New Dropdown for Public Users -->
                     <a href="{{ route('postView') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'postView' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-newspaper text-sm w-5"></i>
-                        <span>What's New</span>
+                        <span class="english nav-eng">What's New</span>
+                        <span class="harari nav-har">What's New</span>
+                        <span class="amharic nav-am">ምን አዲስ ነገር አለ</span>
                     </a>
 
                     <!-- REMOVED: Login, Register, and Theme Toggle from center section -->
@@ -289,27 +296,33 @@
                           'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
                           'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                     <i class="fas fa-home w-6 mr-3 text-center"></i>
-                    Home
+                    <span class="english nav-eng">Home</span>
+                    <span class="harari nav-har">Home</span>
+                    <span class="amharic nav-am">መነሻ</span>
                 </a>
 
                 <a href="{{ url('/about') }}"
                    class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                     <i class="fas fa-info-circle w-6 mr-3 text-center"></i>
-                    About
+                    <span class="english nav-eng">About</span>
+                    <span class="harari nav-har">About</span>
+                    <span class="amharic nav-am">ስለ እኛ</span>
                 </a>
                 <a href="{{ url('/library') }}"
                      class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
-                      Library
+                      <span class="english nav-eng">Library</span>
+                      <span class="harari nav-har">Library</span>
+                      <span class="amharic nav-am">ቤተ መጻሕፍት</span>
                 </a>
 
                 <a href="{{ url('/p') }}"
                      class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
-                      Library
+                      <span class="english nav-eng">What's New</span>
+                      <span class="harari nav-har">Library</span>
+                      <span class="amharic nav-am">ምን አዲስ ነገር አለ</span>
                 </a>
-
-
             @endauth
         </div>
     </div>
