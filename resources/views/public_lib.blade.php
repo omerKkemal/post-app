@@ -244,309 +244,328 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Language filter functionality
-        const languageButtons = document.querySelectorAll('.language-filter-btn');
-        const resetButton = document.getElementById('reset-language-filter');
+        document.addEventListener('DOMContentLoaded', function () {
+            // Language filter functionality
+            const languageButtons = document.querySelectorAll('.language-filter-btn');
+            const resetButton = document.getElementById('reset-language-filter');
 
-        function setLanguage(language) {
-            // Remove active class from all buttons
-            languageButtons.forEach(btn => {
-                btn.classList.remove('active');
+            function setLanguage(language) {
+                // Remove active class from all buttons
+                languageButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to selected button
+                const selectedBtn = document.querySelector(`[data-language="${language}"]`);
+                if (selectedBtn) {
+                    selectedBtn.classList.add('active');
+                }
+
+                // Show/hide language-specific content
+                const amharicElements = document.querySelectorAll('.amharic');
+                const harariElements = document.querySelectorAll('.harari');
+                const englishElements = document.querySelectorAll('.english');
+
+                if (language === 'amharic') {
+                    // Show Amharic, hide others
+                    amharicElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    englishElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    harariElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                } else if (language === 'harari') {
+                    // Show Harari, hide others
+                    harariElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    englishElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    amharicElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                } else {
+                    // Default to English
+                    englishElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    amharicElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    harariElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                }
+            }
+
+            // Add click events to language buttons
+            languageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const language = this.getAttribute('data-language');
+                    setLanguage(language);
+                });
             });
 
-            // Add active class to selected button
-            const selectedBtn = document.querySelector(`[data-language="${language}"]`);
-            if (selectedBtn) {
-                selectedBtn.classList.add('active');
-            }
-
-            // Show/hide language-specific content
-            const harariElements = document.querySelectorAll('.harari');
-            const englishElements = document.querySelectorAll('.english');
-
-            if (language === 'harari') {
-                harariElements.forEach(el => {
-                    el.classList.remove('hidden1');
-                });
-                englishElements.forEach(el => {
-                    el.classList.add('hidden1');
-                });
-            } else {
-                // Default to English
-                englishElements.forEach(el => {
-                    el.classList.remove('hidden1');
-                });
-                harariElements.forEach(el => {
-                    el.classList.add('hidden1');
+            // Reset button functionality
+            if (resetButton) {
+                resetButton.addEventListener('click', function() {
+                    setLanguage('english');
                 });
             }
-        }
 
-        // Add click events to language buttons
-        languageButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const language = this.getAttribute('data-language');
-                setLanguage(language);
-            });
+            // Initialize with English
+            setLanguage('english');
         });
 
-        // Reset button functionality
-        if (resetButton) {
-            resetButton.addEventListener('click', function() {
-                setLanguage('english');
-            });
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Public Library script loaded');
 
-        // Initialize with English
-        setLanguage('english');
-    });
+            // Initialize modal
+            initializeModal();
 
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Public Library script loaded');
-
-        // Initialize modal
-        initializeModal();
-
-        // Initialize event listeners
-        initializeEventListeners();
-    });
-
-    function initializeModal() {
-        // Make sure modal is properly initialized
-        const previewModal = document.getElementById('previewModal');
-        if (previewModal) {
-            previewModal.style.display = 'none';
-        }
-    }
-
-    function initializeEventListeners() {
-        // Preview button
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.preview-file-btn')) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Preview button clicked');
-                const button = e.target.closest('.preview-file-btn');
-                openPreviewModal(button);
-            }
+            // Initialize event listeners
+            initializeEventListeners();
         });
 
-        // Preview modal close buttons
-        const closePreviewBtn = document.getElementById('closePreviewBtn');
-        const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
-        const closeErrorBtn = document.getElementById('closeErrorBtn');
-
-        [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    closeModal('previewModal');
-                });
-            }
-        });
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function(e) {
+        function initializeModal() {
+            // Make sure modal is properly initialized
             const previewModal = document.getElementById('previewModal');
-            if (previewModal && e.target === previewModal) {
-                closeModal('previewModal');
+            if (previewModal) {
+                previewModal.style.display = 'none';
             }
-        });
-    }
-
-    function openPreviewModal(button) {
-        const fileId = button.dataset.fileId;
-        const fileName = button.dataset.fileName;
-        const fileExtension = button.dataset.fileExtension.toLowerCase();
-        const fileUrl = button.dataset.fileUrl;
-        const downloadUrl = button.dataset.downloadUrl;
-
-        console.log('Opening preview for:', fileName, 'Extension:', fileExtension, 'URL:', fileUrl);
-
-        // Store file info
-        window.currentPreviewFile = {
-            id: fileId,
-            name: fileName,
-            extension: fileExtension,
-            url: fileUrl,
-            downloadUrl: downloadUrl
-        };
-
-        // Update modal title
-        document.getElementById('previewFileName').textContent = fileName;
-        document.getElementById('previewFileType').textContent = `${fileExtension.toUpperCase()} File`;
-
-        // Set download URLs for all download buttons
-        const previewDownloadBtn = document.getElementById('previewDownloadBtn');
-        const unsupportedDownloadBtn = document.getElementById('unsupportedDownloadBtn');
-        const errorDownloadBtn = document.getElementById('errorDownloadBtn');
-
-        if (previewDownloadBtn && downloadUrl) {
-            previewDownloadBtn.href = downloadUrl;
-        }
-        if (unsupportedDownloadBtn && downloadUrl) {
-            unsupportedDownloadBtn.href = downloadUrl;
-        }
-        if (errorDownloadBtn && downloadUrl) {
-            errorDownloadBtn.href = downloadUrl;
         }
 
-        // Show loading state
-        showPreviewSection('loading');
-
-        // Show modal
-        const previewModal = document.getElementById('previewModal');
-        if (previewModal) {
-            previewModal.classList.remove('hidden');
-            previewModal.style.display = 'flex';
-        }
-
-        // Load preview immediately
-        loadPreview(window.currentPreviewFile);
-    }
-
-    function loadPreview(file) {
-        console.log('Loading preview for file:', file);
-
-        if (file.extension === 'pdf') {
-            loadPdfPreview(file);
-        } else if (file.extension === 'txt') {
-            loadTextPreview(file);
-        } else {
-            console.log('Unsupported file type:', file.extension);
-            showPreviewSection('unsupported');
-        }
-    }
-
-    function loadPdfPreview(file) {
-        console.log('Loading PDF preview for:', file.url);
-        const pdfIframe = document.getElementById('pdfIframe');
-
-        // Try direct embedding first (works for same-origin PDFs)
-        pdfIframe.src = file.url;
-
-        // Set timeout to check if PDF loaded successfully
-        const loadTimeout = setTimeout(() => {
-            console.log('PDF load timeout, trying Google Docs viewer');
-            // Fallback to Google Docs viewer
-            const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
-            pdfIframe.src = googleDocsViewer;
-
-            // Second fallback timeout
-            const fallbackTimeout = setTimeout(() => {
-                console.log('Google Docs viewer timeout, showing error');
-                showPreviewSection('error');
-            }, 5000);
-
-            pdfIframe.onload = () => {
-                clearTimeout(fallbackTimeout);
-                showPreviewSection('pdf');
-            };
-
-        }, 3000);
-
-        pdfIframe.onload = () => {
-            console.log('PDF loaded directly');
-            clearTimeout(loadTimeout);
-            showPreviewSection('pdf');
-        };
-
-        pdfIframe.onerror = () => {
-            console.log('Direct PDF load failed');
-            clearTimeout(loadTimeout);
-            // Try Google Docs viewer immediately
-            const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
-            pdfIframe.src = googleDocsViewer;
-
-            const fallbackTimeout = setTimeout(() => {
-                console.log('All PDF loading methods failed');
-                showPreviewSection('error');
-            }, 5000);
-
-            pdfIframe.onload = () => {
-                clearTimeout(fallbackTimeout);
-                showPreviewSection('pdf');
-            };
-        };
-    }
-
-    async function loadTextPreview(file) {
-        console.log('Loading text preview for:', file.url);
-        try {
-            // Use fetch with credentials for same-origin requests
-            const response = await fetch(file.url, {
-                credentials: 'same-origin'
+        function initializeEventListeners() {
+            // Preview button
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.preview-file-btn')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Preview button clicked');
+                    const button = e.target.closest('.preview-file-btn');
+                    openPreviewModal(button);
+                }
             });
 
-            if (!response.ok) {
-                throw new Error(`Failed to load text file: ${response.status} ${response.statusText}`);
+            // Preview modal close buttons
+            const closePreviewBtn = document.getElementById('closePreviewBtn');
+            const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
+            const closeErrorBtn = document.getElementById('closeErrorBtn');
+
+            [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeModal('previewModal');
+                    });
+                }
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                const previewModal = document.getElementById('previewModal');
+                if (previewModal && e.target === previewModal) {
+                    closeModal('previewModal');
+                }
+            });
+        }
+
+        function openPreviewModal(button) {
+            const fileId = button.dataset.fileId;
+            const fileName = button.dataset.fileName;
+            const fileExtension = button.dataset.fileExtension.toLowerCase();
+            const fileUrl = button.dataset.fileUrl;
+            const downloadUrl = button.dataset.downloadUrl;
+
+            console.log('Opening preview for:', fileName, 'Extension:', fileExtension, 'URL:', fileUrl);
+
+            // Store file info
+            window.currentPreviewFile = {
+                id: fileId,
+                name: fileName,
+                extension: fileExtension,
+                url: fileUrl,
+                downloadUrl: downloadUrl
+            };
+
+            // Update modal title
+            document.getElementById('previewFileName').textContent = fileName;
+            document.getElementById('previewFileType').textContent = `${fileExtension.toUpperCase()} File`;
+
+            // Set download URLs for all download buttons
+            const previewDownloadBtn = document.getElementById('previewDownloadBtn');
+            const unsupportedDownloadBtn = document.getElementById('unsupportedDownloadBtn');
+            const errorDownloadBtn = document.getElementById('errorDownloadBtn');
+
+            if (previewDownloadBtn && downloadUrl) {
+                previewDownloadBtn.href = downloadUrl;
+            }
+            if (unsupportedDownloadBtn && downloadUrl) {
+                unsupportedDownloadBtn.href = downloadUrl;
+            }
+            if (errorDownloadBtn && downloadUrl) {
+                errorDownloadBtn.href = downloadUrl;
             }
 
-            const text = await response.text();
-            console.log('Text loaded successfully, length:', text.length);
+            // Show loading state
+            showPreviewSection('loading');
 
-            const textContent = document.getElementById('textContent');
-
-            // Truncate very large files
-            const maxLength = 100000; // 100KB max for preview
-            let displayText = text;
-
-            if (text.length > maxLength) {
-                console.log('Text truncated from', text.length, 'to', maxLength);
-                displayText = text.substring(0, maxLength) + '\n\n... (preview truncated - file is very large)';
+            // Show modal
+            const previewModal = document.getElementById('previewModal');
+            if (previewModal) {
+                previewModal.classList.remove('hidden');
+                previewModal.style.display = 'flex';
             }
 
-            textContent.textContent = displayText;
-            showPreviewSection('text');
-        } catch (error) {
-            console.error('Error loading text preview:', error);
-
-            // Show error state
-            const textContent = document.getElementById('textContent');
-            textContent.textContent = `Unable to load file content.\nError: ${error.message}\n\nPlease download the file to view it.`;
-            showPreviewSection('text');
-        }
-    }
-
-    function showPreviewSection(section) {
-        console.log('Showing preview section:', section);
-
-        const sections = {
-            pdf: document.getElementById('pdfPreview'),
-            text: document.getElementById('textPreview'),
-            unsupported: document.getElementById('unsupportedPreview'),
-            loading: document.getElementById('previewLoading'),
-            error: document.getElementById('previewError')
-        };
-
-        // Hide all sections
-        Object.values(sections).forEach(el => {
-            if (el) el.classList.add('hidden');
-        });
-
-        // Show selected section
-        if (sections[section]) {
-            sections[section].classList.remove('hidden');
-        }
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
+            // Load preview immediately
+            loadPreview(window.currentPreviewFile);
         }
 
-        // Clean up preview iframe
-        if (modalId === 'previewModal') {
+        function loadPreview(file) {
+            console.log('Loading preview for file:', file);
+
+            if (file.extension === 'pdf') {
+                loadPdfPreview(file);
+            } else if (file.extension === 'txt') {
+                loadTextPreview(file);
+            } else {
+                console.log('Unsupported file type:', file.extension);
+                showPreviewSection('unsupported');
+            }
+        }
+
+        function loadPdfPreview(file) {
+            console.log('Loading PDF preview for:', file.url);
             const pdfIframe = document.getElementById('pdfIframe');
-            if (pdfIframe) {
-                pdfIframe.src = '';
-            }
-            window.currentPreviewFile = null;
+
+            // Try direct embedding first (works for same-origin PDFs)
+            pdfIframe.src = file.url;
+
+            // Set timeout to check if PDF loaded successfully
+            const loadTimeout = setTimeout(() => {
+                console.log('PDF load timeout, trying Google Docs viewer');
+                // Fallback to Google Docs viewer
+                const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
+                pdfIframe.src = googleDocsViewer;
+
+                // Second fallback timeout
+                const fallbackTimeout = setTimeout(() => {
+                    console.log('Google Docs viewer timeout, showing error');
+                    showPreviewSection('error');
+                }, 5000);
+
+                pdfIframe.onload = () => {
+                    clearTimeout(fallbackTimeout);
+                    showPreviewSection('pdf');
+                };
+
+            }, 3000);
+
+            pdfIframe.onload = () => {
+                console.log('PDF loaded directly');
+                clearTimeout(loadTimeout);
+                showPreviewSection('pdf');
+            };
+
+            pdfIframe.onerror = () => {
+                console.log('Direct PDF load failed');
+                clearTimeout(loadTimeout);
+                // Try Google Docs viewer immediately
+                const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
+                pdfIframe.src = googleDocsViewer;
+
+                const fallbackTimeout = setTimeout(() => {
+                    console.log('All PDF loading methods failed');
+                    showPreviewSection('error');
+                }, 5000);
+
+                pdfIframe.onload = () => {
+                    clearTimeout(fallbackTimeout);
+                    showPreviewSection('pdf');
+                };
+            };
         }
-    }
+
+        async function loadTextPreview(file) {
+            console.log('Loading text preview for:', file.url);
+            try {
+                // Use fetch with credentials for same-origin requests
+                const response = await fetch(file.url, {
+                    credentials: 'same-origin'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to load text file: ${response.status} ${response.statusText}`);
+                }
+
+                const text = await response.text();
+                console.log('Text loaded successfully, length:', text.length);
+
+                const textContent = document.getElementById('textContent');
+
+                // Truncate very large files
+                const maxLength = 100000; // 100KB max for preview
+                let displayText = text;
+
+                if (text.length > maxLength) {
+                    console.log('Text truncated from', text.length, 'to', maxLength);
+                    displayText = text.substring(0, maxLength) + '\n\n... (preview truncated - file is very large)';
+                }
+
+                textContent.textContent = displayText;
+                showPreviewSection('text');
+            } catch (error) {
+                console.error('Error loading text preview:', error);
+
+                // Show error state
+                const textContent = document.getElementById('textContent');
+                textContent.textContent = `Unable to load file content.\nError: ${error.message}\n\nPlease download the file to view it.`;
+                showPreviewSection('text');
+            }
+        }
+
+        function showPreviewSection(section) {
+            console.log('Showing preview section:', section);
+
+            const sections = {
+                pdf: document.getElementById('pdfPreview'),
+                text: document.getElementById('textPreview'),
+                unsupported: document.getElementById('unsupportedPreview'),
+                loading: document.getElementById('previewLoading'),
+                error: document.getElementById('previewError')
+            };
+
+            // Hide all sections
+            Object.values(sections).forEach(el => {
+                if (el) el.classList.add('hidden');
+            });
+
+            // Show selected section
+            if (sections[section]) {
+                sections[section].classList.remove('hidden');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+
+            // Clean up preview iframe
+            if (modalId === 'previewModal') {
+                const pdfIframe = document.getElementById('pdfIframe');
+                if (pdfIframe) {
+                    pdfIframe.src = '';
+                }
+                window.currentPreviewFile = null;
+            }
+        }
     </script>
 
     <style>

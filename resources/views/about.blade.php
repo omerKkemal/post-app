@@ -52,7 +52,7 @@
             <div id="goals" class="mb-12 scroll-mt-8">
                 <h3 class="text-2xl font-semibold mb-6 text-gray-800">Goals & Mission</h3>
                 <div class="bg-white rounded-lg shadow-md p-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
                         <!-- Harari language section -->
                         <div class="space-y-4">
                             <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -115,7 +115,7 @@
                                 </code>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -168,83 +168,102 @@
         updateSlide();
 
         document.addEventListener('DOMContentLoaded', function () {
-        // Slideshow functionality
-        const slides = document.querySelectorAll('.slideshow-image');
-        let currentIndex = 0;
+            // Slideshow functionality
+            const slides = document.querySelectorAll('.slideshow-image');
+            let currentIndex = 0;
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.style.opacity = i === index ? '1' : '0';
-            });
-        }
-
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        }
-
-        // Initialize slideshow
-        if (slides.length > 0) {
-            showSlide(currentIndex);
-            setInterval(nextSlide, 3000);
-        }
-
-        // Language filter functionality
-        const languageButtons = document.querySelectorAll('.language-filter-btn');
-        const resetButton = document.getElementById('reset-language-filter');
-
-        function setLanguage(language) {
-            // Remove active class from all buttons
-            languageButtons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Add active class to selected button
-            const selectedBtn = document.querySelector(`[data-language="${language}"]`);
-            if (selectedBtn) {
-                selectedBtn.classList.add('active');
-            }
-
-            // Show/hide language-specific content
-            const harariElements = document.querySelectorAll('.harari');
-            const englishElements = document.querySelectorAll('.english');
-
-            if (language === 'harari') {
-                harariElements.forEach(el => {
-                    el.classList.remove('hidden1');
-                });
-                englishElements.forEach(el => {
-                    el.classList.add('hidden1');
-                });
-            } else {
-                // Default to English
-                englishElements.forEach(el => {
-                    el.classList.remove('hidden1');
-                });
-                harariElements.forEach(el => {
-                    el.classList.add('hidden1');
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.style.opacity = i === index ? '1' : '0';
                 });
             }
-        }
 
-        // Add click events to language buttons
-        languageButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const language = this.getAttribute('data-language');
-                setLanguage(language);
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+
+            // Initialize slideshow
+            if (slides.length > 0) {
+                showSlide(currentIndex);
+                setInterval(nextSlide, 3000);
+            }
+
+            // Language filter functionality
+            const languageButtons = document.querySelectorAll('.language-filter-btn');
+            const resetButton = document.getElementById('reset-language-filter');
+
+            function setLanguage(language) {
+                // Remove active class from all buttons
+                languageButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to selected button
+                const selectedBtn = document.querySelector(`[data-language="${language}"]`);
+                if (selectedBtn) {
+                    selectedBtn.classList.add('active');
+                }
+
+                // Show/hide language-specific content
+                const amharicElements = document.querySelectorAll('.amharic');
+                const harariElements = document.querySelectorAll('.harari');
+                const englishElements = document.querySelectorAll('.english');
+
+                if (language === 'amharic') {
+                    // Show Amharic, hide others
+                    amharicElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    englishElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    harariElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                } else if (language === 'harari') {
+                    // Show Harari, hide others
+                    harariElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    englishElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    amharicElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                } else {
+                    // Default to English
+                    englishElements.forEach(el => {
+                        el.classList.remove('hidden1');
+                    });
+                    amharicElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                    harariElements.forEach(el => {
+                        el.classList.add('hidden1');
+                    });
+                }
+            }
+
+            // Add click events to language buttons
+            languageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const language = this.getAttribute('data-language');
+                    setLanguage(language);
+                });
             });
+
+            // Reset button functionality
+            if (resetButton) {
+                resetButton.addEventListener('click', function() {
+                    setLanguage('english');
+                });
+            }
+
+            // Initialize with English
+            setLanguage('english');
         });
-
-        // Reset button functionality
-        if (resetButton) {
-            resetButton.addEventListener('click', function() {
-                setLanguage('english');
-            });
-        }
-
-        // Initialize with English
-        setLanguage('english');
-    });
     </script>
 
     <style>
