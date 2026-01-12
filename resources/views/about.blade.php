@@ -35,7 +35,6 @@
 
             <!-- Certificates section -->
             <div id="certificates" class="mb-12 scroll-mt-8">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800">Certificates</h3>
                 <div class="relative w-full max-w-4xl mx-auto bg-gray-100 rounded-lg shadow-lg p-4">
                     <div class="overflow-hidden relative h-80 rounded-lg">
                         <div class="absolute inset-0 transition-transform duration-500" id="slideshow">
@@ -50,7 +49,8 @@
 
             <!-- Goals and Mission section -->
             <div id="goals" class="mb-12 scroll-mt-8">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800">Goals & Mission</h3>
+                <h3 class="english text-2xl font-semibold mb-6 text-gray-800">Goals & Mission</h3>
+                <h3 class="harari text-2xl font-semibold mb-6 text-gray-800">ተላኾት ዋ ሀድፈ</h3>
                 <div class="bg-white rounded-lg shadow-md p-6">
 
                         <!-- Harari language section -->
@@ -121,7 +121,8 @@
 
             <!-- Congress Members section -->
             <div id="members" class="mb-8 scroll-mt-8">
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800">Congress Members</h3>
+                <h3 class="english text-2xl font-semibold mb-6 text-gray-800">Congress Members</h3>
+                <h3 class="harari text-2xl font-semibold mb-6 text-gray-800">መጅሊስ አግቡራች</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach($members as $member)
                         @if ($member->position === 'President')

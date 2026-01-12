@@ -29,11 +29,17 @@
                             />
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+                            <span class="english nav-eng text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
                                 {{ config('app.name', 'Laravel') }}
                             </span>
-                            <span class="text-xs text-gray-500 font-medium dark:text-white hidden md:block">
+                            <span class="harari nav-har text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+                                ሀርሪ መሀድ መጅሊስ
+                            </span>
+                            <span class="english nav-eng text-xs text-gray-500 font-medium dark:text-white hidden md:block">
                                 @auth Dashboard @else Welcome @endauth
+                            </span>
+                            <span class="harari nav-har text-xs text-gray-500 font-medium dark:text-white hidden md:block">
+                                @auth Dashboard <style>.nav-har{ display: none; }</style> @else ሀምበይሌ አማንቤ ዲጂኹ @endauth
                             </span>
                         </div>
                     </a>
@@ -84,14 +90,14 @@
                        :class="currentRoute === 'home' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-home text-sm w-5"></i>
                         <span class="english nav-eng">Home</span>
-                        <span class="harari nav-har">Home</span>
+                        <span class="harari nav-har">ቡእቲ</span>
                         <span class="amharic nav-am">መነሻ</span>
                     </a>
                     <a href="{{ url('/about') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'about' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-info-circle text-sm w-5"></i>
                         <span class="english nav-eng">About</span>
-                        <span class="harari nav-har">About</span>
+                        <span class="harari nav-har">ዚእኛች</span>
                         <span class="amharic nav-am">ስለ እኛ</span>
                     </a>
 
@@ -99,7 +105,7 @@
                        :class="currentRoute === 'public.library' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-folder text-sm w-5"></i>
                         <span class="english nav-eng">Library</span>
-                        <span class="harari nav-har">Library</span>
+                        <span class="harari nav-har">ላይብራሪ</span>
                         <span class="amharic nav-am">ቤተ መጻሕፍት</span>
                     </a>
 
@@ -108,7 +114,7 @@
                        :class="currentRoute === 'postView' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-newspaper text-sm w-5"></i>
                         <span class="english nav-eng">What's New</span>
-                        <span class="harari nav-har">What's New</span>
+                        <span class="harari nav-har">ኸብራች</span>
                         <span class="amharic nav-am">ምን አዲስ ነገር አለ</span>
                     </a>
 
@@ -297,7 +303,7 @@
                           'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                     <i class="fas fa-home w-6 mr-3 text-center"></i>
                     <span class="english nav-eng">Home</span>
-                    <span class="harari nav-har">Home</span>
+                    <span class="harari nav-har">ቡእቲ</span>
                     <span class="amharic nav-am">መነሻ</span>
                 </a>
 
@@ -305,14 +311,14 @@
                    class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                     <i class="fas fa-info-circle w-6 mr-3 text-center"></i>
                     <span class="english nav-eng">About</span>
-                    <span class="harari nav-har">About</span>
+                    <span class="harari nav-har">ዚእኛች</span>
                     <span class="amharic nav-am">ስለ እኛ</span>
                 </a>
                 <a href="{{ url('/library') }}"
                      class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
                       <span class="english nav-eng">Library</span>
-                      <span class="harari nav-har">Library</span>
+                      <span class="harari nav-har">ላይብራሪ</span>
                       <span class="amharic nav-am">ቤተ መጻሕፍት</span>
                 </a>
 
@@ -320,7 +326,7 @@
                      class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
                       <span class="english nav-eng">What's New</span>
-                      <span class="harari nav-har">Library</span>
+                      <span class="harari nav-har">ኸብራች</span>
                       <span class="amharic nav-am">ምን አዲስ ነገር አለ</span>
                 </a>
             @endauth

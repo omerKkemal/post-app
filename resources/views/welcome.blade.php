@@ -108,9 +108,9 @@
                         <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-praying-hands text-red-600 text-2xl"></i>
                         </div>
-                        <h3 class="english text-xl font-semibold text-gray-800 mb-3">Religious Traditions</h3>
+                        <h3 class="english text-xl font-semibold text-gray-800 mb-3">Shuwalid festival and mawlid</h3>
                         <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-3">ሹዋል ኢድ ዋ መውሉድ</h3>
-                        <p class="english text-gray-600">Understanding the Islamic traditions and religious practices in Harari culture</p>
+                        <p class="english text-gray-600">celebrating Shuwalid festival and prophet muhammad peace be upon him mawlid</p>
                         <p class="harari hidden1 text-gray-600">ዚሀረሪ መሐድ ሹዋል ኢድ ዋ መውሉድ መግደርቲ ሒራች ዋ ተቃሊዳች</p>
                     </div>
                 </div>
@@ -324,13 +324,13 @@
                     <div class="fade-in" style="animation-delay: 0.2s">
                         <div class="bg-white rounded-xl p-6 h-full">
                             <h3 class="english text-2xl font-bold text-gray-800 mb-6">Get Involved</h3>
-                            <h3 class="harari hidden1 text-2xl font-bold text-gray-800 mb-6">ዳይሐዋዞ ተሳተፍ</h3>
+                            <h3 class="harari hidden1 text-2xl font-bold text-gray-800 mb-6">ዳይሐዋዞ ተሳአዶት</h3>
                             <p class="english text-gray-600 mb-4">Join our community discussions and stay updated with the latest announcements.</p>
-                            <p class="harari hidden1 text-gray-600 mb-4">ኪም ዳይሐዋዞ ሙዳወናች ተሳተፍ ዋ ቁራ ወቅቲ አቴወቆታችባሕ ዩነብራል ቁራ.</p>
+                            <p class="harari hidden1 text-gray-600 mb-4">ዳይ ሀዋዚያ  ተሳአዶት ኡሹማ ቁራ ወቅቲ አቴውቅታች ሪኸቡ</p>
                             <div class="english space-y-3">
                                 <div class="flex items-center">
                                     <i class="fas fa-calendar-check text-green-500 mr-3"></i>
-                                    <span>Community meetings every Saturday</span>
+                                    <span>Community meetings</span>
                                 </div>
                                 <div class="flex items-center">
                                     <i class="fas fa-bullhorn text-amber-500 mr-3"></i>
@@ -344,15 +344,15 @@
                             <div class="harari hidden1 space-y-3">
                                 <div class="flex items-center">
                                     <i class="fas fa-calendar-check text-green-500 mr-3"></i>
-                                    <span>ዳይሐዋዝ ሙጃላሳች ኩል ሰንበት</span>
+                                    <span>ዳይ ሀዋዚያ ዲብላናች</span>
                                 </div>
                                 <div class="flex items-center">
                                     <i class="fas fa-bullhorn text-amber-500 mr-3"></i>
-                                    <span>አጅል ማሳወቂያች ዋ አቴወቆታች</span>
+                                    <span>ዳይ ሀዋዚያ አቴውቅታች</span>
                                 </div>
                                 <div class="flex items-center">
                                     <i class="fas fa-handshake text-blue-500 mr-3"></i>
-                                    <span>ዚተግባር አፍታች</span>
+                                    <span>ኸይሪባይ ትሳአዳች</span>
                                 </div>
                             </div>
                         </div>
@@ -512,7 +512,7 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="english  text-3xl md:text-4xl font-bold text-gray-800 mb-4">Laws & Regulations</h2>
-                    <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ናች ዋ መኤቀድቲ</h2>
+                    <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ቃኑናች ዋ መኤቀድቲ</h2>
                     <p class="english text-gray-600 max-w-2xl mx-auto">Governing laws and community regulations for the Harari people</p>
                     <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">ዚሀረሪ መሐድ መጅሊስ መትሒዳደርቲ ቃኑናች ዋ ዳይሐዋዝ መኤቀድቲያች</p>
                 </div>

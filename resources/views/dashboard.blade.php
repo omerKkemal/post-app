@@ -26,6 +26,10 @@
             width: 100%;
         }
 
+        .nav-har{
+            display: none;
+        }
+
         /* Ensure canvas elements are responsive */
         .chart-container canvas {
             width: 100% !important;
