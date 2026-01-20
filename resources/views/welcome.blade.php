@@ -15,7 +15,7 @@
                 </button>
             </div>
             <div class="flex flex-wrap gap-3" id="language-filters-container">
-                <button class="filter-btn language-filter-btn active" data-language="english">
+                <button class="filter-btn language-filter-btn" data-language="english">
                     <span class="language-badge">English</span>
                 </button>
                 <button class="filter-btn language-filter-btn" data-language="harari">
@@ -541,6 +541,7 @@
             // Slideshow functionality
             const slides = document.querySelectorAll('.slideshow-image');
             let currentIndex = 0;
+            let slideInterval = null;
 
             function showSlide(index) {
                 slides.forEach((slide, i) => {
@@ -556,17 +557,57 @@
             // Initialize slideshow
             if (slides.length > 0) {
                 showSlide(currentIndex);
-                setInterval(nextSlide, 3000);
+                slideInterval = setInterval(nextSlide, 3000);
+
+                // Pause on hover
+                const slideshowContainer = document.querySelector('.relative.overflow-hidden1');
+                if (slideshowContainer) {
+                    slideshowContainer.addEventListener('mouseenter', () => {
+                        if (slideInterval) {
+                            clearInterval(slideInterval);
+                            slideInterval = null;
+                        }
+                    });
+                    slideshowContainer.addEventListener('mouseleave', () => {
+                        if (!slideInterval) {
+                            slideInterval = setInterval(nextSlide, 3000);
+                        }
+                    });
+                }
             }
 
             // Language functionality
+            // Cookie functions
+            function setCookie(name, value, days) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + '=';
+                const ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
             const languageButtons = document.querySelectorAll('.language-filter-btn');
             const resetButton = document.getElementById('reset-language-filter');
             const toggleButton = document.getElementById('toggle-language');
-            let currentLanguage = 'english';
+            let currentLanguage = (function() {
+                const saved = getCookie('selected_language');
+                return (saved && saved !== 'all') ? saved : 'amharic';
+            })();
 
             function setLanguage(language) {
                 currentLanguage = language;
+                if (language !== 'amharic') {
+                    setCookie('selected_language', language, 30); // Save for 30 days
+                }
 
                 // Remove active class from all buttons
                 languageButtons.forEach(btn => {
@@ -641,14 +682,15 @@
                 toggleButton.addEventListener('click', toggleLanguage);
             }
 
-            // Initialize with English
-            setLanguage('english');
+            // Initialize with saved language or default
+            setLanguage(currentLanguage);
         });
     </script>
 
     <style>
         .slideshow-image {
             transition: opacity 1s ease-in-out;
+            background: black;
         }
 
         @keyframes fadeIn {
@@ -670,6 +712,7 @@
         }
             .slideshow-image {
         transition: opacity 1s ease-in-out;
+        background: black;
     }
 
     @keyframes fadeIn {

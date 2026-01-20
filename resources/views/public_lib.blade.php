@@ -28,7 +28,7 @@
                     </button>
                 </div>
                 <div class="flex flex-wrap gap-3" id="language-filters-container">
-                    <button class="filter-btn language-filter-btn active" data-language="english">
+                    <button class="filter-btn language-filter-btn" data-language="english">
                         <span class="language-badge">English</span>
                     </button>
                     <button class="filter-btn language-filter-btn" data-language="harari">
@@ -246,10 +246,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Language filter functionality
+            // Cookie functions
+            function setCookie(name, value, days) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + '=';
+                const ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
             const languageButtons = document.querySelectorAll('.language-filter-btn');
             const resetButton = document.getElementById('reset-language-filter');
 
             function setLanguage(language) {
+                if (language !== 'amharic') {
+                    setCookie('selected_language', language, 30); // Save for 30 days
+                }
+
                 // Remove active class from all buttons
                 languageButtons.forEach(btn => {
                     btn.classList.remove('active');
@@ -317,8 +339,10 @@
                 });
             }
 
-            // Initialize with English
-            setLanguage('english');
+            // Initialize with saved language or default
+            const saved = getCookie('selected_language');
+            const currentLanguage = (saved && saved !== 'all') ? saved : 'amharic';
+            setLanguage(currentLanguage);
         });
 
         document.addEventListener('DOMContentLoaded', function() {

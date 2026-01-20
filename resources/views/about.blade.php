@@ -24,7 +24,7 @@
                     </button>
                 </div>
                 <div class="flex flex-wrap gap-3" id="language-filters-container">
-                    <button class="filter-btn language-filter-btn active" data-language="english">
+                    <button class="filter-btn language-filter-btn" data-language="english">
                         <span class="language-badge">English</span>
                     </button>
                     <button class="filter-btn language-filter-btn" data-language="harari">
@@ -35,14 +35,18 @@
 
             <!-- Certificates section -->
             <div id="certificates" class="mb-12 scroll-mt-8">
-                <div class="relative w-full max-w-4xl mx-auto bg-gray-100 rounded-lg shadow-lg p-4">
-                    <div class="overflow-hidden relative h-80 rounded-lg">
-                        <div class="absolute inset-0 transition-transform duration-500" id="slideshow">
-                            <img src="/images/certificate1.jpg" alt="Certificate 1" class="w-full h-full object-contain">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="overflow-hidden rounded-xl shadow-lg fade-in relative h-[500px]">
+                        <!-- Slideshow Images -->
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-100">
+                            <img src="/images/certificate1.jpg" alt="Certificate 1" class="w-full h-full object-cover">
                         </div>
-                    </div>
-                    <div class="flex justify-center mt-4 space-x-2">
-                        <span id="slide-indicator" class="text-sm text-gray-600">1 / 3</span>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-0">
+                            <img src="/images/certificate2.jpg" alt="Certificate 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 w-full h-full slideshow-image opacity-0">
+                            <img src="/images/certificate3.jpg" alt="Certificate 3" class="w-full h-full object-cover">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,8 +59,8 @@
 
                         <!-- Harari language section -->
                         <div class="space-y-4">
-                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                                <code class="harari block overflow-x-auto">
+                            <div class="harari bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <code class="block overflow-x-auto">
                                     <h1 style="text-align: center; text-decoration: underline; font-size: 30px; margin-bottom: 1rem;">ቡእቲ</h1>
                                     ሀረሪ ኡመት ሑሉፍ ዛዩ ደኻጥ ሑኩማች ሐርቆትዚዩ ሰበብቤ ሒልቂዞ ኡኑስ ዚኻና ሀረሪ መሐድ ማንነትዞቤ የቃኛኩት፣ ሲያሳ ዋ ኢቅቲሳዲያቤም  ዩሩሕቂማ አላይዞ ኢጂው ቀር ቀረብ ዩቂሕሪኩት፣ ኢስበልበላት አዱኛ ባዳችቤ ዩትፌጠኒኩት ሞሸቤ ዘጋሕ ደኽጢዋ ጀሪማ ዩቡርዲባ ዚናራ ኡመት ዚናራነት ዩታወቃል፡፡
                                     ሀረሪ መሐድ መጅሊስ መጋቢት 06 አያም 1987 ዚኢዮጲያ ዚመትሚጃጅቲ ሑኩማ ተዌካያች ሒርጊ ጋርቤ 102ታኝ ኡርፊ ዲብላንቤ ሀረሪ ሑስኒ ሉይ ሚልሐ ሔራ ጠብ ዩሊኩት ዌሰና ዩዞም ሀረሪ ሑስኒ መሐዲያ ሒርጊጋር መቃነኑ ዩነካል፡፡ ሀረሪ ሑስኒ አኽእ ዛል 2 ዊቃሮታችቤ ዩትዋቀሩኩት ሀረሪ መሐድ መጅሊስ ዋ ሀረሪ ሁስኒ ሒርጊ ጋር ቃኑን ያጪ ቃማቹ መድበልቤ 1986 አመትቤ ዚኢፊድሪ መገስ ሐከማ ኢስሰበታ ቤሔርሌ ወቅተንዞ ኡርፊ ዩኹንኩት ኻናማ ሑስኒዞ ሑኩማቤ ሀረሪ መሐድ ዩትዌከልባዛል ሒርጊ ጋር ኻና፡፡
@@ -102,8 +106,8 @@
 
                         <!-- English section -->
                         <div class="space-y-4">
-                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                                <code class='english block overflow-x-auto'>
+                            <div class="english bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <code class='block overflow-x-auto'>
                                     <h1 style="text-align: center; text-decoration: underline; margin-bottom: 1.5rem;">Goals</h1>
                                     Harari Ummat is committed to promoting the rights, culture, and development of the Harari people. Our primary goals include:
                                     1. Advocacy: Representing the interests of the Harari community at local, national, and international levels.
@@ -146,32 +150,11 @@
     </div>
 
     <script>
-        let currentIndex = 0;
-        const images = [
-            '/images/certificate1.jpg',
-            '/images/certificate2.jpg',
-            '/images/certificate3.jpg'
-        ];
-        const slideshow = document.getElementById('slideshow');
-        const slideIndicator = document.getElementById('slide-indicator');
-
-        function updateSlide() {
-            slideshow.innerHTML = `<img src="${images[currentIndex]}" alt="Certificate ${currentIndex + 1}" class="w-full h-full object-contain">`;
-            slideIndicator.textContent = `${currentIndex + 1} / ${images.length}`;
-        }
-
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateSlide();
-        }, 3000);
-
-        // Initialize first slide
-        updateSlide();
-
         document.addEventListener('DOMContentLoaded', function () {
             // Slideshow functionality
             const slides = document.querySelectorAll('.slideshow-image');
             let currentIndex = 0;
+            let slideInterval = null;
 
             function showSlide(index) {
                 slides.forEach((slide, i) => {
@@ -187,14 +170,52 @@
             // Initialize slideshow
             if (slides.length > 0) {
                 showSlide(currentIndex);
-                setInterval(nextSlide, 3000);
+                slideInterval = setInterval(nextSlide, 3000);
+
+                // Pause on hover
+                const slideshowContainer = document.querySelector('.fade-in');
+                if (slideshowContainer) {
+                    slideshowContainer.addEventListener('mouseenter', () => {
+                        if (slideInterval) {
+                            clearInterval(slideInterval);
+                            slideInterval = null;
+                        }
+                    });
+                    slideshowContainer.addEventListener('mouseleave', () => {
+                        if (!slideInterval) {
+                            slideInterval = setInterval(nextSlide, 3000);
+                        }
+                    });
+                }
             }
 
             // Language filter functionality
+            // Cookie functions
+            function setCookie(name, value, days) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + '=';
+                const ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
             const languageButtons = document.querySelectorAll('.language-filter-btn');
             const resetButton = document.getElementById('reset-language-filter');
 
             function setLanguage(language) {
+                if (language !== 'amharic') {
+                    setCookie('selected_language', language, 30); // Save for 30 days
+                }
+
                 // Remove active class from all buttons
                 languageButtons.forEach(btn => {
                     btn.classList.remove('active');
@@ -262,8 +283,10 @@
                 });
             }
 
-            // Initialize with English
-            setLanguage('english');
+            // Initialize with saved language or default
+            const saved = getCookie('selected_language');
+            const currentLanguage = (saved && saved !== 'all') ? saved : 'amharic';
+            setLanguage(currentLanguage);
         });
     </script>
 

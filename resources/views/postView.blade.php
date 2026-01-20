@@ -17,6 +17,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background: black;
     }
 
     .slideshow-slide.active {
@@ -73,7 +74,7 @@
                         </button>
                     </div>
                     <div class="flex flex-wrap gap-3" id="language-filters-container">
-                        <button class="filter-btn language-filter-btn language-filter-active" data-language="all">
+                        <button class="filter-btn language-filter-btn" data-language="all">
                             <span class="language-badge">All Languages</span>
                         </button>
                         <button class="filter-btn language-filter-btn" data-language="harari">
@@ -863,8 +864,26 @@
             const posts = document.querySelectorAll('.post-card');
             const resetLanguageFilter = document.getElementById('reset-language-filter');
 
+            // Cookie functions
+            function setCookie(name, value, days) {
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+            }
+
+            function getCookie(name) {
+                const nameEQ = name + '=';
+                const ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
             // Language filter functionality
-            let currentLanguageFilter = 'all';
+            let currentLanguageFilter = getCookie('selected_language') || 'all';
             let currentCategoryFilter = 'all';
 
             // Function to hide/show navigation language spans
@@ -938,6 +957,9 @@
 
                         // Update current filter
                         currentLanguageFilter = language;
+                        if (language !== 'amharic') {
+                            setCookie('selected_language', language, 30);
+                        }
 
                         // Update navigation language spans
                         updateNavigationLanguage(language);
@@ -1041,6 +1063,7 @@
                     });
                     document.querySelector('.language-filter-btn[data-language="all"]').classList.add('language-filter-active');
                     currentLanguageFilter = 'all';
+                    setCookie('selected_language', 'all', 30);
 
                     // Update navigation language spans to show English (since "all" selected)
                     updateNavigationLanguage('all');
@@ -1056,8 +1079,15 @@
             initializeLanguageFilter();
             initializeCategoryFilter();
 
+            // Set initial active language button
+            const initialLanguageBtn = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
+            if (initialLanguageBtn) {
+                initialLanguageBtn.classList.add('language-filter-active');
+            }
+
             // Apply initial filters and set initial navigation language
-            updateNavigationLanguage('all'); // This will show English only
+            updateNavigationLanguage(currentLanguageFilter);
+            updateCategoryButtonLabels(currentLanguageFilter);
             applyFilters();
 
             // Initialize slideshows
@@ -1075,6 +1105,15 @@
 
                 let currentSlide = 0;
                 let slideInterval = null;
+
+                function resetInterval() {
+                    if (slideInterval) {
+                        clearInterval(slideInterval);
+                    }
+                    if (slides.length > 1) {
+                        slideInterval = setInterval(nextSlide, 5000);
+                    }
+                }
 
                 function showSlide(index) {
                     // Hide all slides
@@ -1122,11 +1161,17 @@
 
                 // Event listeners for navigation
                 if (nextBtn) {
-                    nextBtn.addEventListener('click', nextSlide);
+                    nextBtn.addEventListener('click', () => {
+                        nextSlide();
+                        resetInterval();
+                    });
                 }
 
                 if (prevBtn) {
-                    prevBtn.addEventListener('click', prevSlide);
+                    prevBtn.addEventListener('click', () => {
+                        prevSlide();
+                        resetInterval();
+                    });
                 }
 
                 // Event listeners for dots
@@ -1134,12 +1179,13 @@
                     dot.addEventListener('click', function() {
                         const slideIndex = parseInt(this.getAttribute('data-slide-index'));
                         showSlide(slideIndex);
+                        resetInterval();
                     });
                 });
 
                 // Auto-advance slides (optional)
                 if (slides.length > 1) {
-                    slideInterval = setInterval(nextSlide, 5000);
+                    resetInterval();
 
                     // Pause auto-advance on hover
                     container.addEventListener('mouseenter', () => {
@@ -1148,18 +1194,19 @@
                         }
                     });
 
-                    container.addEventListener('mouseleave', () => {
-                        if (slideInterval) {
-                            clearInterval(slideInterval);
-                        }
-                        slideInterval = setInterval(nextSlide, 5000);
-                    });
+                    container.addEventListener('mouseleave', resetInterval);
                 }
 
                 // Keyboard navigation
                 container.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') prevSlide();
-                    if (e.key === 'ArrowRight') nextSlide();
+                    if (e.key === 'ArrowLeft') {
+                        prevSlide();
+                        resetInterval();
+                    }
+                    if (e.key === 'ArrowRight') {
+                        nextSlide();
+                        resetInterval();
+                    }
                 });
 
                 // Focus for accessibility
