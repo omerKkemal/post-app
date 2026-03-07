@@ -8,16 +8,6 @@
   <img src="https://img.shields.io/badge/DYNAMIC-BLOGGING%20PLATFORM-FF6B6B?style=for-the-badge&logo=laravel&logoColor=white&labelColor=1a1a2e" alt="Dynamic Blogging Platform">
 </p>
 
-<!-- MODULE BADGES - CLEAN HEADER -->
-<p align="center">
-  <img src="https://img.shields.io/badge/Module-Admin%20Panel-FF6B6B?style=flat-square&logo=laravel">
-  <img src="https://img.shields.io/badge/Module-Public%20Website-4ECDC4?style=flat-square&logo=web">
-  <img src="https://img.shields.io/badge/Module-Category%20Manager-45B7D1?style=flat-square&logo=category">
-  <img src="https://img.shields.io/badge/Module-Media%20Upload-96CEB4?style=flat-square&logo=image">
-  <img src="https://img.shields.io/badge/Module-YouTube%20Embed-FF0000?style=flat-square&logo=youtube">
-  <img src="https://img.shields.io/badge/Module-SQLite%20DB-003B57?style=flat-square&logo=sqlite">
-</p>
-
 <!-- SPECIFIED BADGES ONLY -->
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-FF6B6B?style=for-the-badge&logo=git&logoColor=white&labelColor=1a1a2e">
