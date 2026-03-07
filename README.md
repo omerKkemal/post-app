@@ -3,11 +3,6 @@
   <img src="screen_shot/logo.png" alt="Blogging Platform Logo" width="200">
 </p>
 
-<!--- Animated Header --->
-<p align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=32&duration=2000&pause=500&color=FF6B6B&center=true&vCenter=true&width=600&lines=Dynamic+Blogging+Platform;Laravel+%2B+SQLite;Content+Management+System;Modern+Blog+Engine;Rich+Media+Support" alt="Typing SVG" />
-</p>
-
 <!-- MAIN TITLE -->
 <p align="center">
   <img src="https://img.shields.io/badge/DYNAMIC-BLOGGING%20PLATFORM-FF6B6B?style=for-the-badge&logo=laravel&logoColor=white&labelColor=1a1a2e" alt="Dynamic Blogging Platform">
@@ -23,7 +18,7 @@
   <img src="https://img.shields.io/badge/Module-SQLite%20DB-003B57?style=flat-square&logo=sqlite">
 </p>
 
-<!-- VERSION BADGES -->
+<!-- SPECIFIED BADGES ONLY -->
 <p align="center">
   <img src="https://img.shields.io/badge/version-1.0.0-FF6B6B?style=for-the-badge&logo=git&logoColor=white&labelColor=1a1a2e">
   <img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white&labelColor=1a1a2e">
@@ -32,7 +27,7 @@
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge&logo=open-source&logoColor=white&labelColor=1a1a2e">
 </p>
 
-<!-- REPO STATS -->
+<!-- REPO STATS BADGES -->
 <p align="center">
   <img src="https://api.visitorbadge.io/api/visitors?path=yourusername%2Fyour-repo&countColor=%23FF6B6B&style=for-the-badge" alt="Visitors">
   <img src="https://img.shields.io/github/stars/yourusername/your-repo?style=for-the-badge&logo=github&color=gold&labelColor=1a1a2e" alt="Stars">
@@ -61,13 +56,12 @@
 ## 📋 NAVIGATION MENU
 
 <p align="center">
-  <a href="#-overview"><img src="https://img.shields.io/badge/Overview-FF6B6B?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-features"><img src="https://img.shields.io/badge/Features-4ECDC4?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-architecture"><img src="https://img.shields.io/badge/Architecture-45B7D1?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-tech-stack"><img src="https://img.shields.io/badge/Tech%20Stack-96CEB4?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-installation"><img src="https://img.shields.io/badge/Installation-FF0000?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-future-improvements"><img src="https://img.shields.io/badge/Future-003B57?style=for-the-badge&logo=readme&logoColor=white"></a>
-  <a href="#-license"><img src="https://img.shields.io/badge/License-green?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#overview"><img src="https://img.shields.io/badge/Overview-FF6B6B?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#features"><img src="https://img.shields.io/badge/Features-4ECDC4?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#tech-stack"><img src="https://img.shields.io/badge/Tech%20Stack-96CEB4?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#installation"><img src="https://img.shields.io/badge/Installation-FF0000?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#future-improvements"><img src="https://img.shields.io/badge/Future-003B57?style=for-the-badge&logo=readme&logoColor=white"></a>
+  <a href="#license"><img src="https://img.shields.io/badge/License-green?style=for-the-badge&logo=readme&logoColor=white"></a>
 </p>
 
 ---
@@ -82,26 +76,6 @@ The platform is divided into two main parts:
 * **Public Website** – for visitors to browse articles and updates
 
 It also includes a **dynamic homepage, categorized library, and a "What's New" section** showing recent posts grouped by categories.
-
-```mermaid
-graph TD
-    A[Dynamic Blogging Platform] --> B[Admin Panel]
-    A --> C[Public Website]
-    
-    B --> B1[Post Management]
-    B --> B2[Category Management]
-    B --> B3[Media Upload]
-    B --> B4[What's New Updates]
-    
-    C --> C1[Dynamic Homepage]
-    C --> C2[Category Pages]
-    C --> C3[Library Section]
-    C --> C4[What's New Page]
-    
-    style A fill:#FF6B6B,stroke:#fff,stroke-width:2px,color:#fff
-    style B fill:#4ECDC4,stroke:#fff,color:#fff
-    style C fill:#45B7D1,stroke:#fff,color:#fff
-```
 
 ---
 
@@ -145,43 +119,6 @@ Visitors can browse content through several dynamic sections.
 - Shows recently published articles
 - Organized by categories for quick discovery
 - Helps users stay updated with latest content
-
----
-
-## ARCHITECTURE
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    DYNAMIC BLOGGING PLATFORM                     │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌──────────────────┐              ┌──────────────────┐        │
-│  │   ADMIN PANEL    │              │  PUBLIC WEBSITE  │        │
-│  │                  │              │                  │        │
-│  │ • Dashboard      │              │ • Homepage       │        │
-│  │ • Posts CRUD     │◄────────────►│ • Category Pages │        │
-│  │ • Categories     │   Database    │ • Library        │        │
-│  │ • Media Library  │   Layer       │ • What's New     │        │
-│  │ • Settings       │              │ • Article View   │        │
-│  └──────────────────┘              └──────────────────┘        │
-│           │                                 │                   │
-│           └──────────────┬──────────────────┘                   │
-│                          │                                      │
-│                    ┌─────▼─────┐                               │
-│                    │  SQLite   │                               │
-│                    │ Database  │                               │
-│                    └───────────┘                               │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                    MEDIA HANDLING                         │  │
-│  │  ┌────────────┐  ┌────────────┐  ┌────────────────────┐  │  │
-│  │  │   Images   │  │  YouTube   │  │ Structured Content │  │  │
-│  │  │   Upload   │  │   Embeds   │  │  (Titles, Lists)   │  │  │
-│  │  └────────────┘  └────────────┘  └────────────────────┘  │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
 
 ---
 
@@ -325,17 +262,10 @@ SOFTWARE.
 ---
 
 <!-- FOOTER -->
-<p align="center">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=16&duration=3000&pause=500&color=FF6B6B&center=true&vCenter=true&width=400&lines=Dynamic+Blogging+Platform;Built+with+Laravel+and+SQLite;Modern+Content+Management;Open+Source+Project" alt="Footer Typing SVG" />
-</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Dynamic%20Blogging%20Platform-v1.0.0-FF6B6B?style=for-the-badge">
   <img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?style=for-the-badge">
   <br>
   <sub>© 2024 Dynamic Blogging Platform. MIT License.</sub>
-</p>
-
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=footer&gradient=FF6B6B,4ECDC4,45B7D1"/>
 </p>
