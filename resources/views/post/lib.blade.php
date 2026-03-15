@@ -203,7 +203,7 @@
                 </button>
             </div>
 
-            <form id="uploadForm" enctype="multipart/form-data" action="{{ route('library.store') }}">
+            <form id="uploadForm" enctype="multipart/form-data" action="{{ route('library.store') }}" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="fileName" class="block text-sm font-medium text-gray-700 mb-2">File Name *</label>
@@ -218,7 +218,7 @@
                 <div class="mb-4">
                     <label for="fileCategory" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                     <select id="fileCategory"
-                            name="category_id"
+                            name="catagory_id"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Select Category (Optional)</option>
                         @foreach($categories as $category)

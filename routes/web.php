@@ -122,6 +122,8 @@ Route::post('/subscribe', [App\Http\Controllers\SubScription::class, 'subscribe'
 
 // Public Library Route
 Route::get('/public-library', [App\Http\Controllers\LibController::class, 'publicIndex'])->name('public.library');
+Route::get('/library/view/{id}', [App\Http\Controllers\LibController::class, 'view'])->name('library.view');
+Route::get('/library/preview-text/{id}', [App\Http\Controllers\LibController::class, 'previewText'])->name('library.preview-text');
 
 // Post Routes
 Route::get('/load-more-posts/{clickCount}/{language}', [PostController::class, 'loadMorePosts']);
@@ -158,8 +160,6 @@ Route::middleware('auth')->group(function () {
     // Library Routes
     Route::get('/library', [App\Http\Controllers\LibController::class, 'index'])->name('library.index');
     Route::post('/library/store', [App\Http\Controllers\LibController::class, 'store'])->name('library.store');
-    Route::get('/library/view/{id}', [App\Http\Controllers\LibController::class, 'view'])->name('library.view');
-    Route::get('/library/preview-text/{id}', [App\Http\Controllers\LibController::class, 'previewText'])->name('library.preview-text');
     Route::delete('/library/{id}', [App\Http\Controllers\LibController::class, 'destroy'])->name('library.destroy');
 });
 require __DIR__.'/auth.php';

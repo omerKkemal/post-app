@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('libraries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('catagory_id')->constrained('catagories')->onDelete('cascade');
             $table->string('location');
             $table->string('description')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Add this

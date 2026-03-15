@@ -20,7 +20,8 @@ class LibController extends Controller
     public function publicIndex()
     {
         $libraries = Library::latest()->get();
-        return view('public_lib', compact('libraries'));
+        $categories = \DB::table('catagories')->get();
+        return view('public_lib', compact('libraries', 'categories'));
     }
 
     // Store new library file
@@ -28,6 +29,7 @@ class LibController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'catagory_id' => 'required|exists:catagories,id',
             'description' => 'nullable|string',
             'document' => 'required|file|mimes:pdf,doc,docx,txt|max:10240', // 10MB max
         ]);
@@ -40,13 +42,19 @@ class LibController extends Controller
 
             auth()->user()->library()->create([
                 'name' => $request->name,
+                'catagory_id' => $request->catagory_id,
                 'description' => $request->description,
                 'location' => $path,
             ]);
 
             return response()->json(['success' => true, 'message' => 'File uploaded successfully!']);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'An error occurred while uploading the file.'], 500);
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ], 500);
         }
     }
 
