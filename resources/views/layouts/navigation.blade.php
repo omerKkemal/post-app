@@ -314,7 +314,7 @@
                     <span class="harari nav-har">ዚእኛች</span>
                     <span class="amharic nav-am">ስለ እኛ</span>
                 </a>
-                <a href="{{ url('/library') }}"
+                <a href="{{ url('/public-library') }}"
                      class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
                       <span class="english nav-eng">Library</span>
