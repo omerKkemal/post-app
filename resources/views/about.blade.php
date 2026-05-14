@@ -30,6 +30,9 @@
                     <button class="filter-btn language-filter-btn" data-language="harari">
                         <span class="language-badge">Harari</span>
                     </button>
+                    <button class="filter-btn language-filter-btn" data-language="amharic">
+                        <span class="language-badge">Amharic</span>
+                    </button>
                 </div>
             </div>
 

@@ -75,6 +75,66 @@
         width: 100%;
         height: 100%;
     }
+
+    /* Language Filter Styles */
+    .language-filter-btn {
+        padding: 8px 16px;
+        background-color: #f3f4f6;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .language-filter-btn:hover {
+        background-color: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    .language-filter-active {
+        background-color: #3b82f6 !important;
+        color: white;
+        border-color: #3b82f6;
+    }
+
+    .language-badge {
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+
+    /* Category Filter Active State */
+    .category-filter-btn {
+        padding: 8px 16px;
+        background-color: #f3f4f6;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .category-filter-btn:hover {
+        background-color: #e5e7eb;
+        transform: translateY(-1px);
+    }
+
+    .category-filter-active {
+        background-color: #3b82f6 !important;
+        color: white;
+        border-color: #3b82f6;
+    }
+
+    /* Animation for filter changes */
+    .library-item {
+        transition: all 0.3s ease;
+    }
+
+    .library-item.hidden {
+        opacity: 0;
+        transform: translateY(-10px);
+        height: 0;
+        margin: 0;
+        overflow: hidden;
+    }
 </style>
 
 <x-app-layout>
@@ -104,21 +164,63 @@
                 </div>
             @endif
 
+            <!-- Language Filter -->
+            <div class="mb-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                            </svg>
+                            Language Filter
+                        </h3>
+                        <button id="reset-language-filter" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">
+                            Reset Filter
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-3" id="language-filters-container">
+                        <button class="filter-btn language-filter-btn language-filter-active" data-language="all">
+                            <span class="language-badge">All Languages</span>
+                        </button>
+                        <button class="filter-btn language-filter-btn" data-language="harari">
+                            <span class="language-badge">Harari</span>
+                        </button>
+                        <button class="filter-btn language-filter-btn" data-language="english">
+                            <span class="language-badge">English</span>
+                        </button>
+                        <button class="filter-btn language-filter-btn" data-language="amharic">
+                            <span class="language-badge">Amharic</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Category Filter -->
             <div class="mb-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"></path>
+                        </svg>
                         Filter by Category
                     </h3>
-                    <div class="flex flex-wrap gap-2" id="categoryFilters">
-                        <button class="filter-btn px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700"
-                                data-category="all">
-                            All Categories
+                    <div class="flex flex-wrap gap-3" id="categoryFilters">
+                        <button class="filter-btn category-filter-btn category-filter-active" data-category="all">
+                            <span class="category-badge" data-en="All Categories" data-har="ሁሉም ምድቦች" data-am="ሁሉም ምድቦች">All Categories</span>
                         </button>
                         @foreach($categories as $category)
-                            <button class="filter-btn px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    data-category="{{ $category->id }}">
-                                {{ $category->name }}
+                            <button class="filter-btn category-filter-btn"
+                                    data-category="{{ $category->id }}"
+                                    data-category-name="{{ $category->name }}"
+                                    data-category-en="{{ $category->name }}"
+                                    data-category-har="{{ $category->har }}"
+                                    data-category-am="{{ $category->am }}">
+                                <span class="category-badge"
+                                      data-en="{{ $category->name }}"
+                                      data-har="{{ $category->har }}"
+                                      data-am="{{ $category->am }}">
+                                    {{ $category->name }}
+                                </span>
                             </button>
                         @endforeach
                     </div>
@@ -133,10 +235,6 @@
                             Your Library Files
                             <span id="fileCount">({{ $libraries->count() }})</span>
                         </h3>
-                        <div id="activeCategory" class="text-sm text-gray-600 hidden">
-                            Filtered by: <span class="font-medium" id="currentCategory"></span>
-                            <button id="clearFilter" class="ml-2 text-blue-600 hover:text-blue-800">✕ Clear</button>
-                        </div>
                     </div>
 
                     @if($libraries->count() > 0)
@@ -144,7 +242,8 @@
                             @foreach($libraries as $library)
                                 <div class="library-item bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow duration-200"
                                      data-category="{{ $library->category_id ?? 'uncategorized' }}"
-                                     data-category-name="{{ $library->category->name ?? 'Uncategorized' }}">
+                                     data-category-name="{{ $library->category->name ?? 'Uncategorized' }}"
+                                     data-language="{{ $library->language ?? 'all' }}">
                                     <!-- Category Badge -->
                                     @if($library->category)
                                         <div class="mb-3">
@@ -455,6 +554,12 @@
         return null;
     }
 
+    function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+    }
+
     function updateNavigationLanguage(language) {
         // Hide all language-specific spans
         document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => {
@@ -482,7 +587,40 @@
         }
     }
 
-    // ========== YOUR EXISTING LIBRARY SCRIPT (unchanged) ==========
+    // Update category button labels based on selected language
+    function updateCategoryButtonLabels(language) {
+        const categoryFilterBtns = document.querySelectorAll('.category-filter-btn');
+        categoryFilterBtns.forEach(button => {
+            const badge = button.querySelector('.category-badge');
+            if (badge) {
+                // Get the language-specific text from data attributes
+                let text = '';
+                switch(language) {
+                    case 'harari':
+                        text = badge.getAttribute('data-har') || badge.getAttribute('data-en');
+                        break;
+                    case 'amharic':
+                        text = badge.getAttribute('data-am') || badge.getAttribute('data-en');
+                        break;
+                    case 'english':
+                    case 'all':
+                    default:
+                        text = badge.getAttribute('data-en');
+                        break;
+                }
+
+                // Update the button text
+                if (text) {
+                    badge.textContent = text;
+                }
+            }
+        });
+    }
+
+    // ========== LIBRARY FILTERING WITH LANGUAGE SUPPORT ==========
+    let currentLanguageFilter = getCookie('selected_library_language') || 'all';
+    let currentCategoryFilter = 'all';
+
     document.addEventListener('DOMContentLoaded', function() {
         // Apply saved language to navbar
         const savedLanguage = getCookie('selected_language') || 'all';
@@ -493,12 +631,153 @@
         // Initialize all modals first
         initializeModals();
 
+        // Initialize language filter
+        initializeLanguageFilter();
+
+        // Initialize category filter
+        initializeCategoryFilter();
+
         // Initialize event listeners
         initializeEventListeners();
 
-        // Initialize filter
-        filterByCategory('all');
+        // Initialize filter with saved language
+        updateCategoryButtonLabels(currentLanguageFilter);
+        applyFilters();
     });
+
+    function initializeLanguageFilter() {
+        const languageFilterButtons = document.querySelectorAll('.language-filter-btn');
+        const resetLanguageFilter = document.getElementById('reset-language-filter');
+
+        languageFilterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const language = this.getAttribute('data-language');
+
+                // Update active state
+                languageFilterButtons.forEach(btn => {
+                    btn.classList.remove('language-filter-active');
+                });
+                this.classList.add('language-filter-active');
+
+                // Update current filter
+                currentLanguageFilter = language;
+                if (language !== 'amharic') {
+                    setCookie('selected_library_language', language, 30);
+                }
+
+                // Update navigation language spans
+                updateNavigationLanguage(language);
+
+                // Update category button labels
+                updateCategoryButtonLabels(language);
+
+                // Apply filters
+                applyFilters();
+            });
+        });
+
+        // Set initial active language button
+        const initialLanguageBtn = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
+        if (initialLanguageBtn) {
+            initialLanguageBtn.classList.add('language-filter-active');
+        }
+
+        // Reset language filter
+        if (resetLanguageFilter) {
+            resetLanguageFilter.addEventListener('click', function() {
+                languageFilterButtons.forEach(btn => {
+                    btn.classList.remove('language-filter-active');
+                });
+                document.querySelector('.language-filter-btn[data-language="all"]').classList.add('language-filter-active');
+                currentLanguageFilter = 'all';
+                setCookie('selected_library_language', 'all', 30);
+
+                // Update navigation language spans to show English (since "all" selected)
+                updateNavigationLanguage('all');
+
+                // Reset category button labels to English
+                updateCategoryButtonLabels('all');
+
+                applyFilters();
+            });
+        }
+    }
+
+    function initializeCategoryFilter() {
+        const categoryFilterButtons = document.querySelectorAll('.category-filter-btn');
+        console.log('Initializing category filter with', categoryFilterButtons.length, 'buttons');
+
+        categoryFilterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                console.log('Category button clicked:', category);
+
+                // Update active state
+                categoryFilterButtons.forEach(btn => {
+                    btn.classList.remove('category-filter-active');
+                });
+                this.classList.add('category-filter-active');
+
+                // Update current filter
+                currentCategoryFilter = category;
+                console.log('Current category filter set to:', currentCategoryFilter);
+
+                // Apply filters
+                applyFilters();
+            });
+        });
+    }
+
+    function applyFilters() {
+        const items = document.querySelectorAll('.library-item');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const itemLanguage = item.getAttribute('data-language') || 'all';
+            const itemCategory = String(item.getAttribute('data-category'));
+
+            // Check language filter
+            const languageMatch = currentLanguageFilter === 'all' || itemLanguage === 'all' || itemLanguage === currentLanguageFilter;
+
+            // Check category filter
+            const categoryMatch = currentCategoryFilter === 'all' || String(itemCategory) === String(currentCategoryFilter);
+
+            if (languageMatch && categoryMatch) {
+                item.style.display = 'block';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 50);
+                visibleCount++;
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        // Update file count
+        const fileCount = document.getElementById('fileCount');
+        if (fileCount) {
+            fileCount.textContent = `(${visibleCount})`;
+        }
+
+        // Show message if no items visible
+        const noFilesMessage = document.getElementById('noFilesMessage');
+        if (visibleCount === 0) {
+            if (noFilesMessage) {
+                noFilesMessage.style.display = 'block';
+            }
+        } else {
+            if (noFilesMessage) {
+                noFilesMessage.style.display = 'none';
+            }
+        }
+    }
+
+    // ========== YOUR EXISTING LIBRARY SCRIPT (unchanged) ==========
 
     function initializeModals() {
         // Make sure modals are properly initialized
@@ -1035,59 +1314,7 @@
     }
 
     // Filter functions
-    function filterByCategory(categoryId) {
-        const items = document.querySelectorAll('.library-item');
-        let visibleCount = 0;
-
-        items.forEach(item => {
-            const itemCategory = item.getAttribute('data-category');
-
-            if (categoryId === 'all' || categoryId === itemCategory) {
-                item.style.display = 'block';
-                visibleCount++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Update file count
-        const fileCount = document.getElementById('fileCount');
-        if (fileCount) {
-            fileCount.textContent = `(${visibleCount})`;
-        }
-
-        // Update active filter display
-        const activeCategory = document.getElementById('activeCategory');
-        if (categoryId === 'all') {
-            if (activeCategory) activeCategory.classList.add('hidden');
-        } else {
-            if (activeCategory) {
-                activeCategory.classList.remove('hidden');
-                const filterBtn = document.querySelector(`[data-category="${categoryId}"]`);
-                const currentCategory = document.getElementById('currentCategory');
-                if (currentCategory && filterBtn) {
-                    currentCategory.textContent = filterBtn.textContent.trim();
-                }
-            }
-        }
-
-        // Update filter button states
-        updateFilterButtons(categoryId);
-    }
-
-    function updateFilterButtons(activeCategoryId) {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            const category = btn.getAttribute('data-category');
-            if (category === activeCategoryId) {
-                btn.classList.remove('bg-gray-100', 'text-gray-700');
-                btn.classList.add('bg-blue-600', 'text-white');
-            } else {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-gray-100', 'text-gray-700');
-            }
-        });
-    }
+    // Note: Category filtering is now handled by applyFilters() function above
     </script>
     @endpush
 </x-app-layout>
