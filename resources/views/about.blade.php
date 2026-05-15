@@ -233,7 +233,7 @@
             const resetButton = document.getElementById('reset-language-filter');
 
             function setLanguage(language) {
-                if (language !== 'amharic') {
+                if (language !== 'harari') {
                     setCookie('selected_language', language, 30); // Save for 30 days
                 }
 
@@ -306,7 +306,7 @@
 
             // Initialize with saved language or default
             const saved = getCookie('selected_language');
-            const currentLanguage = (saved && saved !== 'all') ? saved : 'amharic';
+            const currentLanguage = (saved && saved !== 'all') ? saved : 'harari';
             setLanguage(currentLanguage);
         });
     </script>

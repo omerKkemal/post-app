@@ -617,12 +617,12 @@
             const toggleButton = document.getElementById('toggle-language');
             let currentLanguage = (function() {
                 const saved = getCookie('selected_language');
-                return (saved && saved !== 'all') ? saved : 'amharic';
+                return (saved && saved !== 'all') ? saved : 'harari';
             })();
 
             function setLanguage(language) {
                 currentLanguage = language;
-                if (language !== 'amharic') {
+                if (language !== 'harari') {
                     setCookie('selected_language', language, 30); // Save for 30 days
                 }
 
