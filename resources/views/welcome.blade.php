@@ -39,11 +39,17 @@
                         <h1 class="harari hidden1 text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
                             ሀረሪ መጀሊስ
                         </h1>
+                        <h1 class="amharic hidden1 text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">
+                            ሀረሪ ኮንግረስ
+                        </h1>
                         <p class="english text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-white drop-shadow-lg">
                             Preserving the rich heritage and culture of Harar while building a prosperous future for our community
                         </p>
                         <p class="harari hidden1 text-lg md:text-xl mb-4 max-w-2xl mx-auto text-white drop-shadow-lg">
                             ዚሀረሪ ሳዮት ቁራስ ዋ አዳች መቄረሕቤ ዳይሐዋዝዚኛሌ ዚሳይቲ ሙስተቅበል መቼኻል ላአይቤ.
+                        </p>
+                        <p class="amharic hidden1 text-lg md:text-xl mb-4 max-w-2xl mx-auto text-white drop-shadow-lg">
+                            የሀረር ባህላዊ ርህራሄ እና ባህል በማስተያየት ለማህበራችን የሚለምን የተሻለ ምህዳር በመስራት ላይ ነን።
                         </p>
                         <div class="flex flex-wrap justify-center gap-4 mt-8">
                             <a href="#messaging"
@@ -54,6 +60,10 @@
                             class="harari hidden1 bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                                 <i class="fas fa-bullhorn mr-2"></i>ዚዳይሐዋዞ ሉኽ
                             </a>
+                            <a href="#messaging"
+                            class="amharic hidden1 bg-white text-green-700 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-bullhorn mr-2"></i>የማህበራዊ መልእክቶች
+                            </a>
                             <a href="#news"
                             class="english bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                                 <i class="fas fa-newspaper mr-2"></i>Latest News
@@ -61,6 +71,10 @@
                             <a href="#news"
                             class="harari hidden1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
                                 <i class="fas fa-newspaper mr-2"></i>ቁራ ወቅቲ ኻበራች
+                            </a>
+                            <a href="#news"
+                            class="amharic hidden1 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-lg">
+                                <i class="fas fa-newspaper mr-2"></i>የቅርቡ ዜናዎች
                             </a>
                         </div>
                     </div>

@@ -58,6 +58,7 @@
             <div id="goals" class="mb-12 scroll-mt-8">
                 <h3 class="english text-2xl font-semibold mb-6 text-gray-800">Goals & Mission</h3>
                 <h3 class="harari text-2xl font-semibold mb-6 text-gray-800">ተላኾት ዋ ሀድፈ</h3>
+                <h3 class="amharic text-2xl font-semibold mb-6 text-gray-800">ተልእኮ እና ተልእኮ</h3>
                 <div class="bg-white rounded-lg shadow-md p-6">
 
                         <!-- Harari language section -->
@@ -123,6 +124,22 @@
                             </div>
                         </div>
 
+                        <!-- Amharic section -->
+                        <div class="space-y-4">
+                            <div class="amharic bg-green-50 p-4 rounded-lg border border-green-200">
+                                <code class='block overflow-x-auto'>
+                                    <h1 style="text-align: center; text-decoration: underline; margin-bottom: 1.5rem;">ተልእኮች</h1>
+                                    ሀረሪ ኡማት የሀረሪ ህዝብ መብቶችን፣ ባህልን እና ልምዱን ለማሳደግ ተለያዩ ፕሮግራሞች እና ስራዎች በመስራት ተለያዩ ተልእኮች አሉት፡፡
+                                    1. የማሳወቂያ ስራ፡ የሀረሪ ማህበራት ፍላጎቶችን በአካባቢ፣ በብሔራዊ እና በአለም አቀፍ ደረጃ ለማሳወቅ።
+                                    2. የባህል ማስተያየት፡ የሀረሪ ቋንቋ፣ ልምዶች እና ርህራሄን በተለያዩ ፕሮግራሞች እና ስራዎች በመስራት ለማስተያየት።
+                                    3. የትምህርት ስራ፡ ለሀረሪ ወጣቶች ትምህርታዊ እድሎችን በመስጠት በተለያዩ የትምህርት ምንጮች እና ድጋፍ በመስጠት።
+                                    4. የኢኮኖሚ ልምድ፡ ለሀረሪ ማህበራት የሚለምኑ ኢኮኖሚ ስራዎችን በመስራት እና የሥራ ፈጠራ በመስራት።
+                                    5. የማህበራዊ እርዳታ ስራ፡ የሀረሪ ህዝብን የሚያሳድዱ ማህበራዊ ችግሮችን በመፍታት እና የህክምና፣ የመኖሪያ ቦታ እና የማህበራዊ አገልግሎት በመስጠት።
+                                    በእነዚህ ተልእኮች ሀረሪ ኡማት የሀረሪ ማህበራትን ለማበረታታት እና የማህበራቱን የማህበራዊ እና ኢኮኖሚ ልምድ ለማስተያየት ተለያዩ ስራዎች አሉት።
+                                </code>
+                            </div>
+                        </div>
+
                 </div>
             </div>
 
@@ -130,6 +147,7 @@
             <div id="members" class="mb-8 scroll-mt-8">
                 <h3 class="english text-2xl font-semibold mb-6 text-gray-800">Congress Members</h3>
                 <h3 class="harari text-2xl font-semibold mb-6 text-gray-800">መጅሊስ አግቡራች</h3>
+                <h3 class="amharic text-2xl font-semibold mb-6 text-gray-800">የኮንግረስ አባላት</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach($members as $member)
                         @if ($member->position === 'President')
