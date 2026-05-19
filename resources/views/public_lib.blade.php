@@ -128,13 +128,7 @@
         transition: all 0.3s ease;
     }
 
-    .library-item.hidden {
-        opacity: 0;
-        transform: translateY(-10px);
-        height: 0;
-        margin: 0;
-        overflow: hidden;
-    }
+
 </style>
 
 <x-app-layout>
@@ -241,7 +235,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="libraryGrid">
                             @foreach($libraries as $library)
                                 <div class="library-item bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow duration-200"
-                                     data-category="{{ $library->category_id ?? 'uncategorized' }}"
+                                     data-category="{{ $library->catagory_id ?? 0 }}"
                                      data-category-name="{{ $library->category->name ?? 'Uncategorized' }}"
                                      data-language="{{ $library->language ?? 'all' }}">
                                     <!-- Category Badge -->
@@ -542,655 +536,178 @@
 
     @push('scripts')
     <script>
-    // ========== NAVBAR LANGUAGE FUNCTIONS (copied from postView) ==========
+    // ==================== COOKIE HELPERS ====================
     function getCookie(name) {
-        const nameEQ = name + '=';
-        const ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
     }
-
     function setCookie(name, value, days) {
         const expires = new Date();
         expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
         document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
     }
 
+    // ==================== NAVIGATION & CATEGORY BUTTON TEXTS ====================
     function updateNavigationLanguage(language) {
-        // Hide all language-specific spans
-        document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => {
-            span.style.display = 'none';
-        });
-
-        // Show only the spans for the selected language
-        switch(language) {
-            case 'english':
-            case 'all':
-                document.querySelectorAll('.nav-eng').forEach(span => {
-                    span.style.display = 'inline';
-                });
-                break;
-            case 'harari':
-                document.querySelectorAll('.nav-har').forEach(span => {
-                    span.style.display = 'inline';
-                });
-                break;
-            case 'amharic':
-                document.querySelectorAll('.nav-am').forEach(span => {
-                    span.style.display = 'inline';
-                });
-                break;
-        }
+        document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => span.style.display = 'none');
+        if (language === 'english' || language === 'all')
+            document.querySelectorAll('.nav-eng').forEach(span => span.style.display = 'inline');
+        else if (language === 'harari')
+            document.querySelectorAll('.nav-har').forEach(span => span.style.display = 'inline');
+        else if (language === 'amharic')
+            document.querySelectorAll('.nav-am').forEach(span => span.style.display = 'inline');
     }
 
-    // Update category button labels based on selected language
     function updateCategoryButtonLabels(language) {
-        const categoryFilterBtns = document.querySelectorAll('.category-filter-btn');
-        categoryFilterBtns.forEach(button => {
-            const badge = button.querySelector('.category-badge');
-            if (badge) {
-                // Get the language-specific text from data attributes
-                let text = '';
-                switch(language) {
-                    case 'harari':
-                        text = badge.getAttribute('data-har') || badge.getAttribute('data-en');
-                        break;
-                    case 'amharic':
-                        text = badge.getAttribute('data-am') || badge.getAttribute('data-en');
-                        break;
-                    case 'english':
-                    case 'all':
-                    default:
-                        text = badge.getAttribute('data-en');
-                        break;
-                }
-
-                // Update the button text
-                if (text) {
-                    badge.textContent = text;
-                }
-            }
+        document.querySelectorAll('.category-filter-btn .category-badge').forEach(badge => {
+            let text = '';
+            if (language === 'harari')
+                text = badge.getAttribute('data-har') || badge.getAttribute('data-en');
+            else if (language === 'amharic')
+                text = badge.getAttribute('data-am') || badge.getAttribute('data-en');
+            else
+                text = badge.getAttribute('data-en');
+            if (text) badge.textContent = text;
         });
     }
 
-    // ========== LIBRARY FILTERING WITH LANGUAGE SUPPORT ==========
+    // ==================== FILTER STATE ====================
     let currentLanguageFilter = getCookie('selected_library_language') || 'all';
-    let currentCategoryFilter = 'all';
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Apply saved language to navbar
-        const savedLanguage = getCookie('selected_language') || 'all';
-        updateNavigationLanguage(savedLanguage);
-
-        console.log('Library Management script loaded');
-
-        // Initialize all modals first
-        initializeModals();
-
-        // Initialize language filter
-        initializeLanguageFilter();
-
-        // Initialize category filter
-        initializeCategoryFilter();
-
-        // Initialize event listeners
-        initializeEventListeners();
-
-        // Initialize filter with saved language
-        updateCategoryButtonLabels(currentLanguageFilter);
-        applyFilters();
-    });
-
-    function initializeLanguageFilter() {
-        const languageFilterButtons = document.querySelectorAll('.language-filter-btn');
-        const resetLanguageFilter = document.getElementById('reset-language-filter');
-
-        languageFilterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const language = this.getAttribute('data-language');
-
-                // Update active state
-                languageFilterButtons.forEach(btn => {
-                    btn.classList.remove('language-filter-active');
-                });
-                this.classList.add('language-filter-active');
-
-                // Update current filter
-                currentLanguageFilter = language;
-                if (language !== 'amharic') {
-                    setCookie('selected_library_language', language, 30);
-                }
-
-                // Update navigation language spans
-                updateNavigationLanguage(language);
-
-                // Update category button labels
-                updateCategoryButtonLabels(language);
-
-                // Apply filters
-                applyFilters();
-            });
-        });
-
-        // Set initial active language button
-        const initialLanguageBtn = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
-        if (initialLanguageBtn) {
-            initialLanguageBtn.classList.add('language-filter-active');
-        }
-
-        // Reset language filter
-        if (resetLanguageFilter) {
-            resetLanguageFilter.addEventListener('click', function() {
-                languageFilterButtons.forEach(btn => {
-                    btn.classList.remove('language-filter-active');
-                });
-                document.querySelector('.language-filter-btn[data-language="all"]').classList.add('language-filter-active');
-                currentLanguageFilter = 'all';
-                setCookie('selected_library_language', 'all', 30);
-
-                // Update navigation language spans to show English (since "all" selected)
-                updateNavigationLanguage('all');
-
-                // Reset category button labels to English
-                updateCategoryButtonLabels('all');
-
-                applyFilters();
-            });
-        }
-    }
-
-    function initializeCategoryFilter() {
-        const categoryFilterButtons = document.querySelectorAll('.category-filter-btn');
-        console.log('Initializing category filter with', categoryFilterButtons.length, 'buttons');
-
-        categoryFilterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const category = this.getAttribute('data-category');
-                console.log('Category button clicked:', category);
-
-                // Update active state
-                categoryFilterButtons.forEach(btn => {
-                    btn.classList.remove('category-filter-active');
-                });
-                this.classList.add('category-filter-active');
-
-                // Update current filter
-                currentCategoryFilter = category;
-                console.log('Current category filter set to:', currentCategoryFilter);
-
-                // Apply filters
-                applyFilters();
-            });
-        });
-    }
-
+    // ==================== CORE FILTER FUNCTION (NO CLASS DEPENDENCY) ====================
     function applyFilters() {
-        const items = document.querySelectorAll('.library-item');
+        // Select all elements that have the category data attributes (no class needed)
+        const items = document.querySelectorAll('[data-category-en]');
         let visibleCount = 0;
 
+        // Decide which language attribute to use for category comparison
+        let categoryAttr = 'data-category-en';
+        if (currentLanguageFilter === 'harari') categoryAttr = 'data-category-har';
+        else if (currentLanguageFilter === 'amharic') categoryAttr = 'data-category-am';
+
+        // Get the active category button and the selected category name (in the current language)
+        const activeCategoryBtn = document.querySelector('.category-filter-btn.category-filter-active');
+        let selectedCategoryName = null;
+        let isAllCategories = true;
+
+        if (activeCategoryBtn) {
+            const isAllBtn = activeCategoryBtn.getAttribute('data-category') === 'all';
+            if (isAllBtn) {
+                isAllCategories = true;
+            } else {
+                isAllCategories = false;
+                if (currentLanguageFilter === 'harari')
+                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-har');
+                else if (currentLanguageFilter === 'amharic')
+                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-am');
+                else
+                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-en');
+
+                // Fallback to English if translation missing
+                if (!selectedCategoryName)
+                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-en');
+            }
+        }
+
+        // Apply filter to each item
         items.forEach(item => {
             const itemLanguage = item.getAttribute('data-language') || 'all';
-            const itemCategory = String(item.getAttribute('data-category'));
+            let itemCategory = item.getAttribute(categoryAttr) || '';
+            itemCategory = itemCategory.trim();
+            const normalizedSelected = selectedCategoryName ? selectedCategoryName.trim() : '';
 
-            // Check language filter
-            const languageMatch = currentLanguageFilter === 'all' || itemLanguage === 'all' || itemLanguage === currentLanguageFilter;
-
-            // Check category filter
-            const categoryMatch = currentCategoryFilter === 'all' || String(itemCategory) === String(currentCategoryFilter);
+            const languageMatch = (currentLanguageFilter === 'all') ||
+                                  (itemLanguage === 'all') ||
+                                  (itemLanguage === currentLanguageFilter);
+            let categoryMatch = false;
+            if (isAllCategories) {
+                categoryMatch = true;
+            } else {
+                // Case‑sensitive comparison; use .toLowerCase() if you prefer case‑insensitive
+                categoryMatch = (itemCategory === normalizedSelected);
+            }
 
             if (languageMatch && categoryMatch) {
                 item.style.display = 'block';
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                }, 50);
                 visibleCount++;
             } else {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 300);
+                item.style.display = 'none';
             }
         });
 
-        // Update file count
-        const fileCount = document.getElementById('fileCount');
-        if (fileCount) {
-            fileCount.textContent = `(${visibleCount})`;
-        }
-
-        // Show message if no items visible
-        const noFilesMessage = document.getElementById('noFilesMessage');
-        if (visibleCount === 0) {
-            if (noFilesMessage) {
-                noFilesMessage.style.display = 'block';
-            }
-        } else {
-            if (noFilesMessage) {
-                noFilesMessage.style.display = 'none';
-            }
-        }
+        // Update file counter and "no files" message
+        const fileCountSpan = document.getElementById('fileCount');
+        if (fileCountSpan) fileCountSpan.innerHTML = `(${visibleCount})`;
+        const noFilesMsg = document.getElementById('noFilesMessage');
+        if (noFilesMsg) noFilesMsg.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
-    // ========== YOUR EXISTING LIBRARY SCRIPT (unchanged) ==========
-
-    function initializeModals() {
-        // Make sure modals are properly initialized
-        const uploadModal = document.getElementById('uploadModal');
-        const deleteModal = document.getElementById('deleteModal');
-        const previewModal = document.getElementById('previewModal');
-
-        // Set initial state
-        if (uploadModal) uploadModal.style.display = 'none';
-        if (deleteModal) deleteModal.style.display = 'none';
-        if (previewModal) previewModal.style.display = 'none';
-    }
-
-    function initializeEventListeners() {
-        // Add file buttons
-        document.addEventListener('click', function(e) {
-            // Add file button
-            if (e.target.closest('.add-file-btn')) {
+    // ==================== INITIALIZE FILTER BUTTONS ====================
+    function initializeCategoryFilter() {
+        const btns = document.querySelectorAll('.category-filter-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                console.log('Add file button clicked');
-                const uploadModal = document.getElementById('uploadModal');
-                if (uploadModal) {
-                    uploadModal.classList.remove('hidden');
-                    uploadModal.style.display = 'flex';
-                }
-            }
-
-            // Preview button
-            if (e.target.closest('.preview-file-btn')) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Preview button clicked');
-                const button = e.target.closest('.preview-file-btn');
-                openPreviewModal(button);
-            }
-
-            // Delete button
-            if (e.target.closest('.delete-file-btn')) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Delete button clicked');
-                const button = e.target.closest('.delete-file-btn');
-                openDeleteModal(button);
-            }
+                btns.forEach(b => b.classList.remove('category-filter-active'));
+                this.classList.add('category-filter-active');
+                applyFilters();
+            });
         });
+        // Ensure "All Categories" is active by default
+        if (!document.querySelector('.category-filter-btn.category-filter-active')) {
+            const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
+            if (allBtn) allBtn.classList.add('category-filter-active');
+        }
+    }
 
-        // Upload modal close buttons
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-
-        [closeModalBtn, cancelBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    closeModal('uploadModal');
-                    resetForm();
-                });
-            }
+    function initializeLanguageFilter() {
+        const langBtns = document.querySelectorAll('.language-filter-btn');
+        const resetBtn = document.getElementById('reset-language-filter');
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-language');
+                langBtns.forEach(b => b.classList.remove('language-filter-active'));
+                this.classList.add('language-filter-active');
+                currentLanguageFilter = lang;
+                if (lang !== 'amharic') setCookie('selected_library_language', lang, 30);
+                updateNavigationLanguage(lang);
+                updateCategoryButtonLabels(lang);
+                applyFilters();
+            });
         });
-
-        // Delete modal buttons
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-
-        if (cancelDeleteBtn) {
-            cancelDeleteBtn.addEventListener('click', function(e) {
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                closeModal('deleteModal');
+                langBtns.forEach(b => b.classList.remove('language-filter-active'));
+                const allLangBtn = document.querySelector('.language-filter-btn[data-language="all"]');
+                if (allLangBtn) allLangBtn.classList.add('language-filter-active');
+                currentLanguageFilter = 'all';
+                setCookie('selected_library_language', 'all', 30);
+                updateNavigationLanguage('all');
+                updateCategoryButtonLabels('all');
+                applyFilters();
             });
         }
-
-        if (confirmDeleteBtn) {
-            confirmDeleteBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                deleteFile();
-            });
-        }
-
-        // Preview modal close buttons
-        const closePreviewBtn = document.getElementById('closePreviewBtn');
-        const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
-        const closeErrorBtn = document.getElementById('closeErrorBtn');
-
-        [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    closeModal('previewModal');
-                });
-            }
-        });
-
-        // File upload functionality
-        const fileDropZone = document.getElementById('fileDropZone');
-        const fileInput = document.getElementById('fileDocument');
-        const removeFileBtn = document.getElementById('removeFile');
-        const uploadForm = document.getElementById('uploadForm');
-
-        if (fileDropZone && fileInput) {
-            fileDropZone.addEventListener('click', function(e) {
-                e.preventDefault();
-                fileInput.click();
-            });
-
-            fileInput.addEventListener('change', function(e) {
-                if (e.target.files.length > 0) {
-                    handleFileSelect(e.target.files[0]);
-                }
-            });
-        }
-
-        if (removeFileBtn) {
-            removeFileBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (fileInput) fileInput.value = '';
-                const fileInfo = document.getElementById('fileInfo');
-                if (fileInfo) fileInfo.classList.add('hidden');
-            });
-        }
-
-        if (uploadForm) {
-            uploadForm.addEventListener('submit', handleFormSubmit);
-        }
-
-        // Filter functionality
-        const categoryFilters = document.getElementById('categoryFilters');
-        const clearFilter = document.getElementById('clearFilter');
-
-        if (categoryFilters) {
-            categoryFilters.addEventListener('click', function(e) {
-                if (e.target.closest('.filter-btn')) {
-                    const filterBtn = e.target.closest('.filter-btn');
-                    const category = filterBtn.getAttribute('data-category');
-                    filterByCategory(category);
-                }
-            });
-        }
-
-        if (clearFilter) {
-            clearFilter.addEventListener('click', function(e) {
-                e.preventDefault();
-                filterByCategory('all');
-            });
-        }
-
-        // Close modals when clicking outside
-        window.addEventListener('click', function(e) {
-            // Upload modal
-            const uploadModal = document.getElementById('uploadModal');
-            if (uploadModal && e.target === uploadModal) {
-                closeModal('uploadModal');
-                resetForm();
-            }
-
-            // Delete modal
-            const deleteModal = document.getElementById('deleteModal');
-            if (deleteModal && e.target === deleteModal) {
-                closeModal('deleteModal');
-            }
-
-            // Preview modal
-            const previewModal = document.getElementById('previewModal');
-            if (previewModal && e.target === previewModal) {
-                closeModal('previewModal');
-            }
-        });
+        const initialLang = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
+        if (initialLang) initialLang.classList.add('language-filter-active');
+        else document.querySelector('.language-filter-btn[data-language="all"]')?.classList.add('language-filter-active');
     }
 
-    // Modal functions
-    function openDeleteModal(button) {
-        const fileId = button.dataset.fileId;
-        const fileName = button.dataset.fileName;
-
-        // Store file ID for deletion
-        window.currentFileToDelete = fileId;
-
-        // Update modal content
-        document.getElementById('deleteFileName').textContent = fileName;
-
-        // Show modal
-        const deleteModal = document.getElementById('deleteModal');
-        if (deleteModal) {
-            deleteModal.classList.remove('hidden');
-            deleteModal.style.display = 'flex';
+    // ==================== PREVIEW MODAL FUNCTIONS ====================
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
         }
-    }
-
-    async function deleteFile() {
-        if (!window.currentFileToDelete) {
-            alert('No file selected for deletion');
-            return;
-        }
-
-        const deleteBtn = document.getElementById('confirmDeleteBtn');
-        const originalText = deleteBtn.innerHTML;
-
-        try {
-            deleteBtn.disabled = true;
-            deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Deleting...';
-
-            const response = await fetch(`/library/${window.currentFileToDelete}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                closeModal('deleteModal');
-                // Show success message
-                alert('File deleted successfully!');
-                // Reload page to reflect changes
-                window.location.reload();
-            } else {
-                alert(result.message || 'Failed to delete file');
-            }
-        } catch (error) {
-            console.error('Delete error:', error);
-            alert('An error occurred while deleting the file');
-        } finally {
-            deleteBtn.disabled = false;
-            deleteBtn.innerHTML = originalText;
-            window.currentFileToDelete = null;
-        }
-    }
-
-    function openPreviewModal(button) {
-        const fileId = button.dataset.fileId;
-        const fileName = button.dataset.fileName;
-        const fileExtension = button.dataset.fileExtension.toLowerCase();
-        const fileUrl = button.dataset.fileUrl;
-        const downloadUrl = button.dataset.downloadUrl;
-
-        console.log('Opening preview for:', fileName, 'Extension:', fileExtension, 'URL:', fileUrl);
-
-        // Store file info
-        window.currentPreviewFile = {
-            id: fileId,
-            name: fileName,
-            extension: fileExtension,
-            url: fileUrl,
-            downloadUrl: downloadUrl
-        };
-
-        // Update modal title
-        document.getElementById('previewFileName').textContent = fileName;
-        document.getElementById('previewFileType').textContent = `${fileExtension.toUpperCase()} File`;
-
-        // Set download URLs for all download buttons
-        const previewDownloadBtn = document.getElementById('previewDownloadBtn');
-        const unsupportedDownloadBtn = document.getElementById('unsupportedDownloadBtn');
-        const errorDownloadBtn = document.getElementById('errorDownloadBtn');
-
-        if (previewDownloadBtn && downloadUrl) {
-            previewDownloadBtn.href = downloadUrl;
-        }
-        if (unsupportedDownloadBtn && downloadUrl) {
-            unsupportedDownloadBtn.href = downloadUrl;
-        }
-        if (errorDownloadBtn && downloadUrl) {
-            errorDownloadBtn.href = downloadUrl;
-        }
-
-        // Show loading state
-        showPreviewSection('loading');
-
-        // Show modal
-        const previewModal = document.getElementById('previewModal');
-        if (previewModal) {
-            previewModal.classList.remove('hidden');
-            previewModal.style.display = 'flex';
-        }
-
-        // Load preview immediately
-        loadPreview(window.currentPreviewFile);
-    }
-
-    function loadPreview(file) {
-        console.log('Loading preview for file:', file);
-
-        if (file.extension === 'pdf') {
-            loadPdfPreview(file);
-        } else if (file.extension === 'txt') {
-            loadTextPreview(file);
-        } else {
-            console.log('Unsupported file type:', file.extension);
-            showPreviewSection('unsupported');
-        }
-    }
-
-    function loadPdfPreview(file) {
-        console.log('Loading PDF preview for:', file.url);
-        const pdfIframe = document.getElementById('pdfIframe');
-
-        // Try direct embedding first (works for same-origin PDFs)
-        pdfIframe.src = file.url;
-
-        // Set timeout to check if PDF loaded successfully
-        const loadTimeout = setTimeout(() => {
-            console.log('PDF load timeout, trying Google Docs viewer');
-            // Fallback to Google Docs viewer
-            const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
-            pdfIframe.src = googleDocsViewer;
-
-            // Second fallback timeout
-            const fallbackTimeout = setTimeout(() => {
-                console.log('Google Docs viewer timeout, showing error');
-                showPreviewSection('error');
-            }, 5000);
-
-            pdfIframe.onload = () => {
-                clearTimeout(fallbackTimeout);
-                showPreviewSection('pdf');
-            };
-
-        }, 3000);
-
-        pdfIframe.onload = () => {
-            console.log('PDF loaded directly');
-            clearTimeout(loadTimeout);
-            showPreviewSection('pdf');
-        };
-
-        pdfIframe.onerror = () => {
-            console.log('Direct PDF load failed');
-            clearTimeout(loadTimeout);
-            // Try Google Docs viewer immediately
-            const googleDocsViewer = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
-            pdfIframe.src = googleDocsViewer;
-
-            const fallbackTimeout = setTimeout(() => {
-                console.log('All PDF loading methods failed');
-                showPreviewSection('error');
-            }, 5000);
-
-            pdfIframe.onload = () => {
-                clearTimeout(fallbackTimeout);
-                showPreviewSection('pdf');
-            };
-        };
-    }
-
-    async function loadTextPreview(file) {
-        console.log('Loading text preview for:', file.url);
-        try {
-            // Use fetch with credentials for same-origin requests
-            const response = await fetch(file.url, {
-                credentials: 'same-origin'
-            });
-
-            if (!response.ok) {
-                throw new Error(`Failed to load text file: ${response.status} ${response.statusText}`);
-            }
-
-            const text = await response.text();
-            console.log('Text loaded successfully, length:', text.length);
-
-            const textContent = document.getElementById('textContent');
-
-            // Truncate very large files
-            const maxLength = 100000; // 100KB max for preview
-            let displayText = text;
-
-            if (text.length > maxLength) {
-                console.log('Text truncated from', text.length, 'to', maxLength);
-                displayText = text.substring(0, maxLength) + '\n\n... (preview truncated - file is very large)';
-            }
-
-            textContent.textContent = displayText;
-            showPreviewSection('text');
-        } catch (error) {
-            console.error('Error loading text preview:', error);
-
-            // Try alternative approach for local files
-            try {
-                // If it's a local file URL, try to fetch from a dedicated endpoint
-                if (file.url.includes('/library/view/')) {
-                    const altResponse = await fetch(`/library/preview-text/${file.id}`, {
-                        credentials: 'same-origin'
-                    });
-
-                    if (altResponse.ok) {
-                        const text = await altResponse.text();
-                        const textContent = document.getElementById('textContent');
-
-                        const maxLength = 100000;
-                        let displayText = text.length > maxLength ?
-                            text.substring(0, maxLength) + '\n\n... (preview truncated)' :
-                            text;
-
-                        textContent.textContent = displayText;
-                        showPreviewSection('text');
-                        return;
-                    }
-                }
-            } catch (altError) {
-                console.error('Alternative text load also failed:', altError);
-            }
-
-            // Show error state
-            const textContent = document.getElementById('textContent');
-            textContent.textContent = `Unable to load file content.\nError: ${error.message}\n\nPlease download the file to view it.`;
-            showPreviewSection('text');
+        if (modalId === 'previewModal') {
+            const iframe = document.getElementById('pdfIframe');
+            if (iframe) iframe.src = '';
         }
     }
 
     function showPreviewSection(section) {
-        console.log('Showing preview section:', section);
-
         const sections = {
             pdf: document.getElementById('pdfPreview'),
             text: document.getElementById('textPreview'),
@@ -1198,123 +715,112 @@
             loading: document.getElementById('previewLoading'),
             error: document.getElementById('previewError')
         };
-
-        // Hide all sections
         Object.values(sections).forEach(el => {
             if (el) el.classList.add('hidden');
         });
-
-        // Show selected section
-        if (sections[section]) {
-            sections[section].classList.remove('hidden');
-        }
+        if (sections[section]) sections[section].classList.remove('hidden');
     }
 
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-        }
-
-        // Clean up preview iframe
-        if (modalId === 'previewModal') {
-            const pdfIframe = document.getElementById('pdfIframe');
-            if (pdfIframe) {
-                pdfIframe.src = '';
-            }
-            window.currentPreviewFile = null;
-        }
-
-        // Clean up delete reference
-        if (modalId === 'deleteModal') {
-            window.currentFileToDelete = null;
-        }
+    function loadPdfPreview(file) {
+        const iframe = document.getElementById('pdfIframe');
+        if (!iframe) return;
+        iframe.src = file.url;
+        const timeout = setTimeout(() => {
+            iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
+            const fallback = setTimeout(() => showPreviewSection('error'), 5000);
+            iframe.onload = () => { clearTimeout(fallback); showPreviewSection('pdf'); };
+        }, 3000);
+        iframe.onload = () => { clearTimeout(timeout); showPreviewSection('pdf'); };
+        iframe.onerror = () => { clearTimeout(timeout); iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`; };
     }
 
-    // File upload functions
-    function handleFileSelect(file) {
-        // Validate file type
-        const allowedExtensions = ['.pdf', '.doc', '.docx', '.txt', '.xls', '.xlsx', '.ppt', '.pptx'];
-        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-
-        if (!allowedExtensions.includes(fileExtension)) {
-            alert('Please select a valid file type (PDF, DOC, DOCX, TXT, XLS, XLSX, PPT, PPTX)');
-            return;
-        }
-
-        // Validate file size (10MB)
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File size must be less than 10MB');
-            return;
-        }
-
-        const selectedFileName = document.getElementById('selectedFileName');
-        const fileInfo = document.getElementById('fileInfo');
-
-        if (selectedFileName) selectedFileName.textContent = file.name;
-        if (fileInfo) fileInfo.classList.remove('hidden');
-    }
-
-    async function handleFormSubmit(e) {
-        e.preventDefault();
-
-        const form = e.target;
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerHTML;
-
-        // Validate file is selected
-        const fileInput = document.getElementById('fileDocument');
-        if (!fileInput.files[0]) {
-            alert('Please select a file to upload');
-            return;
-        }
-
+    async function loadTextPreview(file) {
         try {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...';
-
-            const formData = new FormData(form);
-
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                closeModal('uploadModal');
-                resetForm();
-                alert('File uploaded successfully!');
-                window.location.reload();
-            } else {
-                alert(result.message || 'Upload failed');
-            }
-        } catch (error) {
-            console.error('Upload error:', error);
-            alert('An error occurred during upload');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
+            const response = await fetch(file.url, { credentials: 'same-origin' });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            let text = await response.text();
+            const maxLen = 100000;
+            if (text.length > maxLen) text = text.substring(0, maxLen) + '\n\n... (preview truncated)';
+            const textContent = document.getElementById('textContent');
+            if (textContent) textContent.textContent = text;
+            showPreviewSection('text');
+        } catch (err) {
+            console.error(err);
+            const textContent = document.getElementById('textContent');
+            if (textContent) textContent.textContent = `Unable to load file content.\nError: ${err.message}`;
+            showPreviewSection('text');
         }
     }
 
-    function resetForm() {
-        const uploadForm = document.getElementById('uploadForm');
-        const fileInfo = document.getElementById('fileInfo');
-        const fileInput = document.getElementById('fileDocument');
-
-        if (uploadForm) uploadForm.reset();
-        if (fileInfo) fileInfo.classList.add('hidden');
-        if (fileInput) fileInput.value = '';
+    function loadPreview(file) {
+        if (file.extension === 'pdf') loadPdfPreview(file);
+        else if (file.extension === 'txt') loadTextPreview(file);
+        else showPreviewSection('unsupported');
     }
 
-    // Filter functions
-    // Note: Category filtering is now handled by applyFilters() function above
-    </script>
+    function openPreviewModal(button) {
+        const file = {
+            id: button.getAttribute('data-file-id'),
+            name: button.getAttribute('data-file-name'),
+            extension: button.getAttribute('data-file-extension').toLowerCase(),
+            url: button.getAttribute('data-file-url'),
+            downloadUrl: button.getAttribute('data-download-url')
+        };
+        document.getElementById('previewFileName').textContent = file.name;
+        document.getElementById('previewFileType').textContent = `${file.extension.toUpperCase()} File`;
+        const downloadBtn = document.getElementById('previewDownloadBtn');
+        if (downloadBtn) downloadBtn.href = file.downloadUrl;
+        const unsupportedBtn = document.getElementById('unsupportedDownloadBtn');
+        if (unsupportedBtn) unsupportedBtn.href = file.downloadUrl;
+        const errorBtn = document.getElementById('errorDownloadBtn');
+        if (errorBtn) errorBtn.href = file.downloadUrl;
+        showPreviewSection('loading');
+        const modal = document.getElementById('previewModal');
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+        loadPreview(file);
+    }
+
+    // ==================== GLOBAL EVENT LISTENERS ====================
+    function initializeEventListeners() {
+        // Preview button clicks
+        document.addEventListener('click', function(e) {
+            const previewBtn = e.target.closest('.preview-file-btn');
+            if (previewBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                openPreviewModal(previewBtn);
+            }
+        });
+        // Close modal buttons
+        const closePreviewBtn = document.getElementById('closePreviewBtn');
+        const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
+        const closeErrorBtn = document.getElementById('closeErrorBtn');
+        [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeModal('previewModal');
+                });
+            }
+        });
+        // Click outside to close
+        window.addEventListener('click', (e) => {
+            const previewModal = document.getElementById('previewModal');
+            if (previewModal && e.target === previewModal) closeModal('previewModal');
+        });
+    }
+
+    // ==================== DOM READY ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedNavLang = getCookie('selected_language') || 'all';
+        updateNavigationLanguage(savedNavLang);
+        initializeLanguageFilter();
+        initializeCategoryFilter();
+        initializeEventListeners();
+        updateCategoryButtonLabels(currentLanguageFilter);
+        applyFilters();
+    });
+</script>
     @endpush
 </x-app-layout>

@@ -17,6 +17,11 @@
                         Manage your document library
                     </p>
                 </div>
+                <button type="button"
+                        class="add-file-btn inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    Upload File
+                </button>
             </div>
         </div>
 
@@ -72,7 +77,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="libraryGrid">
                         @foreach($libraries as $library)
                             <div class="library-item bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow duration-200"
-                                 data-category="{{ $library->category_id ?? 'uncategorized' }}"
+                                 data-category="{{ $library->catagory_id ?? 0 }}"
                                  data-category-name="{{ $library->category->name ?? 'Uncategorized' }}">
                                 <!-- Category Badge -->
                                 @if($library->category)
@@ -423,7 +428,7 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+function initializeLibraryPage() {
     console.log('Library Management script loaded');
 
     // Initialize all modals first
@@ -434,7 +439,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize filter
     filterByCategory('all');
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeLibraryPage);
+} else {
+    initializeLibraryPage();
+}
 
 function initializeModals() {
     // Make sure modals are properly initialized
@@ -972,42 +983,41 @@ function resetForm() {
 
 // Filter functions
 function filterByCategory(categoryId) {
-    const items = document.querySelectorAll('.library-item');
+    const libraryGrid = document.getElementById('libraryGrid');
+    const items = libraryGrid ? libraryGrid.querySelectorAll('.library-item') : document.querySelectorAll('.library-item');
     let visibleCount = 0;
 
-    items.forEach(item => {
+    console.log(`Filtering by category: ${categoryId}, items found: ${items.length}`);
+
+    items.forEach((item, index) => {
         const itemCategory = item.getAttribute('data-category');
+        console.log(`Item ${index}: data-category = "${itemCategory}" (type: ${typeof itemCategory})`);
 
         if (categoryId === 'all' || categoryId === itemCategory) {
-            item.style.display = 'block';
+            item.style.display = '';
             visibleCount++;
         } else {
             item.style.display = 'none';
         }
     });
 
-    // Update file count
-    const fileCount = document.getElementById('fileCount');
-    if (fileCount) {
-        fileCount.textContent = `(${visibleCount})`;
-    }
+    const fileCountSpan = document.getElementById('fileCount');
+    if (fileCountSpan) fileCountSpan.textContent = `(${visibleCount})`;
 
-    // Update active filter display
-    const activeCategory = document.getElementById('activeCategory');
+    const activeCategoryDiv = document.getElementById('activeCategory');
     if (categoryId === 'all') {
-        if (activeCategory) activeCategory.classList.add('hidden');
+        if (activeCategoryDiv) activeCategoryDiv.classList.add('hidden');
     } else {
-        if (activeCategory) {
-            activeCategory.classList.remove('hidden');
-            const filterBtn = document.querySelector(`[data-category="${categoryId}"]`);
-            const currentCategory = document.getElementById('currentCategory');
-            if (currentCategory && filterBtn) {
-                currentCategory.textContent = filterBtn.textContent.trim();
+        if (activeCategoryDiv) {
+            activeCategoryDiv.classList.remove('hidden');
+            const currentCategorySpan = document.getElementById('currentCategory');
+            const activeButton = document.querySelector(`.filter-btn[data-category="${categoryId}"]`);
+            if (currentCategorySpan && activeButton) {
+                currentCategorySpan.textContent = activeButton.textContent.trim();
             }
         }
     }
 
-    // Update filter button states
     updateFilterButtons(categoryId);
 }
 
