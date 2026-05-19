@@ -173,17 +173,14 @@
                         </button>
                     </div>
                     <div class="flex flex-wrap gap-3" id="language-filters-container">
-                        <button class="filter-btn language-filter-btn language-filter-active" data-language="all">
-                            <span class="language-badge">All Languages</span>
-                        </button>
                         <button class="filter-btn language-filter-btn" data-language="harari">
-                            <span class="language-badge">Harari</span>
+                            <span class="english language-badge catagory-badge" data-am="ሀረሪ" data-har="ሀረሪ" data-en="Harari">Harari</span>
                         </button>
                         <button class="filter-btn language-filter-btn" data-language="english">
-                            <span class="language-badge">English</span>
+                            <span class="category-badge language-badge" data-am="እንግሊዝኛ" data-har="እንግሊዝኛ" data-en="English">English</span>
                         </button>
                         <button class="filter-btn language-filter-btn" data-language="amharic">
-                            <span class="language-badge">Amharic</span>
+                            <span class="category-badge language-badge" data-am="አማርኛ" data-har="አማርኛ" data-en="Amharic">Amharic</span>
                         </button>
                     </div>
                 </div>
@@ -236,8 +233,7 @@
                             @foreach($libraries as $library)
                                 <div class="library-item bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow duration-200"
                                      data-category="{{ $library->catagory_id ?? 0 }}"
-                                     data-category-name="{{ $library->category->name ?? 'Uncategorized' }}"
-                                     data-language="{{ $library->language ?? 'all' }}">
+                                     data-category-name="{{ $library->category->name ?? 'Uncategorized' }}">
                                     <!-- Category Badge -->
                                     @if($library->category)
                                         <div class="mb-3">
@@ -367,7 +363,7 @@
                     <div class="mb-4">
                         <label for="fileCategory" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
                         <select id="fileCategory"
-                                name="category_id"
+                                name="catagory_id"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Select Category (Optional)</option>
                             @foreach($categories as $category)
@@ -571,73 +567,58 @@
         });
     }
 
+    function updateLanguageButtonLabels(language) {
+        document.querySelectorAll('.language-filter-btn').forEach(btn => {
+            const span = btn.querySelector('.language-badge') || btn.querySelector('span');
+            if (!span) return;
+            let text = '';
+            if (language === 'harari') text = span.getAttribute('data-har') || span.getAttribute('data-en');
+            else if (language === 'amharic') text = span.getAttribute('data-am') || span.getAttribute('data-en');
+            else text = span.getAttribute('data-en') || span.textContent;
+            if (text) span.textContent = text;
+        });
+    }
+
+    function normalizeLanguageCode(language) {
+        if (!language) return 'all';
+        const code = language.toLowerCase().trim();
+        if (code === 'har' || code === 'harari') return 'harari';
+        if (code === 'eng' || code === 'english') return 'english';
+        if (code === 'am' || code === 'amharic') return 'amharic';
+        if (code === 'all') return 'all';
+        return code;
+    }
+
     // ==================== FILTER STATE ====================
-    let currentLanguageFilter = getCookie('selected_library_language') || 'all';
+    let currentLanguageFilter = getCookie('selected_library_language') || 'harari';
 
     // ==================== CORE FILTER FUNCTION (NO CLASS DEPENDENCY) ====================
     function applyFilters() {
-        // Select all elements that have the category data attributes (no class needed)
-        const items = document.querySelectorAll('[data-category-en]');
+        const libraryGrid = document.getElementById('libraryGrid');
+        const items = libraryGrid ? libraryGrid.querySelectorAll('.library-item') : document.querySelectorAll('.library-item');
         let visibleCount = 0;
-
-        // Decide which language attribute to use for category comparison
-        let categoryAttr = 'data-category-en';
-        if (currentLanguageFilter === 'harari') categoryAttr = 'data-category-har';
-        else if (currentLanguageFilter === 'amharic') categoryAttr = 'data-category-am';
-
-        // Get the active category button and the selected category name (in the current language)
         const activeCategoryBtn = document.querySelector('.category-filter-btn.category-filter-active');
-        let selectedCategoryName = null;
-        let isAllCategories = true;
+        const activeCategory = activeCategoryBtn ? activeCategoryBtn.getAttribute('data-category') : 'all';
+        const normalizedCurrentLanguage = normalizeLanguageCode(currentLanguageFilter);
 
-        if (activeCategoryBtn) {
-            const isAllBtn = activeCategoryBtn.getAttribute('data-category') === 'all';
-            if (isAllBtn) {
-                isAllCategories = true;
-            } else {
-                isAllCategories = false;
-                if (currentLanguageFilter === 'harari')
-                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-har');
-                else if (currentLanguageFilter === 'amharic')
-                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-am');
-                else
-                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-en');
-
-                // Fallback to English if translation missing
-                if (!selectedCategoryName)
-                    selectedCategoryName = activeCategoryBtn.getAttribute('data-category-en');
-            }
-        }
-
-        // Apply filter to each item
         items.forEach(item => {
-            const itemLanguage = item.getAttribute('data-language') || 'all';
-            let itemCategory = item.getAttribute(categoryAttr) || '';
-            itemCategory = itemCategory.trim();
-            const normalizedSelected = selectedCategoryName ? selectedCategoryName.trim() : '';
+            const itemLanguage = normalizeLanguageCode(item.getAttribute('data-language') || 'all');
+            const itemCategory = item.getAttribute('data-category') || 'all';
 
-            const languageMatch = (currentLanguageFilter === 'all') ||
+            const languageMatch = (normalizedCurrentLanguage === 'all') ||
                                   (itemLanguage === 'all') ||
-                                  (itemLanguage === currentLanguageFilter);
-            let categoryMatch = false;
-            if (isAllCategories) {
-                categoryMatch = true;
-            } else {
-                // Case‑sensitive comparison; use .toLowerCase() if you prefer case‑insensitive
-                categoryMatch = (itemCategory === normalizedSelected);
-            }
+                                  (itemLanguage === normalizedCurrentLanguage);
+            const categoryMatch = (activeCategory === 'all') || (itemCategory === activeCategory);
 
             if (languageMatch && categoryMatch) {
-                item.style.display = 'block';
+                item.style.display = '';
                 visibleCount++;
             } else {
                 item.style.display = 'none';
             }
         });
 
-        // Update file counter and "no files" message
-        const fileCountSpan = document.getElementById('fileCount');
-        if (fileCountSpan) fileCountSpan.innerHTML = `(${visibleCount})`;
+        // Update "no files" message only, keep the header count fixed to the original total
         const noFilesMsg = document.getElementById('noFilesMessage');
         if (noFilesMsg) noFilesMsg.style.display = visibleCount === 0 ? 'block' : 'none';
     }
@@ -670,9 +651,10 @@
                 langBtns.forEach(b => b.classList.remove('language-filter-active'));
                 this.classList.add('language-filter-active');
                 currentLanguageFilter = lang;
-                if (lang !== 'amharic') setCookie('selected_library_language', lang, 30);
+                setCookie('selected_library_language', lang, 30);
                 updateNavigationLanguage(lang);
                 updateCategoryButtonLabels(lang);
+                updateLanguageButtonLabels(lang);
                 applyFilters();
             });
         });
@@ -680,18 +662,19 @@
             resetBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 langBtns.forEach(b => b.classList.remove('language-filter-active'));
-                const allLangBtn = document.querySelector('.language-filter-btn[data-language="all"]');
-                if (allLangBtn) allLangBtn.classList.add('language-filter-active');
-                currentLanguageFilter = 'all';
-                setCookie('selected_library_language', 'all', 30);
-                updateNavigationLanguage('all');
-                updateCategoryButtonLabels('all');
+                const harBtn = document.querySelector('.language-filter-btn[data-language="harari"]');
+                if (harBtn) harBtn.classList.add('language-filter-active');
+                currentLanguageFilter = 'harari';
+                setCookie('selected_library_language', 'harari', 30);
+                updateNavigationLanguage('harari');
+                updateCategoryButtonLabels('harari');
+                updateLanguageButtonLabels('harari');
                 applyFilters();
             });
         }
         const initialLang = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
         if (initialLang) initialLang.classList.add('language-filter-active');
-        else document.querySelector('.language-filter-btn[data-language="all"]')?.classList.add('language-filter-active');
+        else document.querySelector('.language-filter-btn[data-language="harari"]')?.classList.add('language-filter-active');
     }
 
     // ==================== PREVIEW MODAL FUNCTIONS ====================
@@ -813,12 +796,14 @@
 
     // ==================== DOM READY ====================
     document.addEventListener('DOMContentLoaded', function() {
-        const savedNavLang = getCookie('selected_language') || 'all';
+        const savedNavLang = getCookie('selected_library_language') || 'harari';
+        currentLanguageFilter = savedNavLang;
         updateNavigationLanguage(savedNavLang);
         initializeLanguageFilter();
         initializeCategoryFilter();
         initializeEventListeners();
         updateCategoryButtonLabels(currentLanguageFilter);
+        updateLanguageButtonLabels(currentLanguageFilter);
         applyFilters();
     });
 </script>

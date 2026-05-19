@@ -12,4 +12,9 @@ class Library extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Catagory::class, 'catagory_id');
+    }
 }

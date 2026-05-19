@@ -16,13 +16,19 @@
             </div>
             <div class="flex flex-wrap gap-3" id="language-filters-container">
                 <button class="filter-btn language-filter-btn" data-language="english">
-                    <span class="language-badge">English</span>
+                    <span class="english language-badge">English</span>
+                    <span class="harari hidden1 language-badge">Harari</span>
+                    <span class="amharic hidden1 language-badge">እንግሊዝኛ</span>
                 </button>
                 <button class="filter-btn language-filter-btn" data-language="harari">
-                    <span class="language-badge">Harari</span>
+                    <span class="english language-badge">Harari</span>
+                    <span class="harari hidden1 language-badge">ሀረሪ</span>
+                    <span class="amharic hidden1 language-badge">ሀረሪ</span>
                 </button>
                 <button class="filter-btn language-filter-btn" data-language="amharic">
-                    <span class="language-badge">Amharic</span>
+                    <span class="english language-badge">Amharic</span>
+                    <span class="harari hidden1 language-badge">አማርኛ</span>
+                    <span class="amharic hidden1 language-badge">አማርኛ</span>
                 </button>
             </div>
         </div>
