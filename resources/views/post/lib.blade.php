@@ -255,7 +255,7 @@
                             <div class="text-center">
                                 <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
                                 <p class="text-sm text-gray-600">Click to browse or drag and drop</p>
-                                <p class="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, TXT, XLS, XLSX, PPT, PPTX (Max 10MB)</p>
+                                <p class="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, TXT, XLS, XLSX, PPT, PPTX (Max 100MB)</p>
                             </div>
                         </div>
                     </div>
@@ -911,9 +911,9 @@ function handleFileSelect(file) {
         return;
     }
 
-    // Validate file size (10MB)
-    if (file.size > 10 * 1024 * 1024) {
-        alert('File size must be less than 10MB');
+    // Validate file size (100MB)
+    if (file.size > 100 * 1024 * 1024) {
+        alert('File size must be less than 100MB');
         return;
     }
 
@@ -948,19 +948,28 @@ async function handleFormSubmit(e) {
             method: 'POST',
             body: formData,
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
             }
         });
 
-        const result = await response.json();
+        const text = await response.text();
+        let result;
 
-        if (result.success) {
+        try {
+            result = text ? JSON.parse(text) : {};
+        } catch (parseError) {
+            throw new Error(`Invalid server response: ${text.substring(0, 200)}`);
+        }
+
+        if (response.ok && result.success) {
             closeModal('uploadModal');
             resetForm();
             alert('File uploaded successfully!');
             window.location.reload();
         } else {
-            alert(result.message || 'Upload failed');
+            const message = result.message || result.error || (result.errors ? Object.values(result.errors).flat().join('\n') : null);
+            alert(message || 'Upload failed');
         }
     } catch (error) {
         console.error('Upload error:', error);

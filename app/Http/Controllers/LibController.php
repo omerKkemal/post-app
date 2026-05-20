@@ -31,7 +31,7 @@ class LibController extends Controller
             'name' => 'required|string|max:255',
             'catagory_id' => 'required|exists:catagories,id',
             'description' => 'nullable|string',
-            'document' => 'required|file|mimes:pdf,doc,docx,txt|max:10240', // 10MB max
+            'document' => 'required|file|mimes:pdf,doc,docx,txt|max:102400', // 100MB max
         ]);
 
         try {

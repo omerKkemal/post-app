@@ -32,14 +32,21 @@
                             <span class="english nav-eng text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
                                 {{ config('app.name', 'Laravel') }}
                             </span>
-                            <span class="harari nav-har text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+                            <span class="harari nav-har hidden1 text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
                                 ሀርሪ መሀድ መጅሊስ
                             </span>
-                            <span class="english nav-eng text-xs text-gray-500 font-medium dark:text-white hidden md:block">
-                                @auth Dashboard @else Welcome @endauth
+                            <span class="amharic nav-am hidden1 text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
+                                የሐረር ኮንግረስ
                             </span>
-                            <span class="harari nav-har text-xs text-gray-500 font-medium dark:text-white hidden md:block">
-                                @auth Dashboard <style>.nav-har{ display: none; }</style> @else ሀምበይሌ አማንቤ ዲጂኹ @endauth
+
+                            <span class="english nav-eng text-xs text-gray-500 font-medium dark:text-white hidden md:block">
+                                @auth Dashboard <style> .nav-am{display: none} .nav-har{display: none} </style> @else Welcome @endauth
+                            </span>
+                            <span class="harari nav-har hidden1 text-xs text-gray-500 font-medium dark:text-white hidden md:block">
+                                ሀምበይሌ አማንቤ ዲጂኹ
+                            </span>
+                            <span class="amharic nav-am hidden1 text-xs text-gray-500 font-medium dark:text-white hidden md:block">
+                                እንኳን ደህና መጣህ
                             </span>
                         </div>
                     </a>
@@ -93,7 +100,7 @@
                         <span class="harari nav-har">ቡእቲ</span>
                         <span class="amharic nav-am">መነሻ</span>
                     </a>
-                    <a href="{{ url('/about') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
+                    <a href="{{ route('about') }}" class="nav-link px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-2 group"
                        :class="currentRoute === 'about' ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                         <i class="fas fa-info-circle text-sm w-5"></i>
                         <span class="english nav-eng">About</span>
@@ -261,7 +268,7 @@
                 <!-- category management link -->
                 <a href="{{ route('post.category')}}"
                 class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
-                :class="currentRoute === 'category.show' ?
+                :class="currentRoute === 'post.category' ?
                        'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
                        'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                  <i class="fas fa-tags w-6 mr-3 text-center"></i>
@@ -270,7 +277,7 @@
 
                <a href="{{ route('post.view') }}"
                 class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
-                :class="currentRoute === 'category.show' ?
+                :class="currentRoute === 'post.view' ?
                        'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
                        'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                  <i class="fas fa-newspaper w-6 mr-3 text-center"></i>
@@ -307,23 +314,32 @@
                     <span class="amharic nav-am">መነሻ</span>
                 </a>
 
-                <a href="{{ url('/about') }}"
-                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                <a href="{{ route('about') }}"
+                   class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
+                   :class="currentRoute === 'about' ?
+                          'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                          'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                     <i class="fas fa-info-circle w-6 mr-3 text-center"></i>
                     <span class="english nav-eng">About</span>
                     <span class="harari nav-har">ዚእኛች</span>
                     <span class="amharic nav-am">ስለ እኛ</span>
                 </a>
-                <a href="{{ url('/public-library') }}"
-                     class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                <a href="{{ route('public.library') }}"
+                     class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium transition-all duration-200"
+                     :class="currentRoute === 'public.library' ?
+                            'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                            'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
                       <span class="english nav-eng">Library</span>
                       <span class="harari nav-har">ላይብራሪ</span>
                       <span class="amharic nav-am">ቤተ መጻሕፍት</span>
                 </a>
 
-                <a href="{{ url('/p') }}"
-                     class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800">
+                <a href="{{ route('postView') }}"
+                     class="mobile-nav-link block px-3 py-3 rounded-lg text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 dark:text-white dark:hover:text-white dark:hover:bg-gray-800"
+                     :class="currentRoute === 'postView' ?
+                            'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800' :
+                            'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:text-white dark:hover:bg-gray-800'">
                       <i class="fas fa-folder w-6 mr-3 text-center"></i>
                       <span class="english nav-eng">What's New</span>
                       <span class="harari nav-har">ኸብራች</span>

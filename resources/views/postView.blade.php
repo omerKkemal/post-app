@@ -74,17 +74,20 @@
                         </button>
                     </div>
                     <div class="flex flex-wrap gap-3" id="language-filters-container">
-                        <button class="filter-btn language-filter-btn" data-language="all">
-                            <span class="language-badge">All Languages</span>
+                        <button class="filter-btn language-filter-btn" data-language="english">
+                            <span class="english language-badge">English</span>
+                            <span class="harari hidden1 language-badge">እንግሊዝኛ</span>
+                            <span class="amharic hidden1 language-badge">እንግሊዝኛ</span>
                         </button>
                         <button class="filter-btn language-filter-btn" data-language="harari">
-                            <span class="language-badge">Harari</span>
-                        </button>
-                        <button class="filter-btn language-filter-btn" data-language="english">
-                            <span class="language-badge">English</span>
+                            <span class="english language-badge">Harari</span>
+                            <span class="harari hidden1 language-badge">ሀረሪ</span>
+                            <span class="amharic hidden1 language-badge">ሀረሪ</span>
                         </button>
                         <button class="filter-btn language-filter-btn" data-language="amharic">
-                            <span class="language-badge">Amharic</span>
+                            <span class="english language-badge">Amharic</span>
+                            <span class="harari hidden1 language-badge">አማርኛ</span>
+                            <span class="amharic hidden1 language-badge">አማርኛ</span>
                         </button>
                     </div>
                 </div>
@@ -271,29 +274,15 @@
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                </svg>
-                                <span>243</span>
-                            </button>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                </svg>
-                                <span>42</span>
-                            </button>
+                            <img
+                                src="{{ asset('image/logo.jpg') }}"
+                                alt="{{ config('app.name', 'Laravel') }}"
+                                class="relative w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:border-blue-200 dark:border-gray-600"
+                                loading="eager"
+                            />
                         </div>
                         <div>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                                </svg>
-                                <span>Share</span>
-                            </button>
+                            <h1 class="">ሀረሪ መጀሊስ</h1>
                         </div>
                     </div>
                 </div>
@@ -450,29 +439,15 @@
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                </svg>
-                                <span>243</span>
-                            </button>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                </svg>
-                                <span>42</span>
-                            </button>
+                            <img
+                                src="{{ asset('image/logo.jpg') }}"
+                                alt="{{ config('app.name', 'Laravel') }}"
+                                class="relative w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:border-blue-200 dark:border-gray-600"
+                                loading="eager"
+                            />
                         </div>
                         <div>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                                </svg>
-                                <span>Share</span>
-                            </button>
+                            <h1 class="">{{ config('app.name', 'Laravel') }}</h1>
                         </div>
                     </div>
                 </div>
@@ -629,29 +604,15 @@
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                </svg>
-                                <span>243</span>
-                            </button>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                </svg>
-                                <span>42</span>
-                            </button>
+                            <img
+                                src="{{ asset('image/logo.jpg') }}"
+                                alt="{{ config('app.name', 'Laravel') }}"
+                                class="relative w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:border-blue-200 dark:border-gray-600"
+                                loading="eager"
+                            />
                         </div>
                         <div>
-                            <button class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
-                                <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                                </svg>
-                                <span>Share</span>
-                            </button>
+                            <h1 class="">ሐረሪ ኮንግረስ</h1>
                         </div>
                     </div>
                 </div>
@@ -943,6 +904,33 @@
                 });
             }
 
+            function updateLanguageButtonLabels(language) {
+                languageFilterButtons.forEach(button => {
+                    const englishSpan = button.querySelector('.english');
+                    const harariSpan = button.querySelector('.harari');
+                    const amharicSpan = button.querySelector('.amharic');
+                    if (!englishSpan || !harariSpan || !amharicSpan) return;
+
+                    englishSpan.style.display = 'none';
+                    harariSpan.style.display = 'none';
+                    amharicSpan.style.display = 'none';
+
+                    switch(language) {
+                        case 'harari':
+                            harariSpan.style.display = 'inline';
+                            break;
+                        case 'amharic':
+                            amharicSpan.style.display = 'inline';
+                            break;
+                        case 'english':
+                        case 'all':
+                        default:
+                            englishSpan.style.display = 'inline';
+                            break;
+                    }
+                });
+            }
+
             // Initialize language filter
             function initializeLanguageFilter() {
                 languageFilterButtons.forEach(button => {
@@ -957,15 +945,14 @@
 
                         // Update current filter
                         currentLanguageFilter = language;
-                        if (language !== 'amharic') {
-                            setCookie('selected_language', language, 30);
-                        }
+                        setCookie('selected_language', language, 30);
 
                         // Update navigation language spans
                         updateNavigationLanguage(language);
 
-                        // Update category button labels
+                        // Update category and language button labels
                         updateCategoryButtonLabels(language);
+                        updateLanguageButtonLabels(language);
 
                         // Apply filters
                         applyFilters();
@@ -1061,15 +1048,17 @@
                     languageFilterButtons.forEach(btn => {
                         btn.classList.remove('language-filter-active');
                     });
-                    document.querySelector('.language-filter-btn[data-language="all"]').classList.add('language-filter-active');
-                    currentLanguageFilter = 'all';
-                    setCookie('selected_language', 'all', 30);
+                    const englishBtn = document.querySelector('.language-filter-btn[data-language="english"]');
+                    if (englishBtn) englishBtn.classList.add('language-filter-active');
+                    currentLanguageFilter = 'english';
+                    setCookie('selected_language', 'english', 30);
 
-                    // Update navigation language spans to show English (since "all" selected)
-                    updateNavigationLanguage('all');
+                    // Update navigation language spans to show English
+                    updateNavigationLanguage('english');
 
                     // Reset category button labels to English
-                    updateCategoryButtonLabels('all');
+                    updateCategoryButtonLabels('english');
+                    updateLanguageButtonLabels('english');
 
                     applyFilters();
                 });
@@ -1083,11 +1072,15 @@
             const initialLanguageBtn = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
             if (initialLanguageBtn) {
                 initialLanguageBtn.classList.add('language-filter-active');
+            } else {
+                const englishBtn = document.querySelector('.language-filter-btn[data-language="english"]');
+                if (englishBtn) englishBtn.classList.add('language-filter-active');
             }
 
             // Apply initial filters and set initial navigation language
             updateNavigationLanguage(currentLanguageFilter);
             updateCategoryButtonLabels(currentLanguageFilter);
+            updateLanguageButtonLabels(currentLanguageFilter);
             applyFilters();
 
             // Initialize slideshows
