@@ -612,6 +612,12 @@ function initializeEventListeners() {
             closeModal('previewModal');
         }
     });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal('previewModal');
+        }
+    });
 }
 
 // Modal functions
@@ -722,6 +728,7 @@ function openPreviewModal(button) {
         previewModal.classList.remove('hidden');
         previewModal.style.display = 'flex';
     }
+    document.body.style.overflow = 'hidden';
 
     // Load preview immediately
     loadPreview(window.currentPreviewFile);
@@ -891,6 +898,7 @@ function closeModal(modalId) {
         if (pdfIframe) {
             pdfIframe.src = '';
         }
+        document.body.style.overflow = '';
         window.currentPreviewFile = null;
     }
 

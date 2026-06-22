@@ -128,7 +128,16 @@
         transition: all 0.3s ease;
     }
 
+    /* Modal backdrop - prevent closing by clicking outside */
+    #previewModal {
+        background-color: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+    }
 
+    /* Prevent modal from closing when clicking inside */
+    #previewModal .relative {
+        pointer-events: auto;
+    }
 </style>
 
 <x-app-layout>
@@ -427,9 +436,9 @@
         </div>
     </div>
 
-    <!-- Preview Modal -->
-    <div id="previewModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-5 mx-auto p-0 border shadow-lg rounded-md bg-white max-w-4xl w-full">
+    <!-- Preview Modal - Only closes with Close button, X button, or Escape key -->
+    <div id="previewModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50" style="background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);">
+        <div class="relative top-5 mx-auto p-0 border shadow-lg rounded-md bg-white max-w-4xl w-full" style="pointer-events: auto;">
             <div class="sticky top-0 bg-white border-b border-gray-200 p-4 z-10">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
@@ -531,281 +540,294 @@
     </div>
 
     @push('scripts')
-    <script>
-    // ==================== COOKIE HELPERS ====================
-    function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? match[2] : null;
-    }
-    function setCookie(name, value, days) {
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-        document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
-    }
+        <script>
+        // ==================== COOKIE HELPERS ====================
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : null;
+        }
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+        }
 
-    // ==================== NAVIGATION & CATEGORY BUTTON TEXTS ====================
-    function updateNavigationLanguage(language) {
-        document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => span.style.display = 'none');
-        if (language === 'english' || language === 'all')
-            document.querySelectorAll('.nav-eng').forEach(span => span.style.display = 'inline');
-        else if (language === 'harari')
-            document.querySelectorAll('.nav-har').forEach(span => span.style.display = 'inline');
-        else if (language === 'amharic')
-            document.querySelectorAll('.nav-am').forEach(span => span.style.display = 'inline');
-    }
-
-    function updateCategoryButtonLabels(language) {
-        document.querySelectorAll('.category-filter-btn .category-badge').forEach(badge => {
-            let text = '';
-            if (language === 'harari')
-                text = badge.getAttribute('data-har') || badge.getAttribute('data-en');
+        // ==================== NAVIGATION & CATEGORY BUTTON TEXTS ====================
+        function updateNavigationLanguage(language) {
+            document.querySelectorAll('.nav-eng, .nav-har, .nav-am').forEach(span => span.style.display = 'none');
+            if (language === 'english' || language === 'all')
+                document.querySelectorAll('.nav-eng').forEach(span => span.style.display = 'inline');
+            else if (language === 'harari')
+                document.querySelectorAll('.nav-har').forEach(span => span.style.display = 'inline');
             else if (language === 'amharic')
-                text = badge.getAttribute('data-am') || badge.getAttribute('data-en');
-            else
-                text = badge.getAttribute('data-en');
-            if (text) badge.textContent = text;
-        });
-    }
-
-    function updateLanguageButtonLabels(language) {
-        document.querySelectorAll('.language-filter-btn').forEach(btn => {
-            const span = btn.querySelector('.language-badge') || btn.querySelector('span');
-            if (!span) return;
-            let text = '';
-            if (language === 'harari') text = span.getAttribute('data-har') || span.getAttribute('data-en');
-            else if (language === 'amharic') text = span.getAttribute('data-am') || span.getAttribute('data-en');
-            else text = span.getAttribute('data-en') || span.textContent;
-            if (text) span.textContent = text;
-        });
-    }
-
-    function normalizeLanguageCode(language) {
-        if (!language) return 'all';
-        const code = language.toLowerCase().trim();
-        if (code === 'har' || code === 'harari') return 'harari';
-        if (code === 'eng' || code === 'english') return 'english';
-        if (code === 'am' || code === 'amharic') return 'amharic';
-        if (code === 'all') return 'all';
-        return code;
-    }
-
-    // ==================== FILTER STATE ====================
-    let currentLanguageFilter = getCookie('selected_library_language') || 'harari';
-
-    // ==================== CORE FILTER FUNCTION (NO CLASS DEPENDENCY) ====================
-    function applyFilters() {
-        const libraryGrid = document.getElementById('libraryGrid');
-        const items = libraryGrid ? libraryGrid.querySelectorAll('.library-item') : document.querySelectorAll('.library-item');
-        let visibleCount = 0;
-        const activeCategoryBtn = document.querySelector('.category-filter-btn.category-filter-active');
-        const activeCategory = activeCategoryBtn ? activeCategoryBtn.getAttribute('data-category') : 'all';
-        const normalizedCurrentLanguage = normalizeLanguageCode(currentLanguageFilter);
-
-        items.forEach(item => {
-            const itemLanguage = normalizeLanguageCode(item.getAttribute('data-language') || 'all');
-            const itemCategory = item.getAttribute('data-category') || 'all';
-
-            const languageMatch = (normalizedCurrentLanguage === 'all') ||
-                                  (itemLanguage === 'all') ||
-                                  (itemLanguage === normalizedCurrentLanguage);
-            const categoryMatch = (activeCategory === 'all') || (itemCategory === activeCategory);
-
-            if (languageMatch && categoryMatch) {
-                item.style.display = '';
-                visibleCount++;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Update "no files" message only, keep the header count fixed to the original total
-        const noFilesMsg = document.getElementById('noFilesMessage');
-        if (noFilesMsg) noFilesMsg.style.display = visibleCount === 0 ? 'block' : 'none';
-    }
-
-    // ==================== INITIALIZE FILTER BUTTONS ====================
-    function initializeCategoryFilter() {
-        const btns = document.querySelectorAll('.category-filter-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                btns.forEach(b => b.classList.remove('category-filter-active'));
-                this.classList.add('category-filter-active');
-                applyFilters();
-            });
-        });
-        // Ensure "All Categories" is active by default
-        if (!document.querySelector('.category-filter-btn.category-filter-active')) {
-            const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
-            if (allBtn) allBtn.classList.add('category-filter-active');
+                document.querySelectorAll('.nav-am').forEach(span => span.style.display = 'inline');
         }
-    }
 
-    function initializeLanguageFilter() {
-        const langBtns = document.querySelectorAll('.language-filter-btn');
-        const resetBtn = document.getElementById('reset-language-filter');
-        langBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const lang = this.getAttribute('data-language');
-                langBtns.forEach(b => b.classList.remove('language-filter-active'));
-                this.classList.add('language-filter-active');
-                currentLanguageFilter = lang;
-                setCookie('selected_library_language', lang, 30);
-                updateNavigationLanguage(lang);
-                updateCategoryButtonLabels(lang);
-                updateLanguageButtonLabels(lang);
-                applyFilters();
-            });
-        });
-        if (resetBtn) {
-            resetBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                langBtns.forEach(b => b.classList.remove('language-filter-active'));
-                const harBtn = document.querySelector('.language-filter-btn[data-language="harari"]');
-                if (harBtn) harBtn.classList.add('language-filter-active');
-                currentLanguageFilter = 'harari';
-                setCookie('selected_library_language', 'harari', 30);
-                updateNavigationLanguage('harari');
-                updateCategoryButtonLabels('harari');
-                updateLanguageButtonLabels('harari');
-                applyFilters();
+        function updateCategoryButtonLabels(language) {
+            document.querySelectorAll('.category-filter-btn .category-badge').forEach(badge => {
+                let text = '';
+                if (language === 'harari')
+                    text = badge.getAttribute('data-har') || badge.getAttribute('data-en');
+                else if (language === 'amharic')
+                    text = badge.getAttribute('data-am') || badge.getAttribute('data-en');
+                else
+                    text = badge.getAttribute('data-en');
+                if (text) badge.textContent = text;
             });
         }
-        const initialLang = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
-        if (initialLang) initialLang.classList.add('language-filter-active');
-        else document.querySelector('.language-filter-btn[data-language="harari"]')?.classList.add('language-filter-active');
-    }
 
-    // ==================== PREVIEW MODAL FUNCTIONS ====================
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
+        function updateLanguageButtonLabels(language) {
+            document.querySelectorAll('.language-filter-btn').forEach(btn => {
+                const span = btn.querySelector('.language-badge') || btn.querySelector('span');
+                if (!span) return;
+                let text = '';
+                if (language === 'harari') text = span.getAttribute('data-har') || span.getAttribute('data-en');
+                else if (language === 'amharic') text = span.getAttribute('data-am') || span.getAttribute('data-en');
+                else text = span.getAttribute('data-en') || span.textContent;
+                if (text) span.textContent = text;
+            });
         }
-        if (modalId === 'previewModal') {
-            const iframe = document.getElementById('pdfIframe');
-            if (iframe) iframe.src = '';
+
+        function normalizeLanguageCode(language) {
+            if (!language) return 'all';
+            const code = language.toLowerCase().trim();
+            if (code === 'har' || code === 'harari') return 'harari';
+            if (code === 'eng' || code === 'english') return 'english';
+            if (code === 'am' || code === 'amharic') return 'amharic';
+            if (code === 'all') return 'all';
+            return code;
         }
-    }
 
-    function showPreviewSection(section) {
-        const sections = {
-            pdf: document.getElementById('pdfPreview'),
-            text: document.getElementById('textPreview'),
-            unsupported: document.getElementById('unsupportedPreview'),
-            loading: document.getElementById('previewLoading'),
-            error: document.getElementById('previewError')
-        };
-        Object.values(sections).forEach(el => {
-            if (el) el.classList.add('hidden');
-        });
-        if (sections[section]) sections[section].classList.remove('hidden');
-    }
+        // ==================== FILTER STATE ====================
+        let currentLanguageFilter = getCookie('selected_library_language') || 'harari';
 
-    function loadPdfPreview(file) {
-        const iframe = document.getElementById('pdfIframe');
-        if (!iframe) return;
-        iframe.src = file.url;
-        const timeout = setTimeout(() => {
-            iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
-            const fallback = setTimeout(() => showPreviewSection('error'), 5000);
-            iframe.onload = () => { clearTimeout(fallback); showPreviewSection('pdf'); };
-        }, 3000);
-        iframe.onload = () => { clearTimeout(timeout); showPreviewSection('pdf'); };
-        iframe.onerror = () => { clearTimeout(timeout); iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`; };
-    }
+        // ==================== CORE FILTER FUNCTION (NO CLASS DEPENDENCY) ====================
+        function applyFilters() {
+            const libraryGrid = document.getElementById('libraryGrid');
+            const items = libraryGrid ? libraryGrid.querySelectorAll('.library-item') : document.querySelectorAll('.library-item');
+            let visibleCount = 0;
+            const activeCategoryBtn = document.querySelector('.category-filter-btn.category-filter-active');
+            const activeCategory = activeCategoryBtn ? activeCategoryBtn.getAttribute('data-category') : 'all';
+            const normalizedCurrentLanguage = normalizeLanguageCode(currentLanguageFilter);
 
-    async function loadTextPreview(file) {
-        try {
-            const response = await fetch(file.url, { credentials: 'same-origin' });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            let text = await response.text();
-            const maxLen = 100000;
-            if (text.length > maxLen) text = text.substring(0, maxLen) + '\n\n... (preview truncated)';
-            const textContent = document.getElementById('textContent');
-            if (textContent) textContent.textContent = text;
-            showPreviewSection('text');
-        } catch (err) {
-            console.error(err);
-            const textContent = document.getElementById('textContent');
-            if (textContent) textContent.textContent = `Unable to load file content.\nError: ${err.message}`;
-            showPreviewSection('text');
+            items.forEach(item => {
+                const itemLanguage = normalizeLanguageCode(item.getAttribute('data-language') || 'all');
+                const itemCategory = item.getAttribute('data-category') || 'all';
+
+                const languageMatch = (normalizedCurrentLanguage === 'all') ||
+                                    (itemLanguage === 'all') ||
+                                    (itemLanguage === normalizedCurrentLanguage);
+                const categoryMatch = (activeCategory === 'all') || (itemCategory === activeCategory);
+
+                if (languageMatch && categoryMatch) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Update "no files" message only, keep the header count fixed to the original total
+            const noFilesMsg = document.getElementById('noFilesMessage');
+            if (noFilesMsg) noFilesMsg.style.display = visibleCount === 0 ? 'block' : 'none';
         }
-    }
 
-    function loadPreview(file) {
-        if (file.extension === 'pdf') loadPdfPreview(file);
-        else if (file.extension === 'txt') loadTextPreview(file);
-        else showPreviewSection('unsupported');
-    }
-
-    function openPreviewModal(button) {
-        const file = {
-            id: button.getAttribute('data-file-id'),
-            name: button.getAttribute('data-file-name'),
-            extension: button.getAttribute('data-file-extension').toLowerCase(),
-            url: button.getAttribute('data-file-url'),
-            downloadUrl: button.getAttribute('data-download-url')
-        };
-        document.getElementById('previewFileName').textContent = file.name;
-        document.getElementById('previewFileType').textContent = `${file.extension.toUpperCase()} File`;
-        const downloadBtn = document.getElementById('previewDownloadBtn');
-        if (downloadBtn) downloadBtn.href = file.downloadUrl;
-        const unsupportedBtn = document.getElementById('unsupportedDownloadBtn');
-        if (unsupportedBtn) unsupportedBtn.href = file.downloadUrl;
-        const errorBtn = document.getElementById('errorDownloadBtn');
-        if (errorBtn) errorBtn.href = file.downloadUrl;
-        showPreviewSection('loading');
-        const modal = document.getElementById('previewModal');
-        modal.classList.remove('hidden');
-        modal.style.display = 'flex';
-        loadPreview(file);
-    }
-
-    // ==================== GLOBAL EVENT LISTENERS ====================
-    function initializeEventListeners() {
-        // Preview button clicks
-        document.addEventListener('click', function(e) {
-            const previewBtn = e.target.closest('.preview-file-btn');
-            if (previewBtn) {
-                e.preventDefault();
-                e.stopPropagation();
-                openPreviewModal(previewBtn);
-            }
-        });
-        // Close modal buttons
-        const closePreviewBtn = document.getElementById('closePreviewBtn');
-        const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
-        const closeErrorBtn = document.getElementById('closeErrorBtn');
-        [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
-            if (btn) {
-                btn.addEventListener('click', (e) => {
+        // ==================== INITIALIZE FILTER BUTTONS ====================
+        function initializeCategoryFilter() {
+            const btns = document.querySelectorAll('.category-filter-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    closeModal('previewModal');
+                    btns.forEach(b => b.classList.remove('category-filter-active'));
+                    this.classList.add('category-filter-active');
+                    applyFilters();
+                });
+            });
+            // Ensure "All Categories" is active by default
+            if (!document.querySelector('.category-filter-btn.category-filter-active')) {
+                const allBtn = document.querySelector('.category-filter-btn[data-category="all"]');
+                if (allBtn) allBtn.classList.add('category-filter-active');
+            }
+        }
+
+        function initializeLanguageFilter() {
+            const langBtns = document.querySelectorAll('.language-filter-btn');
+            const resetBtn = document.getElementById('reset-language-filter');
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-language');
+                    langBtns.forEach(b => b.classList.remove('language-filter-active'));
+                    this.classList.add('language-filter-active');
+                    currentLanguageFilter = lang;
+                    setCookie('selected_library_language', lang, 30);
+                    updateNavigationLanguage(lang);
+                    updateCategoryButtonLabels(lang);
+                    updateLanguageButtonLabels(lang);
+                    applyFilters();
+                });
+            });
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    langBtns.forEach(b => b.classList.remove('language-filter-active'));
+                    const harBtn = document.querySelector('.language-filter-btn[data-language="harari"]');
+                    if (harBtn) harBtn.classList.add('language-filter-active');
+                    currentLanguageFilter = 'harari';
+                    setCookie('selected_library_language', 'harari', 30);
+                    updateNavigationLanguage('harari');
+                    updateCategoryButtonLabels('harari');
+                    updateLanguageButtonLabels('harari');
+                    applyFilters();
                 });
             }
-        });
-        // Click outside to close
-        window.addEventListener('click', (e) => {
-            const previewModal = document.getElementById('previewModal');
-            if (previewModal && e.target === previewModal) closeModal('previewModal');
-        });
-    }
+            const initialLang = document.querySelector(`.language-filter-btn[data-language="${currentLanguageFilter}"]`);
+            if (initialLang) initialLang.classList.add('language-filter-active');
+            else document.querySelector('.language-filter-btn[data-language="harari"]')?.classList.add('language-filter-active');
+        }
 
-    // ==================== DOM READY ====================
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedNavLang = getCookie('selected_library_language') || 'harari';
-        currentLanguageFilter = savedNavLang;
-        updateNavigationLanguage(savedNavLang);
-        initializeLanguageFilter();
-        initializeCategoryFilter();
-        initializeEventListeners();
-        updateCategoryButtonLabels(currentLanguageFilter);
-        updateLanguageButtonLabels(currentLanguageFilter);
-        applyFilters();
-    });
-</script>
-    @endpush
+        // ==================== PREVIEW MODAL FUNCTIONS ====================
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+            if (modalId === 'previewModal') {
+                const iframe = document.getElementById('pdfIframe');
+                if (iframe) iframe.src = '';
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showPreviewSection(section) {
+            const sections = {
+                pdf: document.getElementById('pdfPreview'),
+                text: document.getElementById('textPreview'),
+                unsupported: document.getElementById('unsupportedPreview'),
+                loading: document.getElementById('previewLoading'),
+                error: document.getElementById('previewError')
+            };
+            Object.values(sections).forEach(el => {
+                if (el) el.classList.add('hidden');
+            });
+            if (sections[section]) sections[section].classList.remove('hidden');
+        }
+
+        function loadPdfPreview(file) {
+            const iframe = document.getElementById('pdfIframe');
+            if (!iframe) return;
+            iframe.src = file.url;
+            const timeout = setTimeout(() => {
+                iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`;
+                const fallback = setTimeout(() => showPreviewSection('error'), 5000);
+                iframe.onload = () => { clearTimeout(fallback); showPreviewSection('pdf'); };
+            }, 3000);
+            iframe.onload = () => { clearTimeout(timeout); showPreviewSection('pdf'); };
+            iframe.onerror = () => { clearTimeout(timeout); iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(file.url)}&embedded=true`; };
+        }
+
+        async function loadTextPreview(file) {
+            try {
+                const response = await fetch(file.url, { credentials: 'same-origin' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                let text = await response.text();
+                const maxLen = 100000;
+                if (text.length > maxLen) text = text.substring(0, maxLen) + '\n\n... (preview truncated)';
+                const textContent = document.getElementById('textContent');
+                if (textContent) textContent.textContent = text;
+                showPreviewSection('text');
+            } catch (err) {
+                console.error(err);
+                const textContent = document.getElementById('textContent');
+                if (textContent) textContent.textContent = `Unable to load file content.\nError: ${err.message}`;
+                showPreviewSection('text');
+            }
+        }
+
+        function loadPreview(file) {
+            if (file.extension === 'pdf') loadPdfPreview(file);
+            else if (file.extension === 'txt') loadTextPreview(file);
+            else showPreviewSection('unsupported');
+        }
+
+        function openPreviewModal(button) {
+            const file = {
+                id: button.getAttribute('data-file-id'),
+                name: button.getAttribute('data-file-name'),
+                extension: button.getAttribute('data-file-extension').toLowerCase(),
+                url: button.getAttribute('data-file-url'),
+                downloadUrl: button.getAttribute('data-download-url')
+            };
+            document.getElementById('previewFileName').textContent = file.name;
+            document.getElementById('previewFileType').textContent = `${file.extension.toUpperCase()} File`;
+            const downloadBtn = document.getElementById('previewDownloadBtn');
+            if (downloadBtn) downloadBtn.href = file.downloadUrl;
+            const unsupportedBtn = document.getElementById('unsupportedDownloadBtn');
+            if (unsupportedBtn) unsupportedBtn.href = file.downloadUrl;
+            const errorBtn = document.getElementById('errorDownloadBtn');
+            if (errorBtn) errorBtn.href = file.downloadUrl;
+            showPreviewSection('loading');
+            const modal = document.getElementById('previewModal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            loadPreview(file);
+        }
+
+        // ==================== GLOBAL EVENT LISTENERS ====================
+        function initializeEventListeners() {
+            // Preview button clicks
+            document.addEventListener('click', function(e) {
+                const previewBtn = e.target.closest('.preview-file-btn');
+                if (previewBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openPreviewModal(previewBtn);
+                }
+            });
+            
+            // Close modal buttons
+            const closePreviewBtn = document.getElementById('closePreviewBtn');
+            const closeUnsupportedBtn = document.getElementById('closeUnsupportedBtn');
+            const closeErrorBtn = document.getElementById('closeErrorBtn');
+            
+            [closePreviewBtn, closeUnsupportedBtn, closeErrorBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        closeModal('previewModal');
+                    });
+                }
+            });
+
+            // ESC key to close
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const previewModal = document.getElementById('previewModal');
+                    if (previewModal && !previewModal.classList.contains('hidden')) {
+                        closeModal('previewModal');
+                    }
+                }
+            });
+
+            // IMPORTANT: Remove click outside to close - Only closes with buttons or Escape
+            // The modal will NOT close when clicking the backdrop
+        }
+
+        // ==================== DOM READY ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedNavLang = getCookie('selected_library_language') || 'harari';
+            currentLanguageFilter = savedNavLang;
+            updateNavigationLanguage(savedNavLang);
+            initializeLanguageFilter();
+            initializeCategoryFilter();
+            initializeEventListeners();
+            updateCategoryButtonLabels(currentLanguageFilter);
+            updateLanguageButtonLabels(currentLanguageFilter);
+            applyFilters();
+        });
+    </script>
+@endpush
 </x-app-layout>

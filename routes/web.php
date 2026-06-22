@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Library;
 use App\Models\Post;
 
 Route::get('/', function () {
@@ -11,7 +12,22 @@ Route::get('/', function () {
         $recent_english_posts = Post::orderBy('created_at', 'desc')->take(3)->where('language', 'eng')->get();
         $congress_members = DB::table('congress_leaders')->get();
         $messages = Post::where('category', 'message')->get();
-        $law_posts = Post::where('category', 'law')->orderBy('created_at','desc')->take(5)->get();
+        
+        // Debug: Check all available categories
+        $allCategories = DB::table('catagories')->get();
+        \Log::info('All categories:', $allCategories->toArray());
+        
+        $law_posts = Library::whereHas('category', function($query) {
+            $query->where('name', 'law');
+        })->orderBy('created_at','desc')->take(5)->get();
+        
+        \Log::info('Law posts found: ' . $law_posts->count());
+        if ($law_posts->isEmpty()) {
+            \Log::warning('No law posts found. Checking all libraries:', [
+                'total_libraries' => Library::count(),
+                'all_libraries' => Library::with('category')->get()->toArray()
+            ]);
+        }
 
         return view('welcome', compact('messages', 'congress_members', 'recent_harari_posts', 'recent_english_posts', 'law_posts'));
     } catch (\Exception $e) {

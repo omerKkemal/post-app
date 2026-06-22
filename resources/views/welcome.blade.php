@@ -112,8 +112,10 @@
                             <i class="fas fa-language text-green-600 text-2xl"></i>
                         </div>
                         <h3 class="english text-xl font-semibold text-gray-800 mb-3">Harari Language</h3>
+                        <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-3">የሀረር ቋንቋ</h3>
                         <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-3">ሀረሪ ሉኃ</h3>
                         <p class="english text-gray-600">Learn about the unique Harari language (Gey Sinan) and its preservation efforts</p>
+                        <p class="amharic hidden1 text-gray-600">ስለ የሀረር የተለየ ቋንቋ (Gey Sinan) እና የማስተናገዱ ጥረቶች ያገኙ።</p>
                         <p class="harari hidden1 text-gray-600">ሀረሪ ሉኃ ኔሮት ዋ ቄረሖት ኩሽኩሽቲው ዩቁ.</p>
                     </div>
 
@@ -122,8 +124,10 @@
                             <i class="fas fa-utensils text-amber-600 text-2xl"></i>
                         </div>
                         <h3 class="english text-xl font-semibold text-gray-800 mb-3">Traditional Cuisine</h3>
+                        <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-3">የባህላዊ ምግብ</h3>
                         <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-3">አዳ ሐንጉራች</h3>
                         <p class="english text-gray-600">Explore the unique flavors and dishes of Harari culinary traditions</p>
+                        <p class="amharic hidden1 text-gray-600">የሀረር ባህላዊ ምግብን እና የእርስዎን ጣዕሙ ያገኙ።</p>
                         <p class="harari hidden1 text-gray-600">ሀረሪ አዳ ሐንጉራች ሲነታች ዋ ሉይ ጢማቹ የፌሕሱ</p>
                     </div>
 
@@ -132,8 +136,10 @@
                             <i class="fas fa-praying-hands text-red-600 text-2xl"></i>
                         </div>
                         <h3 class="english text-xl font-semibold text-gray-800 mb-3">Shuwalid festival and mawlid</h3>
+                        <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-3">በሹዋልና በመውልድ በሚደረገው በዓል ላይ</h3>
                         <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-3">ሹዋል ኢድ ዋ መውሉድ</h3>
                         <p class="english text-gray-600">celebrating Shuwalid festival and prophet muhammad peace be upon him mawlid</p>
+                        <p class="amharic hidden1 text-gray-600">በሹዋል በዓልና በነቢዩ ሙሐመድ መውልድ ልዩ ማኅበረ ሰብ መደምደሚያን እናገናኝ።</p>
                         <p class="harari hidden1 text-gray-600">ዚሀረሪ መሐድ ሹዋል ኢድ ዋ መውሉድ መግደርቲ ሒራች ዋ ተቃሊዳች</p>
                     </div>
                 </div>
@@ -145,8 +151,10 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">History of Harar</h2>
+                    <h2 class="amharic hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">የሐረር ታሪክ</h2>
                     <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዚሀረሪ ታሪኽ</h2>
                     <p class="english text-gray-600 max-w-2xl mx-auto">Explore the ancient walled city and its significant historical legacy</p>
+                    <p class="amharic hidden1 text-gray-600 max-w-2xl mx-auto">ጥንታዊውን በግንብ የተከበበችውን ከተማ እና ጉልህ ታሪካዊ ቅርሶቿን ያስሱ</p>
                     <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">ቀዲም ጆጎል ሑጡርቤ ዚትቼኻልቲ አሲማ ዋ በግዚታ ታሪኽ ዋ ቁራሳች ዛሌ</p>
                 </div>
 
@@ -154,10 +162,14 @@
                     <div class="fade-in">
                         <div class="bg-white rounded-xl shadow-lg p-6">
                             <h3 class="english text-2xl font-bold text-gray-800 mb-4">The Walled City</h3>
+                            <h3 class="amharic hidden1 text-2xl font-bold text-gray-800 mb-4">ቅጥር ከተማ</h3>
                             <h3 class="harari hidden1 text-2xl font-bold text-gray-800 mb-4">ዚትሔጠርቲ አሲማ</h3>
                             <p class="english text-gray-600 mb-4">
                                 Harar Jugol, the historic fortified city, is a UNESCO World Heritage Site with 82 mosques
                                 and 102 shrines, representing the most important Islamic historical city in the Horn of Africa.
+                            </p>
+                            <p class="amharic hidden1 text-gray-600 mb-4">
+                                ታሪካዊቷ የተመሸገችው ሀረር ጁጎል በዩኔስኮ በአለም ቅርስነት የተመዘገበች ሲሆን 82 መስጊዶች እና 102 መቅደሶች ያሉት ሲሆን ይህም በአፍሪካ ቀንድ ውስጥ እጅግ አስፈላጊ የሆነች የእስልምና ታሪካዊ ከተማ ነች።
                             </p>
                             <p class="harari hidden1 text-gray-600 mb-4">
                                 ታሪኺያ ዚቴማ ዚትሼመቅቲ ሀረር ጆጎል ዩኒስኮ አለም ሑቁፍ ታሪኽ ቁራስነትቤ ሲትሴጀልቲ ዚኻነሳአ 82 መስጂዳች 102 አዋቻች ዛሉ ዚኻነሳአ ዩም ቀር አፍሪካቤ ተትኺሽዛት ዚኻንቲ ዚኢስላሚያ ታሪኺያ አሲማነንቴ
@@ -174,6 +186,20 @@
                                 <li class="flex items-start">
                                     <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
                                     <span>Important center for Islamic learning and trade</span>
+                                </li>
+                            </ul>
+                            <ul class="amharic hidden1 space-y-2 text-gray-600">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>በ 7 ኛው ክፍለ ዘመን የተመሰረተ</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>የሐረሪ መንግሥት ዋና ከተማ ከ1520 እስከ 1568 ዓ.ም</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                    <span>ለእስልምና ትምህርት እና ንግድ ጠቃሚ ማዕከል</span>
                                 </li>
                             </ul>
                             <ul class="harari hidden1 space-y-2 text-gray-600">
@@ -195,42 +221,54 @@
                     <div class="fade-in" style="animation-delay: 0.1s">
                         <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-xl p-8 text-white">
                             <h3 class="english text-2xl font-bold mb-4">Historical Timeline</h3>
+                            <h3 class="amharic hidden1 text-2xl font-bold mb-4">ታሪካዊ የጊዜ መስመር</h3>
                             <h3 class="harari hidden1 text-2xl font-bold mb-4">ታሪኺያ ዚወቅቲ መስጣራ</h3>
                             <div class="space-y-4">
                                 <div class="flex items-center">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
                                         <span class="english">7th C</span>
+                                        <span class="amharic hidden1">7ኛ ሲ</span>
                                         <span class="harari hidden1">7ኛ ቀርኒ</span>
                                     </div>
                                     <div>
                                         <p class="english">Foundation of Harar</p>
+                                        <p class="amharic hidden1">የሐረር መሠረት</p>
                                         <p class="harari hidden1">ሀረሪ አስሊ</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
-                                        1520
+                                        <span class="english">1520</span>
+                                        <span class="amharic hidden1">1520</span>
+                                        <span class="harari hidden1">1520</span>
                                     </div>
                                     <div>
                                         <p class="english">Capital of Harari Kingdom</p>
+                                        <p class="amharic hidden1">የሀረሪ ግዛት ዋና ከተማ</p>
                                         <p class="harari hidden1">ሀረሪ ሑኩማ ዋና አሲማ</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
-                                        1887
+                                        <span class="english">1887</span>
+                                        <span class="amharic hidden1">1887</span>
+                                        <span class="harari hidden1">1887</span>
                                     </div>
                                     <div>
                                         <p class="english">Incorporation into Ethiopia</p>
+                                        <p class="amharic hidden1">ወደ ኢትዮጵያ መግባት</p>
                                         <p class="harari hidden1">ኪም ኢቶጲያ ሑኩማ</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="bg-white text-green-700 w-20 h-8 rounded-full flex items-center justify-center text-sm font-bold mr-4">
-                                        2006
+                                        <span class="english">2006</span>
+                                        <span class="amharic hidden1">2006</span>
+                                        <span class="harari hidden1">2006</span>
                                     </div>
                                     <div>
                                         <p class="english">UNESCO World Heritage</p>
+                                        <p class="amharic hidden1">የዩኔስኮ የዓለም ቅርስ</p>
                                         <p class="harari hidden1">ዩኒስኮ አለም ሑቁፍ ቁራስ</p>
                                     </div>
                                 </div>
@@ -258,8 +296,10 @@
                         </div>
                         <div class="p-4">
                             <h3 class="english text-xl font-semibold text-gray-800 mb-2">Basketry</h3>
+                            <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-2">ቅርጫት</h3>
                             <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-2">ሞታች</h3>
                             <p class="english text-gray-600 text-sm">Intricately woven baskets with traditional patterns</p>
+                            <p class="amharic hidden1 text-gray-600 text-sm">ከባህላዊ ቅጦች ጋር ውስብስብ የሆነ የተጠለፉ ቅርጫቶች</p>
                             <p class="harari hidden1 text-gray-600 text-sm">አዳ ሲነታችቤ ዚትደለጉ አጃኢብ ዚተዩ ኢጂቤ ዚትሰፉ ሞታች</p>
                         </div>
                     </div>
@@ -270,8 +310,10 @@
                         </div>
                         <div class="p-4">
                             <h3 class="english text-xl font-semibold text-gray-800 mb-2">Textiles</h3>
+                            <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-2">ጨርቃ ጨርቅ</h3>
                             <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-2">ጨርቂቤ</h3>
                             <p class="english text-gray-600 text-sm">Traditional Harari clothing and fabric designs</p>
+                            <p class="amharic hidden1 text-gray-600 text-sm">የሀረሪ ባህላዊ አልባሳት እና የጨርቃጨርቅ ንድፎች</p>
                             <p class="harari hidden1 text-gray-600 text-sm">ሀረሪ አዳ ሊባሻች ዋ ጨርቂቤ ዚደለጉ ሲነታች</p>
                         </div>
                     </div>
@@ -282,8 +324,10 @@
                         </div>
                         <div class="p-4">
                             <h3 class="english text-xl font-semibold text-gray-800 mb-2">Jewelry</h3>
+                            <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-2">ጌጣጌጥ</h3>
                             <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-2">ሰያቅ</h3>
                             <p class="english text-gray-600 text-sm">Silver and beadwork with cultural significance</p>
+                            <p class="amharic hidden1 text-gray-600 text-sm">ከባህላዊ ጠቀሜታ ጋር የብር እና የበቆሎ ስራዎች</p>
                             <p class="harari hidden1 text-gray-600 text-sm">ሀረሪ አዳ ሊባሻች ማቤይነቤ ዚደለጉ ዚትሊያያ ዲዛይቤ ዚትደለጉ ሰያቅ ዲላጋች</p>
                         </div>
                     </div>
@@ -294,8 +338,10 @@
                         </div>
                         <div class="p-4">
                             <h3 class="english text-xl font-semibold text-gray-800 mb-2">Pottery</h3>
+                            <h3 class="amharic hidden1 text-xl font-semibold text-gray-800 mb-2">የሸክላ ዕቃዎች</h3>
                             <h3 class="harari hidden1 text-xl font-semibold text-gray-800 mb-2">አፈር ጌብ</h3>
                             <p class="english text-gray-600 text-sm">Traditional clay works with unique Harari motifs</p>
+                            <p class="amharic hidden1 text-gray-600 text-sm">ባህላዊ ሸክላ ልዩ በሆኑ የሐረሪ ዘይቤዎች ይሠራል</p>
                             <p class="harari hidden1 text-gray-600 text-sm">ዚአዳ አፈር ጌብ ሉይ ዚኻና ኡጋቤ ሀረሪ ተቃሊድ ቤ ዚትደለጉ ኢጂ ሲነታች</p>
                         </div>
                     </div>
@@ -308,8 +354,10 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Community Messaging</h2>
+                    <h2 class="amharic hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">የማህበረሰብ መልእክት</h2>
                     <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ዳይሐዋዞ ሉኽ</h2>
                     <p class="english text-gray-600 max-w-2xl mx-auto">Stay connected with important announcements and community updates</p>
+                    <p class="amharic hidden1 text-gray-600 max-w-2xl mx-auto">አስፈላጊ ከሆኑ ማስታወቂያዎች እና የማህበረሰብ ዝመናዎች ጋር እንደተገናኙ ይቆዩ</p>
                     <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">አትኼሽ ዚኻኑ አቴወቆታች ዋ ዳይሐዋዝ ዘማኒያችባሕ ዚትራአ ኩትቤ ዩነብራል ዚቁራ ዳይሐዋዝ ሉኻች</p>
                 </div>
 
@@ -317,6 +365,7 @@
                     <!-- Recent Messages -->
                     <div class="fade-in" style="animation-delay: 0.1s">
                         <h3 class="english text-2xl font-bold text-gray-800 mb-6">Recent Community Messages</h3>
+                        <h3 class="amharic hidden1 text-2xl font-bold text-gray-800 mb-6">የቅርብ ጊዜ የማህበረሰብ መልዕክቶች</h3>
                         <h3 class="harari hidden1 text-2xl font-bold text-gray-800 mb-6">ቁራ ወቅቲ ዚዳይሐዋዞ ሉኽ</h3>
                         <div class="space-y-4">
                             @if(isset($messages) && count($messages) > 0)
@@ -347,8 +396,10 @@
                     <div class="fade-in" style="animation-delay: 0.2s">
                         <div class="bg-white rounded-xl p-6 h-full">
                             <h3 class="english text-2xl font-bold text-gray-800 mb-6">Get Involved</h3>
+                            <h3 class="amharic hidden1 text-2xl font-bold text-gray-800 mb-6">ተሳተፍ</h3>
                             <h3 class="harari hidden1 text-2xl font-bold text-gray-800 mb-6">ዳይሐዋዞ ተሳአዶት</h3>
                             <p class="english text-gray-600 mb-4">Join our community discussions and stay updated with the latest announcements.</p>
+                            <p class="amharic hidden1 text-gray-600 mb-4">የእኛን የማህበረሰብ ውይይቶች ይቀላቀሉ እና በቅርብ ጊዜ ማስታወቂያዎች እንደተዘመኑ ይቆዩ።</p>
                             <p class="harari hidden1 text-gray-600 mb-4">ዳይ ሀዋዚያ  ተሳአዶት ኡሹማ ቁራ ወቅቲ አቴውቅታች ሪኸቡ</p>
                             <div class="english space-y-3">
                                 <div class="flex items-center">
@@ -362,6 +413,20 @@
                                 <div class="flex items-center">
                                     <i class="fas fa-handshake text-blue-500 mr-3"></i>
                                     <span>Volunteer opportunities</span>
+                                </div>
+                            </div>
+                            <div class="amharic hidden1 space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-check text-green-500 mr-3"></i>
+                                    <span>የማህበረሰብ ስብሰባዎች</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-bullhorn text-amber-500 mr-3"></i>
+                                    <span>የአደጋ ጊዜ ማንቂያዎች እና ማስታወቂያዎች</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-handshake text-blue-500 mr-3"></i>
+                                    <span>የበጎ ፈቃደኝነት እድሎች</span>
                                 </div>
                             </div>
                             <div class="harari hidden1 space-y-3">
@@ -389,8 +454,10 @@
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
                     <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Harari Congress</h2>
+                    <h2 class="amharic hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">የሐረሪ ኮንግረስ</h2>
                     <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ሀረሪ መጀሊስ</h2>
                     <p class="english text-gray-600 max-w-2xl mx-auto">Governing body representing the Harari people and their interests</p>
+                    <p class="amharic hidden1 text-gray-600 max-w-2xl mx-auto">የሀረሪ ህዝብ እና ጥቅማቸውን የሚወክል የበላይ አካል</p>
                     <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">ሀረሪ መሐድ መጅሊስ ተዋቀሮት</p>
                 </div>
 
@@ -450,6 +517,31 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="amharic hidden1 bg-gray-50 rounded-xl p-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-6">የኮንግረስ እንቅስቃሴዎች</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                    <span class="text-gray-700">የባህል ጥበቃ ተነሳሽነት</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                    <span class="text-gray-700">የማህበረሰብ ልማት ፕሮጀክቶች</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                    <span class="text-gray-700">የትምህርት ፕሮግራሞች</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                    <span class="text-gray-700">በክልል መንግስት ውስጥ ውክልና</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                    <span class="text-gray-700">የቅርስ ቦታ ጥበቃ</span>
+                                </li>
+                            </ul>
+                        </div>
 
                         <div class="harari hidden1 bg-gray-50 rounded-xl p-8">
                             <h3 class="text-2xl font-bold text-gray-800 mb-6">ሀረሪ መጅሊስ ኩሽኩሽቲያች</h3>
@@ -486,8 +578,10 @@
         <section id="news" class="py-16 bg-gray-50">
             <div class="text-center mb-12">
                 <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Latest News</h2>
+                <h2 class="amharic hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">የቅርብ ጊዜ ዜናዎች</h2>
                 <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ቁራ ወቅቲ ኻበራች</h2>
                 <p class="english text-gray-600 max-w-2xl mx-auto">Stay updated with the latest developments in the Harari community</p>
+                <p class="amharic hidden1 text-gray-600 max-w-2xl mx-auto">በሐረሪ ማህበረሰብ ውስጥ ባሉ አዳዲስ ክስተቶች ወቅታዊ መረጃዎችን ያግኙ</p>
                 <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">ሀረሪ ሑስኒቤ ዛሉ ሐጂስ ሐጂስ ሩኹብቲያቹ ዋ ወቅቲያ ማእሉማታች የርኸቡ</p>
             </div>
 
@@ -499,7 +593,6 @@
                             <div class="bg-white rounded-xl shadow-md mb-6 p-6 fade-in">
                                 <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $post->title ?? 'No Title' }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{{ Str::limit($post->description ?? 'No description available', 150) }}</p>
-
                             </div>
                         @endif
                     @endforeach
@@ -518,7 +611,6 @@
                             <div class="bg-white rounded-xl shadow-md mb-6 p-6 fade-in">
                                 <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $post->title ?? 'No Title' }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{{ Str::limit($post->description ?? 'No description available', 150) }}</p>
-
                             </div>
                         @endif
                     @endforeach
@@ -530,33 +622,145 @@
             </div>
         </section>
 
-        <!-- Laws Section -->
+        <!-- Laws Section with PDF Preview Modal -->
         <section id="laws" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="text-center mb-12">
-                    <h2 class="english  text-3xl md:text-4xl font-bold text-gray-800 mb-4">Laws & Regulations</h2>
+                    <h2 class="english text-3xl md:text-4xl font-bold text-gray-800 mb-4">Laws & Regulations</h2>
+                    <h2 class="amharic hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ህጎች እና መመሪያዎች</h2>
                     <h2 class="harari hidden1 text-3xl md:text-4xl font-bold text-gray-800 mb-4">ቃኑናች ዋ መኤቀድቲ</h2>
                     <p class="english text-gray-600 max-w-2xl mx-auto">Governing laws and community regulations for the Harari people</p>
+                    <p class="amharic hidden1 text-gray-600 max-w-2xl mx-auto">ለሀረሪ ህዝብ የአስተዳደር ህጎች እና የማህበረሰብ መመሪያዎች</p>
                     <p class="harari hidden1 text-gray-600 max-w-2xl mx-auto">ዚሀረሪ መሐድ መጅሊስ መትሒዳደርቲ ቃኑናች ዋ ዳይሐዋዝ መኤቀድቲያች</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    @foreach ($law_posts as $law)
-                        @if ($law->language == 'eng')
-                            <div class="english bg-gray-50 rounded-xl p-6 fade-in">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $law->title ?? 'No Title' }}</h3>
-                                <p class="text-gray-600 text-sm">{{ Str::limit($law->description ?? 'No description available', 200) }}</p>
+                    @if(isset($law_posts) && count($law_posts) > 0)
+                        @foreach ($law_posts as $law)
+                            <!-- English Version -->
+                            <div class="english bg-gray-50 rounded-xl p-6 fade-in hover:shadow-lg transition-shadow duration-300">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $law->name ?? 'No Title' }}</h3>
+                                <p class="text-gray-600 text-sm mb-4">{{ Str::limit($law->description ?? 'No description available', 200) }}</p>
+                                
+                                @if(isset($law->location) && !empty($law->location))
+                                    @php
+                                        $isUrl = filter_var($law->location, FILTER_VALIDATE_URL);
+                                        $pdfPath = $isUrl ? $law->location : asset('storage/' . $law->location);
+                                    @endphp
+                                    <div class="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-200">
+                                        <button onclick="openPDFViewer('{{ $pdfPath }}', '{{ $law->name }}')" 
+                                                class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-eye mr-2"></i>
+                                            Preview PDF
+                                        </button>
+                                        <a href="{{ $pdfPath }}" 
+                                           download 
+                                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-download mr-2"></i>
+                                            Download
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                        <span class="text-gray-400 text-sm">No PDF available</span>
+                                    </div>
+                                @endif
                             </div>
-                        @elseif ($law->language == 'har')
-                            <div class="harari hidden1 bg-gray-50 rounded-xl p-6 fade-in">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $law->title ?? 'No Title' }}</h3>
-                                <p class="text-gray-600 text-sm">{{ Str::limit($law->description ?? 'No description available', 200) }}</p>
+
+                            <!-- Harari Version -->
+                            <div class="harari hidden1 bg-gray-50 rounded-xl p-6 fade-in hover:shadow-lg transition-shadow duration-300">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $law->name ?? 'No Title' }}</h3>
+                                <p class="text-gray-600 text-sm mb-4">{{ Str::limit($law->description ?? 'No description available', 200) }}</p>
+                                
+                                @if(isset($law->location) && !empty($law->location))
+                                    @php
+                                        $isUrl = filter_var($law->location, FILTER_VALIDATE_URL);
+                                        $pdfPath = $isUrl ? $law->location : asset('storage/' . $law->location);
+                                    @endphp
+                                    <div class="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-200">
+                                        <button onclick="openPDFViewer('{{ $pdfPath }}', '{{ $law->name }}')" 
+                                                class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-eye mr-2"></i>
+                                            ፒዲኤፍ ይመልከቱ
+                                        </button>
+                                        <a href="{{ $pdfPath }}" 
+                                           download 
+                                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-download mr-2"></i>
+                                            አውርድ
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                        <span class="text-gray-400 text-sm">ፒዲኤፍ የለም</span>
+                                    </div>
+                                @endif
                             </div>
-                        @endif
-                    @endforeach
+
+                            <!-- Amharic Version -->
+                            <div class="amharic hidden1 bg-gray-50 rounded-xl p-6 fade-in hover:shadow-lg transition-shadow duration-300">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $law->name ?? 'No Title' }}</h3>
+                                <p class="text-gray-600 text-sm mb-4">{{ Str::limit($law->description ?? 'No description available', 200) }}</p>
+                                
+                                @if(isset($law->location) && !empty($law->location))
+                                    @php
+                                        $isUrl = filter_var($law->location, FILTER_VALIDATE_URL);
+                                        $pdfPath = $isUrl ? $law->location : asset('storage/' . $law->location);
+                                    @endphp
+                                    <div class="flex flex-wrap gap-3 mt-4 pt-4 border-t border-gray-200">
+                                        <button onclick="openPDFViewer('{{ $pdfPath }}', '{{ $law->name }}')" 
+                                                class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-eye mr-2"></i>
+                                            ፒዲኤፍ ይመልከቱ
+                                        </button>
+                                        <a href="{{ $pdfPath }}" 
+                                           download 
+                                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-300 text-sm">
+                                            <i class="fas fa-download mr-2"></i>
+                                            አውርድ
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="mt-4 pt-4 border-t border-gray-200">
+                                        <span class="text-gray-400 text-sm">ፒዲኤፍ የለም</span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="col-span-2 text-center py-8">
+                            <p class="text-gray-500">No laws and regulations available at the moment.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- PDF Viewer Modal -->
+    <div id="pdfViewerModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-75">
+        <div class="bg-white rounded-xl shadow-2xl w-11/12 max-w-5xl h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                    <h3 class="text-lg font-semibold text-gray-800" id="pdfViewerName">PDF Document</h3>
+                </div>
+                <button onclick="closePDFViewer()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="flex-1 p-4 bg-gray-100">
+                <iframe id="pdfViewerIframe" src="" class="w-full h-full rounded-lg border-0" frameborder="0"></iframe>
+            </div>
+            <!-- Modal Footer -->
+            <div class="flex justify-end p-4 border-t border-gray-200 bg-gray-50">
+                <button onclick="closePDFViewer()" class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition duration-300">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -708,6 +912,33 @@
             // Initialize with saved language or default
             setLanguage(currentLanguage);
         });
+
+        // PDF Viewer Functions - Only closes with buttons or Escape key
+        function openPDFViewer(pdfUrl, pdfName) {
+            const modal = document.getElementById('pdfViewerModal');
+            const iframe = document.getElementById('pdfViewerIframe');
+            const name = document.getElementById('pdfViewerName');
+            
+            iframe.src = pdfUrl;
+            name.textContent = pdfName || 'PDF Document';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePDFViewer() {
+            const modal = document.getElementById('pdfViewerModal');
+            const iframe = document.getElementById('pdfViewerIframe');
+            modal.style.display = 'none';
+            iframe.src = '';
+            document.body.style.overflow = '';
+        }
+
+        // Only close with Escape key (not by clicking backdrop)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePDFViewer();
+            }
+        });
     </script>
 
     <style>
@@ -733,49 +964,33 @@
         .hidden1 {
             display: none !important;
         }
-            .slideshow-image {
-        transition: opacity 1s ease-in-out;
-        background: black;
-    }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+        /* Active button styling */
+        .language-filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
 
-    .fade-in {
-        opacity: 0;
-        animation: fadeIn 0.8s ease-out forwards;
-    }
+        .language-filter-btn.active .language-badge {
+            color: white;
+        }
 
-    html {
-        scroll-behavior: smooth;
-    }
+        .language-filter-btn {
+            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+        }
 
-    .hidden1 {
-        display: none !important;
-    }
+        .language-filter-btn:hover {
+            background-color: #e5e7eb;
+        }
 
-    /* Active button styling */
-    .language-filter-btn.active {
-        background-color: #3b82f6; /* blue-500 */
-        color: white;
-    }
-
-    .language-filter-btn.active .language-badge {
-        color: white;
-    }
-
-    .language-filter-btn {
-        transition: all 0.2s ease;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        background-color: #f3f4f6; /* gray-100 */
-        border: 1px solid #e5e7eb; /* gray-200 */
-    }
-
-    .language-filter-btn:hover {
-        background-color: #e5e7eb; /* gray-200 */
-    }
+        /* PDF Viewer Modal Styles */
+        #pdfViewerModal {
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
     </style>
 </x-app-layout>
