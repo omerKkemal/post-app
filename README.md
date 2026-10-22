@@ -118,7 +118,18 @@ DB_DATABASE=/absolute/path/to/your/project/database/database.sqlite
 php artisan migrate
 ```
 
-### Step 7: See It Live
+### Step 7: Add Demo Content
+
+```bash
+php artisan db:seed
+```
+
+The seeder is safe to run more than once. It creates example posts, categories,
+clearly labeled demo leaders, and sample text files in the public library.
+The local demo account is `test@example.com` with password `password`.
+Change the password before using this account in any shared or production environment.
+
+### Step 8: See It Live
 
 ```bash
 php artisan serve

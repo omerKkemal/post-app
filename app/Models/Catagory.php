@@ -11,8 +11,10 @@ class Catagory extends Model
 
     protected $fillable = [
         'name',
+        'am',
+        'har',
         'description',
-        'user_id'
+        'user_id',
     ];
 
     public function user()

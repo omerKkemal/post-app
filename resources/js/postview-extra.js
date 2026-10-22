@@ -13,16 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentFilter = 'all';
     let allCategories = new Set();
 
-    // ✅ Helper: safely parse language from URL
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    const language = parts[parts.length - 1] || "har";
+    const language = "all";
 
     // Initialize categories from existing posts
     initializeCategories();
 
     // Load More functionality
-    loadMoreBtn.addEventListener("click", async () => {
+    loadMoreBtn.addEventListener("click", async (event) => {
         if (isLoading || !hasMore) return;
+        event.stopImmediatePropagation();
         isLoading = true;
 
         loadMoreBtn.disabled = true;
@@ -180,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             : "";
 
         return `
-        <article class="post-card fade-in" data-category="${post.category || "uncategorized"}">
+        <article class="post-card fade-in ${post.language}" data-category="${post.category || "uncategorized"}" data-language="${post.language}">
             <div class="p-6 border-b border-gray-200">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center space-x-3">
@@ -203,6 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h1 class="text-2xl font-bold text-gray-900 mb-4">${post.title}</h1>
                 <div class="flex flex-wrap gap-2">
                     <span class="category-tag">${post.category || "Uncategorized"}</span>
+                    <span class="language-tag">${post.language}</span>
                 </div>
             </div>
 

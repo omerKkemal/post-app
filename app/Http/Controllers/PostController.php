@@ -103,7 +103,7 @@ class PostController extends Controller
         return view('post.view', compact('posts_harari', 'posts_english', 'posts_amharic', 'categories'));
     }
 
-    public function loadMorePosts($clickCount)
+    public function loadMorePosts($clickCount, $language)
     {
         try {
             $perPage = 10;
@@ -163,6 +163,7 @@ class PostController extends Controller
             $transformedPosts_harari = $posts_harari->map(function ($post) {
                 return [
                     'id' => $post->id,
+                    'language' => 'harari',
                     'title' => $post->title,
                     'description' => $post->description,
                     'category' => $post->category,
@@ -176,6 +177,7 @@ class PostController extends Controller
             $transformedPosts_english = $posts_english->map(function ($post) {
                 return [
                     'id' => $post->id,
+                    'language' => 'english',
                     'title' => $post->title,
                     'description' => $post->description,
                     'category' => $post->category,
@@ -189,6 +191,7 @@ class PostController extends Controller
             $transformedPosts_amharic = $posts_amharic->map(function ($post) {
                 return [
                     'id' => $post->id,
+                    'language' => 'amharic',
                     'title' => $post->title,
                     'description' => $post->description,
                     'category' => $post->category,
@@ -199,8 +202,16 @@ class PostController extends Controller
                 ];
             });
 
+            $posts = $transformedPosts_harari
+                ->concat($transformedPosts_english)
+                ->concat($transformedPosts_amharic)
+                ->values();
+            $hasMore = $hasMore_harari || $hasMore_english || $hasMore_amharic;
+
             return response()->json([
                 'success' => true,
+                'posts' => $posts,
+                'hasMore' => $hasMore,
                 'posts_harari' => $transformedPosts_harari,
                 'posts_english' => $transformedPosts_english,
                 'posts_amharic' => $transformedPosts_amharic,
@@ -216,7 +227,8 @@ class PostController extends Controller
                 'postsCount harari' => $posts_harari->count(),
                 'postsCount english' => $posts_english->count(),
                 'postsCount amharic' => $posts_amharic->count(),
-                'clickCount' => $clickCount
+                'clickCount' => $clickCount,
+                'language' => $language,
             ]);
 
         } catch (\Exception $e) {
