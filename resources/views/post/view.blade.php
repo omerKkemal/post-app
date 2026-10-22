@@ -639,7 +639,7 @@
 
         <!-- Load More Section -->
         <div id="load-more-container" class="text-center mt-8 mb-8">
-            <button id="load-more-btn" class="btn btn-primary">
+            <button id="load-more-btn" class="btn btn-primary" data-load-more-handler="inline">
                 <span>Load More Posts</span>
                 <div id="load-more-spinner" class="loading-spinner hidden ml-2"></div>
             </button>
@@ -1197,12 +1197,31 @@
 
                 clickCount++;
 
-                fetch(`/posts/load-more/${clickCount}/{{ $language ?? 'har' }}`)
+                fetch(`/load-more-posts/${clickCount}/all`)
                     .then(response => response.json())
                     .then(data => {
-                        if (data.success && data.posts.length > 0) {
-                            data.posts.forEach(post => {
-                                const mediaFiles = post.media_url || [];
+                        const posts = Array.isArray(data.posts) ? data.posts : [
+                            ...(Array.isArray(data.posts_harari)
+                                ? data.posts_harari.map(post => ({ ...post, language: post.language || 'harari' }))
+                                : []),
+                            ...(Array.isArray(data.posts_english)
+                                ? data.posts_english.map(post => ({ ...post, language: post.language || 'english' }))
+                                : []),
+                            ...(Array.isArray(data.posts_amharic)
+                                ? data.posts_amharic.map(post => ({ ...post, language: post.language || 'amharic' }))
+                                : [])
+                        ];
+                        const hasMorePosts = typeof data.hasMore === 'boolean'
+                            ? data.hasMore
+                            : Boolean(data['hasMore harari'] || data['hasMore english'] || data['hasMore amharic']);
+
+                        if (data.success && posts.length > 0) {
+                            posts.forEach(post => {
+                                const mediaFiles = Array.isArray(post.media_url)
+                                    ? post.media_url
+                                    : post.media_url
+                                        ? [post.media_url]
+                                        : [];
                                 const hasMultipleFiles = mediaFiles.length > 1;
                                 let mediaHtml = '';
 
@@ -1393,7 +1412,7 @@
                                 }, 100);
                             });
 
-                            if (!data.hasMore) {
+                            if (!hasMorePosts) {
                                 loadMoreBtn.classList.add('hidden');
                                 noMorePosts.classList.remove('hidden');
                             }

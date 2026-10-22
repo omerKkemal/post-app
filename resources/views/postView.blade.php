@@ -57,7 +57,15 @@
     <!-- Public Post Content -->
     <div class="max-w-4xl mx-auto px-4 py-6">
         <!-- Posts Container -->
-        <div id="posts-container" class="space-y-6">
+        <div
+            id="posts-container"
+            class="space-y-6"
+            data-footer-logo="{{ asset('image/logo.jpg') }}"
+            data-footer-logo-alt="{{ config('app.name', 'Laravel') }}"
+            data-footer-harari="ሀረሪ መጀሊስ"
+            data-footer-english="{{ config('app.name', 'Laravel') }}"
+            data-footer-amharic="ሐረሪ ኮንግረስ"
+        >
             <!-- Language Filter and Category Filter Container -->
             <div class="mb-8 space-y-6">
                 <!-- Language Filter Dropdown -->

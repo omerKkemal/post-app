@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const categoryFilterContainer = document.getElementById('category-filters-container');
 
     if (!loadMoreBtn || !postsContainer) return;
+    if (loadMoreBtn.dataset.loadMoreHandler === 'inline') return;
 
     let clickCount = 1;
     let isLoading = false;
@@ -35,8 +36,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             console.log("--->Response:", data);
 
-            if (data.success && data.posts.length > 0) {
-                data.posts.forEach(post => {
+            const posts = Array.isArray(data.posts) ? data.posts : [
+                ...(Array.isArray(data.posts_harari)
+                    ? data.posts_harari.map(post => ({ ...post, language: post.language || 'harari' }))
+                    : []),
+                ...(Array.isArray(data.posts_english)
+                    ? data.posts_english.map(post => ({ ...post, language: post.language || 'english' }))
+                    : []),
+                ...(Array.isArray(data.posts_amharic)
+                    ? data.posts_amharic.map(post => ({ ...post, language: post.language || 'amharic' }))
+                    : [])
+            ];
+            const hasMorePosts = typeof data.hasMore === 'boolean'
+                ? data.hasMore
+                : Boolean(data['hasMore harari'] || data['hasMore english'] || data['hasMore amharic']);
+
+            if (data.success && posts.length > 0) {
+                posts.forEach(post => {
                     const postHTML = createPostElement(post);
                     postsContainer.insertAdjacentHTML("beforeend", postHTML);
 
@@ -48,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 clickCount++;
-                hasMore = data.hasMore;
+                hasMore = hasMorePosts;
 
                 // Apply current filter to newly loaded posts
                 applyFilter(currentFilter);
@@ -177,8 +193,15 @@ document.addEventListener("DOMContentLoaded", () => {
                        allowfullscreen class="rounded-lg"></iframe>
                </div>`
             : "";
+        const footerTitle = document.createElement('span');
+        const footerTitleByLanguage = {
+            harari: postsContainer.dataset.footerHarari,
+            english: postsContainer.dataset.footerEnglish,
+            amharic: postsContainer.dataset.footerAmharic
+        };
+        footerTitle.textContent = footerTitleByLanguage[post.language] || footerTitleByLanguage.english || '';
 
-        return `
+        const postMarkup = `
         <article class="post-card fade-in ${post.language}" data-category="${post.category || "uncategorized"}" data-language="${post.language}">
             <div class="p-6 border-b border-gray-200">
                 <div class="flex items-center justify-between mb-4">
@@ -255,6 +278,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         </article>`;
+        const footerMarkup = `
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <img
+                            src="${postsContainer.dataset.footerLogo}"
+                            alt="${postsContainer.dataset.footerLogoAlt}"
+                            class="relative w-10 h-10 rounded-full object-cover border-2 border-white shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:border-blue-200 dark:border-gray-600"
+                            loading="eager"
+                        />
+                    </div>
+                    <div><h1 class="">${footerTitle.innerHTML}</h1></div>
+                </div>
+            </div>`;
+
+        return postMarkup.replace(
+            /<div class="px-6 py-4 bg-gray-50 border-t border-gray-200">[\s\S]*(?=<\/article>)/,
+            footerMarkup
+        );
     }
 
     // Helper function to format description with proper HTML
@@ -741,7 +783,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let clickCount = 0;
         let isLoading = false;
 
-        if (loadMoreBtn) {
+        if (loadMoreBtn && loadMoreBtn.dataset.loadMoreHandler === 'inline') {
             loadMoreBtn.addEventListener('click', function() {
                 if (isLoading) return;
 
@@ -751,7 +793,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 clickCount++;
 
-                fetch(`/posts/load-more/${clickCount}/{{ $language ?? 'har' }}`)
+                fetch(`/load-more-posts/${clickCount}/all`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success && data.posts.length > 0) {

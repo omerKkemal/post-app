@@ -58,6 +58,7 @@ list_of_artisan = [
     "php artisan tinker",
     "php artisan queue:work",
     "php artisan schedule:run"
+    "npx vite build",
 ]
 
 # === Recommended Workflows ===
